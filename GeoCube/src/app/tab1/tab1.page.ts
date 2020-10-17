@@ -1,5 +1,6 @@
 import { Component , ViewChild, ElementRef} from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 declare var google: any
 
@@ -13,16 +14,23 @@ export class Tab1Page {
   map: any;
 @ViewChild('map', {read: ElementRef, static: false}) mapRef:ElementRef;
 
+currentPosLongitude:any = 0
+currentPosLatitude:any = 0
 infoWindows: any = [];
 markers: any = [
   {
-    title: "Current Location",
+    title: "Random Location",
     latitude: "-17.82",
     longitude: "31.04"
+  },
+  {
+    title: "Current Location",
+    latitude: this.currentPosLatitude,
+    longitude: this.currentPosLongitude
   }
 ]
 
-  constructor() {
+  constructor(private geolocation : Geolocation) {
 
   }
   ionViewDidEnter(){
@@ -155,7 +163,17 @@ markers: any = [
       ],
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options,);
+    this.updatePostion()
     this.addMarkersToMap(this.markers);
+  }
+  
+  updatePostion(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.currentPosLatitude = resp.coords.latitude
+      this.currentPosLongitude =  resp.coords.longitude
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
   }
 
 }
