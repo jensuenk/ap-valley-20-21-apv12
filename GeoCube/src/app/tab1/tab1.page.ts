@@ -1,6 +1,8 @@
-import { Component , ViewChild, ElementRef} from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { AuthService } from '../auth/auth.service';
 
 declare var google: any
 
@@ -12,32 +14,38 @@ declare var google: any
 export class Tab1Page {
 
   map: any;
-@ViewChild('map', {read: ElementRef, static: false}) mapRef:ElementRef;
+  @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
-currentPosLongitude:any = 0
-currentPosLatitude:any = 0
-infoWindows: any = [];
-markers: any = [
-  {
-    title: "Random Location",
-    latitude: "-17.82",
-    longitude: "31.04"
-  },
-  {
-    title: "Current Location",
-    latitude: this.currentPosLatitude,
-    longitude: this.currentPosLongitude
+  currentPosLongitude: any = 0
+  currentPosLatitude: any = 0
+  infoWindows: any = [];
+  markers: any = [
+    {
+      title: "Random Location",
+      latitude: "-17.82",
+      longitude: "31.04"
+    },
+    {
+      title: "Current Location",
+      latitude: this.currentPosLatitude,
+      longitude: this.currentPosLongitude
+    }
+  ]
+
+  constructor(
+    private geolocation: Geolocation,
+    private auth: AuthService,
+    private router: Router
+  ) {
+    if (!auth.isLoggedIn) {
+      this.router.navigate(['login']);
+    }
   }
-]
-
-  constructor(private geolocation : Geolocation) {
-
-  }
-  ionViewDidEnter(){
+  ionViewDidEnter() {
     this.showMap();
   }
-  addMarkersToMap(markers){
-    for (let marker of markers){
+  addMarkersToMap(markers) {
+    for (let marker of markers) {
       let position = new google.maps.LatLng(marker.latitude, marker.longitude);
       let mapMarker = new google.maps.Marker({
         position: position,
@@ -51,32 +59,32 @@ markers: any = [
     }
 
   }
-  addInfoWindowToMarker(marker){
-    let infoWindowContent = '<div id="content">'+
-                                                            '<h2 id="firstHeading" class"firstHeading">' +marker.title +'</h2>' +
-                                                            '<p>Latitude: ' + marker.latitude +'</p>' +
-                                                            '<p>Longitude: '+marker.longitude + '</p>' +
-                                                            '</div>';
+  addInfoWindowToMarker(marker) {
+    let infoWindowContent = '<div id="content">' +
+      '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>' +
+      '<p>Latitude: ' + marker.latitude + '</p>' +
+      '<p>Longitude: ' + marker.longitude + '</p>' +
+      '</div>';
 
     let infoWindow = new google.maps.InfoWindow({
       content: infoWindowContent
     });
-    
-    marker.addListener ('click', ()=>{
+
+    marker.addListener('click', () => {
       this.closeAllInfoWindows();
       infoWindow.open(this.map, marker)
     });
     this.infoWindows.push(infoWindow)
   }
 
-  closeAllInfoWindows(){
-    for (let window of this.infoWindows){
+  closeAllInfoWindows() {
+    for (let window of this.infoWindows) {
       window.close()
     }
   }
 
-  showMap(){
-    const location  = new google.maps.LatLng(-17.824858, 31.053028);
+  showMap() {
+    const location = new google.maps.LatLng(-17.824858, 31.053028);
     const options = {
       center: location,
       zoom: 15,
@@ -166,14 +174,14 @@ markers: any = [
     this.updatePostion()
     this.addMarkersToMap(this.markers);
   }
-  
-  updatePostion(){
+
+  updatePostion() {
     this.geolocation.getCurrentPosition().then((resp) => {
       this.currentPosLatitude = resp.coords.latitude
-      this.currentPosLongitude =  resp.coords.longitude
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
+      this.currentPosLongitude = resp.coords.longitude
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
   }
 
 }

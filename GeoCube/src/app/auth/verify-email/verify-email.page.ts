@@ -17,7 +17,7 @@ export class VerifyEmailPage implements OnInit {
   ngOnInit() {
   }
 
-  return() {
+  goToLogin() {
     this.router.navigate(['/login']);
   }
 }

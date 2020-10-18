@@ -7,12 +7,20 @@ const routes: Routes = [
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
+    path: 'home',
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
     path: 'registration',
     loadChildren: () => import('./auth/registration/registration.module').then( m => m.RegistrationPageModule)
   },
   {
     path: 'verify-email',
     loadChildren: () => import('./auth/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   }
 ];
 @NgModule({
