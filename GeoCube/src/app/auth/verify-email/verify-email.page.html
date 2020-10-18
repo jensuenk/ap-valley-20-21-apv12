@@ -3,20 +3,30 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>verify-email</ion-title>
+    <ion-title>Email Verification</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Email confirmation</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Please check your email inbox for a confirmation email and click the link to confirm your email address.
+    </ion-card-content>
+
     <ion-row>
-      <h2>Ionic 4 Firebase Verify Email</h2>
-      <p>
-        Please check your email and click on the link to verfiy your email address.
-      </p>
-      <ion-button type="submit" (click)="authService.SendVerificationMail()" expand="block">
-        Resend Verification Email
-      </ion-button>
+      <ion-col>
+        <ion-button type="submit" fill="outline" color="dark" (click)="authService.SendVerificationMail()" expand="block">Resend Verification Email
+        </ion-button>
+      </ion-col>
     </ion-row>
-  </ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button fill="solid" expand="block" (click)="return()">Continue</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
 </ion-content>

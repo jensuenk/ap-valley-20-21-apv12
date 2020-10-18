@@ -1,9 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
-import { auth } from 'firebase/app';
 import { User } from "./user";
 import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,8 @@ export class AuthService {
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,  
-    public ngZone: NgZone 
+    public ngZone: NgZone,
+    public alertController: AlertController
   ) {
     this.ngFireAuth.authState.subscribe(user => {
       if (user) {
@@ -31,17 +32,17 @@ export class AuthService {
   }
 
   // Login in with email/password
-  SignIn(email, password) {
+  signIn(email, password) {
     return this.ngFireAuth.signInWithEmailAndPassword(email, password)
   }
 
   // Register user with email/password
-  RegisterUser(email, password) {
+  registerUser(email, password) {
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
   }
 
   // Email verification when new user register
-  SendVerificationMail() {
+  sendVerificationMail() {
     return this.ngFireAuth.currentUser.then(u => u.sendEmailVerification())
     .then(() => {
       this.router.navigate(['verify-email']);
@@ -49,12 +50,10 @@ export class AuthService {
   }
 
   // Recover password
-  PasswordRecover(passwordResetEmail) {
+  passwordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      window.alert('Password reset email has been sent, please check your inbox.');
-    }).catch((error) => {
-      window.alert(error)
+    .catch((error) => {
+      this.resetAlert(error)
     })
   }
 
@@ -70,25 +69,13 @@ export class AuthService {
     return (user.emailVerified !== false) ? true : false;
   }
 
-  // Auth providers
-  AuthLogin(provider) {
-    return this.ngFireAuth.signInWithPopup(provider)
-    .then((result) => {
-       this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
-        })
-      this.SetUserData(result.user);
-    }).catch((error) => {
-      window.alert(error)
-    })
-  }
-
   // Store user in localStorage
-  SetUserData(user) {
+  setUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
     const userData: User = {
       uid: user.uid,
-      email: user.email
+      email: user.email,
+      emailVerified: user.emailVerified
     }
     return userRef.set(userData, {
       merge: true
@@ -96,11 +83,21 @@ export class AuthService {
   }
 
   // Sign-out 
-  SignOut() {
+  signOut() {
     return this.ngFireAuth.signOut().then(() => {
       this.ngFireAuth.signOut();
       localStorage.removeItem('user');
       this.router.navigate(['login']);
     })
+  }
+
+  async resetAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Could not reset password',
+      subHeader: 'An error accured trying to reset your password:',
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }

@@ -13,14 +13,6 @@ const routes: Routes = [
   {
     path: 'verify-email',
     loadChildren: () => import('./auth/verify-email/verify-email.module').then( m => m.VerifyEmailPageModule)
-  },
-  {
-    path: 'registration',
-    loadChildren: () => import('./auth/registration/registration.module').then( m => m.RegistrationPageModule)
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   }
 ];
 @NgModule({

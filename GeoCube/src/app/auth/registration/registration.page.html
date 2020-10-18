@@ -3,16 +3,24 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Register User</ion-title>
+    <ion-title>Registration</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form>    
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Create your account</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      Fill in your email and password below to create a geocube account.
+    </ion-card-content>
+
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
       <ion-input type="text" #email required></ion-input>
-    </ion-item> 
+    </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
@@ -20,9 +28,9 @@
     </ion-item>
 
     <ion-row>
-      <ion-col> 
-      <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
+      <ion-col>
+        <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
       </ion-col>
     </ion-row>
-  </form>
+  </ion-card>
 </ion-content>
