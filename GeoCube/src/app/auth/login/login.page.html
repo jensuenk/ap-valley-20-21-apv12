@@ -1,36 +1,35 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Registration</ion-title>
+    <ion-title>Login</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Create your account</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      Fill in your email and password below to create a geocube account.
-    </ion-card-content>
+    <img src="../../../assets/images/logo_colored.png" />
 
     <section class="input-fields">
       <ion-item lines="full">
         <ion-label position="floating">Email</ion-label>
         <ion-input type="text" #email required></ion-input>
       </ion-item>
-
       <ion-item lines="full">
         <ion-label position="floating">Password</ion-label>
         <ion-input type="password" #password required></ion-input>
       </ion-item>
     </section>
+    <div class="ion-text-center">
+      <a (click)="forgotPassword(email)">Forgot password</a>
+    </div>
     <ion-row>
       <ion-col>
-        <ion-button type="submit" (click)="signUp(email, password)" expand="block">Register</ion-button>
+        <ion-button type="submit" fill="outline" color="dark" (click)="goToRegister()" expand="block">Register
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" (click)="logIn(email, password)" expand="block">Login</ion-button>
       </ion-col>
     </ion-row>
   </ion-card>

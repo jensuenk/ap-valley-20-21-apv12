@@ -52,8 +52,11 @@ export class AuthService {
   // Recover password
   passwordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
+    .then(() => {
+      this.resetSuccesAlert()
+    })
     .catch((error) => {
-      this.resetAlert(error)
+      this.resetFailedAlert(error)
     })
   }
 
@@ -91,11 +94,20 @@ export class AuthService {
     })
   }
 
-  async resetAlert(message) {
+  async resetFailedAlert(message) {
     const alert = await this.alertController.create({
       header: 'Could not reset password',
       subHeader: 'An error accured trying to reset your password:',
       message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+  
+  async resetSuccesAlert() {
+    const alert = await this.alertController.create({
+      header: 'Password Reset',
+      subHeader: 'Please check your email inbox to reset your password.',
       buttons: ['OK']
     });
     await alert.present();
