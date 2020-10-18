@@ -63,13 +63,8 @@ export class AuthService {
   // Returns true when user is looged in
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
-  }
-
-  // Returns true when user's email is verified
-  get isEmailVerified(): boolean {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return (user.emailVerified !== false) ? true : false;
+    console.log(user)
+    return (user !== null) ? true : false;
   }
 
   // Store user in localStorage
@@ -78,7 +73,6 @@ export class AuthService {
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      emailVerified: user.emailVerified
     }
     return userRef.set(userData, {
       merge: true
@@ -88,8 +82,8 @@ export class AuthService {
   // Sign-out 
   signOut() {
     return this.ngFireAuth.signOut().then(() => {
-      this.ngFireAuth.signOut();
       localStorage.removeItem('user');
+      this.ngFireAuth.signOut();
       this.router.navigate(['login']);
     })
   }

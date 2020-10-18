@@ -22,12 +22,7 @@ export class LoginPage implements OnInit {
   logIn(email, password) {
     this.authService.signIn(email.value, password.value)
       .then((res) => {
-        if(this.authService.isEmailVerified) {
           this.router.navigate(['home']);          
-        } else {
-          this.loginAlert('Email is not verified')
-          return false;
-        }
       }).catch((error) => {
         this.loginAlert(error.message)
       })
