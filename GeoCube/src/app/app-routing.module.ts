@@ -21,7 +21,19 @@ const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
+  },  {
+    path: 'device-details',
+    loadChildren: () => import('./device-details/device-details.module').then( m => m.DeviceDetailsPageModule)
+  },
+  {
+    path: 'alert-settings',
+    loadChildren: () => import('./alert-settings/alert-settings.module').then( m => m.AlertSettingsPageModule)
+  },
+  {
+    path: 'location-history',
+    loadChildren: () => import('./location-history/location-history.module').then( m => m.LocationHistoryPageModule)
   }
+
 ];
 @NgModule({
   imports: [
