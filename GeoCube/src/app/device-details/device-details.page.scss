@@ -1,0 +1,75 @@
+#map{
+    height: 13em;
+    position: relative;
+}
+.mapRow{
+    position: relative;
+}
+#firstHeading{
+    color:black !important
+}
+p{
+    color:black
+}
+.storemapper-iw-container{
+    background-color: black !important;
+}
+
+.icon{
+    width: 30%;
+    height: 100%;
+}
+
+.mapPlaceholder{
+    height: 13em;
+}
+
+.deviceList{
+    height: 100%;
+}
+
+ion-card{
+    height: 7em;
+}
+
+.title{
+    margin-top: 1em;
+    text-align:center;
+}
+
+div h1{
+    margin: 0 auto;
+    color: rgb(175, 175, 175);
+}
+div p{
+    margin: 0 auto;
+    color:  rgb(175, 175, 175);
+    font-size: small;
+}
+
+p{
+    color:  rgb(175, 175, 175);
+}
+
+ion-label{
+    margin-left: 1em;
+}
+
+ion-label p{
+    font-size: 12px;
+}
+
+ion-item{
+    margin-top: 3em;
+}
+
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+    background: transparent !important;
+}
+
+ion-header{
+    --background-color: transparent;
+    --ion-color-base: transparent !important;
+}

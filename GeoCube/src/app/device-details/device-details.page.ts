@@ -6,12 +6,13 @@ import { AuthService } from '../auth/auth.service';
 
 declare var google: any
 
+
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-device-details',
+  templateUrl: './device-details.page.html',
+  styleUrls: ['./device-details.page.scss'],
 })
-export class Tab1Page {
+export class DeviceDetailsPage{
 
   map: any;
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
@@ -182,10 +183,6 @@ export class Tab1Page {
     }).catch((error) => {
       console.log('Error getting location', error);
     });
-  }
-
-  goToDetails(){
-    
   }
 
 }
