@@ -22,6 +22,14 @@ export class DeviceListService {
         longitude : 10
       }
     },
+    {
+      id : 3,
+      name : "Phone",
+      location : {
+        latitude : 20,
+        longitude : 20
+      }
+    },
 
   ]
 
