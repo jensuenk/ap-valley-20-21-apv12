@@ -2,7 +2,9 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { device } from '../app.component';
 import { AuthService } from '../auth/auth.service';
+import { DeviceListService } from '../device-list.service';
 
 declare var google: any
 
@@ -16,6 +18,7 @@ export class Tab1Page {
   map: any;
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
+  deviceList: Array<device>
   currentPosLongitude: any = 0
   currentPosLatitude: any = 0
   infoWindows: any = [];
@@ -35,11 +38,14 @@ export class Tab1Page {
   constructor(
     private geolocation: Geolocation,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private deviceListService: DeviceListService
   ) {
     if (!auth.isLoggedIn) {
       this.router.navigate(['login']);
     }
+    this.deviceList = deviceListService.deviceList
+    console.log(this.deviceList)
   }
   ionViewDidEnter() {
     this.showMap();
