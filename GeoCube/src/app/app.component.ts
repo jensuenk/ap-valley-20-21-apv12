@@ -28,7 +28,7 @@ export class AppComponent {
 
 export class device{
   id:number
-  name : String
+  name : string
   location:location
 }
 class location{
