@@ -25,3 +25,13 @@ export class AppComponent {
     });
   }
 }
+
+export class device{
+  id:number
+  name : string
+  location:location
+}
+class location{
+  latitude:number
+  longitude:number
+}

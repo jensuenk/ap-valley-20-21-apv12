@@ -1,8 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { device } from '../app.component';
 import { AuthService } from '../auth/auth.service';
+import { DeviceListService } from '../device-list.service';
 
 declare var google: any
 
@@ -17,34 +19,38 @@ export class DeviceDetailsPage{
   map: any;
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
+  currentDeviceId:Number
+  currentDevice:device
+
+	deviceList: Array<device>;
   currentPosLongitude: any = 0
   currentPosLatitude: any = 0
   infoWindows: any = [];
-  markers: any = [
-    {
-      title: "Random Location",
-      latitude: "-17.82",
-      longitude: "31.04"
-    },
-    {
-      title: "Current Location",
-      latitude: this.currentPosLatitude,
-      longitude: this.currentPosLongitude
-    }
-  ]
+	markers: Array<marker>
 
-  constructor(
-    private geolocation: Geolocation,
-    private auth: AuthService,
-    private router: Router
-  ) {
-    if (!auth.isLoggedIn) {
-      this.router.navigate(['login']);
-    }
+	constructor (private geolocation: Geolocation, private auth: AuthService, private router: Router, private deviceListService: DeviceListService,private route:ActivatedRoute) {
+  }
+  ngOnInit(){
+    if (!this.auth.isLoggedIn) {
+			this.router.navigate([ 'login' ]);
+		}
+    this.deviceList = this.deviceListService.deviceList;
+    this.createMarkers()
+    this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
+    this.findCurrentDevice()
+  }
+  findCurrentDevice(){
+    this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.currentDeviceId)
   }
   ionViewDidEnter() {
     this.showMap();
   }
+  createMarkers () {
+    this.markers = Array<marker>()
+		for (let device of this.deviceList) {
+			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
+		}
+	}
   addMarkersToMap(markers) {
     for (let marker of markers) {
       let position = new google.maps.LatLng(marker.latitude, marker.longitude);
@@ -85,7 +91,7 @@ export class DeviceDetailsPage{
   }
 
   showMap() {
-    const location = new google.maps.LatLng(-17.824858, 31.053028);
+    const location = new google.maps.LatLng(this.currentDevice.location.latitude, this.currentDevice.location.longitude);
     const options = {
       center: location,
       zoom: 15,
@@ -185,4 +191,9 @@ export class DeviceDetailsPage{
     });
   }
 
+}
+class marker {
+	title: string;
+	latitude: number;
+	longitude: number;
 }
