@@ -1,6 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -14,15 +14,26 @@ export class LoginPage implements OnInit {
   constructor(
     public authService: AuthService,
     public router: Router,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public loadingController: LoadingController
   ) {}
 
   ngOnInit() {}
 
   logIn(email, password) {
     this.authService.signIn(email.value, password.value)
-      .then((res) => {
-          this.router.navigate(['home']);          
+      .then(async (res) => {
+        this.presentLoading();
+        var tries : number = 0; 
+        while (!this.authService.isLoggedIn) {
+          await this.presentLoading()
+          tries++;
+          if (tries > 10) {
+            this.loginAlert("Could not retreive user data")
+            return
+          }
+        }
+        this.router.navigate(['home']);          
       }).catch((error) => {
         this.loginAlert(error.message)
       })
@@ -44,5 +55,15 @@ export class LoginPage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loggin in...',
+      duration: 500
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
   }
 }
