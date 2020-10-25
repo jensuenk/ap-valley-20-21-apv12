@@ -26,6 +26,13 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 .gm-style-iw{
-    color: black;
+  color: black;
+}
+
+ion-modal {
+  .modal-wrapper {
+      height: 50% !important;
+      width: 85% !important;
   }
+}
   

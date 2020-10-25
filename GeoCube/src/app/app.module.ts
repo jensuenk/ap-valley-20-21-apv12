@@ -15,6 +15,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,7 +34,8 @@ import { environment } from '../environments/environment';
     SplashScreen,
     Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    BluetoothSerial
   ],
   bootstrap: [AppComponent]
 })

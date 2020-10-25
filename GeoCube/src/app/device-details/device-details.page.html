@@ -24,11 +24,11 @@
         <br>
 
         <ion-list>
-          <ion-item lines="none" [routerLink]="['/device-details']">
+          <ion-item lines="none" (click)="presentModal()">
             <ion-icon name="notifications-outline"></ion-icon>            
             <ion-label>
               <h2>Ring</h2>
-              <p>Ring this device</p>
+              <p>Ring your {{currentDevice.name | lowercase}}</p>
             </ion-label>          
           </ion-item>
         </ion-list>

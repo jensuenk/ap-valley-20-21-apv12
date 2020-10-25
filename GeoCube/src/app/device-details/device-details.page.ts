@@ -5,6 +5,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { device } from '../app.component';
 import { AuthService } from '../auth/auth.service';
 import { DeviceListService } from '../device-list.service';
+import { ModalController } from '@ionic/angular';
+import { RingModalPage } from '../ring-modal/ring-modal.page';
 
 declare var google: any
 
@@ -28,7 +30,12 @@ export class DeviceDetailsPage{
   infoWindows: any = [];
 	markers: Array<marker>
 
-	constructor (private geolocation: Geolocation, private auth: AuthService, private router: Router, private deviceListService: DeviceListService,private route:ActivatedRoute) {
+  constructor ( private geolocation: Geolocation, 
+                private auth: AuthService, 
+                private router: Router, 
+                private deviceListService: DeviceListService,
+                private route: ActivatedRoute,
+                private modalController: ModalController ) {
   }
   ngOnInit(){
     if (!this.auth.isLoggedIn) {
@@ -39,6 +46,19 @@ export class DeviceDetailsPage{
     this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
     this.findCurrentDevice()
   }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: RingModalPage,
+      swipeToClose: true,
+      componentProps: {
+        'deviceName': this.currentDevice.name,
+      }    
+    });
+    return await modal.present();
+  }
+
+
   findCurrentDevice(){
     this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.currentDeviceId)
   }
@@ -190,6 +210,8 @@ export class DeviceDetailsPage{
       console.log('Error getting location', error);
     });
   }
+
+
 
 }
 class marker {
