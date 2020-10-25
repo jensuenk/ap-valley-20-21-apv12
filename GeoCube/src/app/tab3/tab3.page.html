@@ -13,5 +13,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-list>
+    <ion-item button (click)="openDeviceList()">
+      <ion-icon slot="start" name="key-outline"></ion-icon>
+      <ion-label>
+        <h3>My devices</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

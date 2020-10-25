@@ -33,9 +33,14 @@ const routes: Routes = [
   {
     path: 'location-history',
     loadChildren: () => import('./location-history/location-history.module').then( m => m.LocationHistoryPageModule)
-  },  {
+  },
+  {
     path: 'ring-modal',
     loadChildren: () => import('./ring-modal/ring-modal.module').then( m => m.RingModalPageModule)
+  },
+  {
+    path: 'device-list',
+    loadChildren: () => import('./tab3/device-list/device-list.module').then( m => m.DeviceListPageModule)
   }
 
 

@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>My Devices</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-list>
+    <ion-card *ngFor = "let device of deviceList" [routerLink]="['./','device-details', device.id]">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="2">
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-icon *ngIf = "device.name == 'Keys'" name="key-outline" size="large"></ion-icon>
+                  <ion-icon *ngIf = "device.name == 'Wallet'" name="wallet-outline" size="large"></ion-icon>
+                  <ion-icon *ngIf = "device.name == 'Phone'" name="phone-portrait-outline" size="large"></ion-icon>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+          <ion-col size="8">
+            <h1>{{device.name}}</h1>
+            <p>Click to view more info</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card>
+  </ion-list>
+</ion-content>
