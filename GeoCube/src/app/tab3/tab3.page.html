@@ -25,13 +25,13 @@
       </ion-item>
     </ion-list>
     <ion-list>
-      <ion-item lines="none" [routerLink]="['/my-devices']">
+      <ion-item lines="none" (click)="logOut()">
         <ion-icon slot="start" name="ban"></ion-icon>
         <ion-label>Sign Out</ion-label>
       </ion-item>
     </ion-list>
     <ion-list>
-      <ion-item lines="none" [routerLink]="['/my-devices']">
+      <ion-item lines="none">
         <ion-icon name="information-circle" slot="start"></ion-icon>
         <ion-label>Help</ion-label>
       </ion-item>

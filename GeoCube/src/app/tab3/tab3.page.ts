@@ -3,6 +3,9 @@ import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { IconModalPage } from '../icon-modal/icon-modal.page';
 import { ToastController } from '@ionic/angular';
+import { auth } from 'firebase';
+import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-tab3',
@@ -17,7 +20,9 @@ export class Tab3Page {
   constructor(
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
-    private toastController: ToastController ) {}
+    private toastController: ToastController,
+    private router: Router,
+    private auth: AuthService ) {}
 
     openDeviceList() {
       this.router.navigate(['/device-list'])
@@ -67,5 +72,9 @@ export class Tab3Page {
       duration: 2000
     });
     toast.present();
+  }
+
+  logOut(){
+    this.auth.signOut();
   }
 }
