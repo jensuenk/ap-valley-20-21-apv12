@@ -1,0 +1,36 @@
+<ion-content>
+
+  <div class="title">
+    <p>Please select one of the following icons</p>
+  </div>
+
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="imageHolder" (click)="dismiss('defaultMan.jpg')">
+            <img src="./assets/images/profileIcons/defaultMan.jpg" alt="icon">
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="imageHolder" (click)="dismiss('defaultWoman.jpg')">
+            <img src="./assets/images/profileIcons/defaultWoman.jpg" alt="icon">
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <div class="imageHolder" (click)="dismiss('businessWoman.png')">
+            <img src="./assets/images/profileIcons/businessWoman.png" alt="icon">
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="imageHolder" (click)="dismiss('blackMan.png')">
+            <img src="./assets/images/profileIcons/blackMan.png" alt="icon">
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+</ion-content>

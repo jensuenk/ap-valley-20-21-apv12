@@ -36,6 +36,10 @@ const routes: Routes = [
   },  {
     path: 'ring-modal',
     loadChildren: () => import('./ring-modal/ring-modal.module').then( m => m.RingModalPageModule)
+  },
+  {
+    path: 'icon-modal',
+    loadChildren: () => import('./icon-modal/icon-modal.module').then( m => m.IconModalPageModule)
   }
 
 

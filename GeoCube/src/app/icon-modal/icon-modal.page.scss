@@ -1,0 +1,22 @@
+ion-content{
+    --ion-background-color: #1b1b1b !important;  
+}
+
+.title{
+    text-align: center;
+    margin-top: 1.5em;
+    p{
+        font-weight: bold;
+        margin: 0 auto;
+        width: 60%;
+        font-size: 12pt;
+        color: rgb(175, 175, 175);
+    }
+}
+
+.imageHolder{
+    border-radius: 100%;
+    img{
+        border-radius: 100%;
+    }
+}

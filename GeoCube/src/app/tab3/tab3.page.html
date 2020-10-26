@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
       Settings
@@ -6,12 +6,36 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Settings</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <div class="userIcon">
+    <img  (click)="presentActionSheet()" size="large" [src]="('./assets/images/profileIcons/' + iconName)" alt="profileImage">
+  </div>
+
+  <div class="userInfo">
+    <h2>John Doe</h2>
+    <p>randomemail@gmail.com</p>
+  </div>
+
+  <div class="accountOptions">
+    <ion-list>
+      <ion-item lines="none" (click)="openDeviceList()">
+        <ion-icon name="key" slot="start"></ion-icon>
+        <ion-label>My Devices</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" [routerLink]="['/my-devices']">
+        <ion-icon slot="start" name="ban"></ion-icon>
+        <ion-label>Sign Out</ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item lines="none" [routerLink]="['/my-devices']">
+        <ion-icon name="information-circle" slot="start"></ion-icon>
+        <ion-label>Help</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
 </ion-content>
