@@ -2,9 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { device } from '../app.component';
 import { AuthService } from '../auth/auth.service';
-import { DeviceListService } from '../device-list.service';
+import { Device, DeviceListService } from '../device-list.service';
 import { ModalController } from '@ionic/angular';
 import { RingModalPage } from '../ring-modal/ring-modal.page';
 
@@ -16,32 +15,33 @@ declare var google: any
   templateUrl: './device-details.page.html',
   styleUrls: ['./device-details.page.scss'],
 })
-export class DeviceDetailsPage{
+export class DeviceDetailsPage {
 
   map: any;
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
-  currentDeviceId:Number
-  currentDevice:device
+  currentDeviceId: Number
+  currentDevice: Device
 
-	deviceList: Array<device>;
+  deviceList: Array<Device>;
   currentPosLongitude: any = 0
   currentPosLatitude: any = 0
   infoWindows: any = [];
-	markers: Array<marker>
+  markers: Array<marker>
 
-  constructor ( private geolocation: Geolocation, 
-                private auth: AuthService, 
-                private router: Router, 
-                private deviceListService: DeviceListService,
-                private route: ActivatedRoute,
-                private modalController: ModalController ) {
+  constructor(
+    private geolocation: Geolocation,
+    private auth: AuthService,
+    private router: Router,
+    private deviceListService: DeviceListService,
+    private route: ActivatedRoute,
+    private modalController: ModalController) {
   }
-  ngOnInit(){
+  ngOnInit() {
     if (!this.auth.isLoggedIn) {
-			this.router.navigate([ 'login' ]);
-		}
-    this.deviceList = this.deviceListService.deviceList;
+      this.router.navigate(['login']);
+    }
+    this.deviceList = this.deviceListService.getDevices();
     this.createMarkers()
     this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
     this.findCurrentDevice()
@@ -53,24 +53,24 @@ export class DeviceDetailsPage{
       swipeToClose: true,
       componentProps: {
         'deviceName': this.currentDevice.name,
-      }    
+      }
     });
     return await modal.present();
   }
 
 
-  findCurrentDevice(){
+  findCurrentDevice() {
     this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.currentDeviceId)
   }
   ionViewDidEnter() {
     this.showMap();
   }
-  createMarkers () {
+  createMarkers() {
     this.markers = Array<marker>()
-		for (let device of this.deviceList) {
-			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
-		}
-	}
+    for (let device of this.deviceList) {
+      this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
+    }
+  }
   addMarkersToMap(markers) {
     for (let marker of markers) {
       let position = new google.maps.LatLng(marker.latitude, marker.longitude);
@@ -215,7 +215,7 @@ export class DeviceDetailsPage{
 
 }
 class marker {
-	title: string;
-	latitude: number;
-	longitude: number;
+  title: string;
+  latitude: number;
+  longitude: number;
 }

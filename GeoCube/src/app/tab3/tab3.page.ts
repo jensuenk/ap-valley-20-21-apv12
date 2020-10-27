@@ -11,8 +11,4 @@ export class Tab3Page {
   constructor(
     public router: Router) {
   }
-
-  openDeviceList() {
-    this.router.navigate(['/device-list'])
-  }
 }
