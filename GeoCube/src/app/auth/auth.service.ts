@@ -34,6 +34,12 @@ export class AuthService {
   // Login in with email/password
   signIn(email, password) {
     return this.ngFireAuth.signInWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      this.insertUserData(userCredential)
+      .catch(error => {
+        this.dataSaveFailed(error)
+      });
+    })
   }
 
   // Register user with email/password
@@ -41,10 +47,10 @@ export class AuthService {
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
     .then(userCredential => {
       this.insertUserData(userCredential)
+      .catch(error => {
+        this.dataSaveFailed(error)
+      });
     })
-    .catch(error => {
-      this.dataSaveFailed(error)
-    });
   }
 
   // Email verification when new user register
@@ -78,6 +84,7 @@ export class AuthService {
   }
 
   async insertUserData(userCredential: firebase.auth.UserCredential) {
+    console.log("Saving userdata to firestore...")
     return this.afStore.doc(`Users/${userCredential.user.uid}`).set({
       email: this.userData.email,
       uid: this.userData.uid

@@ -8,7 +8,6 @@ import { AuthService } from './auth/auth.service';
 })
 export class DeviceListService {
   private deviceCollection: AngularFirestoreCollection<Device>;
-  private devices: Observable<Device[]>;
   
   public deviceList: Array<Device> = [
     {
@@ -42,7 +41,7 @@ export class DeviceListService {
 
   createTestDevice() {
     let newDevice: Device = {
-      id: 3,
+      id: 10,
       name: "Test Device",
       location: {
         latitude: 20,
@@ -61,6 +60,15 @@ export class DeviceListService {
     this.createTestDevice()
     return this.devices;
     */
+  }
+
+  refreshDevices() {
+     this.createTestDevice()
+    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
+    this.deviceCollection.valueChanges().subscribe((data) => {
+      this.deviceList = data;
+    })
+    console.log(this.deviceList)
   }
 
   add(device: Device) {

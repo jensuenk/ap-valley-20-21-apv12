@@ -11,10 +11,9 @@ export class DeviceListPage implements OnInit {
 
   constructor(private devicelistService: DeviceListService) { }
 
-  devices: Array<Device>;
+  deviceList: Array<Device>;
 
   ngOnInit() {
-    this.devices = this.devicelistService.getDevices();
+    this.deviceList = this.devicelistService.getDevices();
   }
-
 }
