@@ -34,11 +34,23 @@ export class AuthService {
   // Login in with email/password
   signIn(email, password) {
     return this.ngFireAuth.signInWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      this.insertUserData(userCredential)
+      .catch(error => {
+        this.dataSaveFailed(error)
+      });
+    })
   }
 
   // Register user with email/password
   registerUser(email, password) {
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      this.insertUserData(userCredential)
+      .catch(error => {
+        this.dataSaveFailed(error)
+      });
+    })
   }
 
   // Email verification when new user register
@@ -67,15 +79,15 @@ export class AuthService {
     return (user !== null) ? true : false;
   }
 
-  // Store user in localStorage
-  setUserData(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-    }
-    return userRef.set(userData, {
-      merge: true
+  getUser() {
+    return JSON.parse(localStorage.getItem('user'));
+  }
+
+  async insertUserData(userCredential: firebase.auth.UserCredential) {
+    console.log("Saving userdata to firestore...")
+    return this.afStore.doc(`Users/${userCredential.user.uid}`).set({
+      email: this.userData.email,
+      uid: this.userData.uid
     })
   }
 
@@ -86,6 +98,16 @@ export class AuthService {
       this.ngFireAuth.signOut();
       this.router.navigate(['login']);
     })
+  }
+
+  async dataSaveFailed(message) {
+    const alert = await this.alertController.create({
+      header: 'Could not save data',
+      subHeader: 'An error accured trying to save your data:',
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   async resetFailedAlert(message) {

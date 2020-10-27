@@ -6,6 +6,10 @@ const routes: Routes = [
   {
     path: '',
     component: Tab3Page,
+  },
+  {
+    path: 'device-list',
+    loadChildren: () => import('./device-list/device-list.module').then( m => m.DeviceListPageModule)
   }
 ];
 
