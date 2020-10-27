@@ -41,9 +41,15 @@ const routes: Routes = [
   {
     path: 'device-list',
     loadChildren: () => import('./tab3/device-list/device-list.module').then( m => m.DeviceListPageModule)
+  },
+  {
+    path: 'ring-modal',
+    loadChildren: () => import('./ring-modal/ring-modal.module').then( m => m.RingModalPageModule)
+  },
+  {
+    path: 'icon-modal',
+    loadChildren: () => import('./icon-modal/icon-modal.module').then( m => m.IconModalPageModule)
   }
-
-
 ];
 @NgModule({
   imports: [
