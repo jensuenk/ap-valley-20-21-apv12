@@ -1,7 +1,7 @@
 {
-  "name": "GeoCube",
+  "name": "GeoTag",
   "version": "0.0.1",
-  "author": "Ionic Framework",
+  "author": "AP Group 12",
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "ng": "ng",
