@@ -7,6 +7,18 @@ const routes: Routes = [
   {
     path: '',
     component: DeviceListPage
+  },
+  {
+    path: 'instructions',
+    loadChildren: () => import('./setup/instructions/instructions.module').then( m => m.InstructionsPageModule)
+  },
+  {
+    path: 'searching',
+    loadChildren: () => import('./setup/searching/searching.module').then( m => m.SearchingPageModule)
+  },
+  {
+    path: 'setup',
+    loadChildren: () => import('./setup/setup/setup.module').then( m => m.SetupPageModule)
   }
 ];
 

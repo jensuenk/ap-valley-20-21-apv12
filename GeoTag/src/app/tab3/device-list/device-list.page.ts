@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Device, DeviceListService } from '../../device-list.service';
 
@@ -9,11 +11,16 @@ import { Device, DeviceListService } from '../../device-list.service';
 })
 export class DeviceListPage implements OnInit {
 
-  constructor(private devicelistService: DeviceListService) { }
+  constructor(private devicelistService: DeviceListService, private alertController: AlertController, 
+    private router: Router) { }
 
   deviceList: Array<Device>;
 
   ngOnInit() {
     this.deviceList = this.devicelistService.getDevices();
+  }
+
+  addDevice() {
+    this.router.navigate(['./setup/instructions']);
   }
 }
