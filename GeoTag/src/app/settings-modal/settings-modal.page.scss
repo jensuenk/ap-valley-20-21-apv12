@@ -1,0 +1,25 @@
+
+ion-content{
+    --ion-background-color: #1b1b1b !important;  
+}
+ion-item{
+    border-radius: 0.8rem;
+    margin-bottom: 1rem;
+}
+ion-content {
+    // overwrite inline styles
+    --overflow: hidden;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  div{
+      padding:2rem;
+  }
+  ion-col{
+      padding:0rem;
+  }
+  ion-grid{
+    padding:0rem;
+}

@@ -28,10 +28,14 @@ export class Tab1Page {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
 		}
-		this.deviceList = deviceListService.getDevices();
+	}
+	ngOnInit(){
+		this.deviceList = this.deviceListService.getDevices();
 		this.createMarkers()
 	}
 	ionViewDidEnter() {
+		this.deviceList = this.deviceListService.getDevices();
+		this.createMarkers()
 		this.showMap();
 	}
 	createMarkers() {
