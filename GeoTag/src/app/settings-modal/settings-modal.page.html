@@ -1,0 +1,28 @@
+
+
+<ion-content>
+  <div>
+    <ion-item lines="none">
+      <ion-label position="floating">Change Name</ion-label>
+      <ion-input type="text" [(ngModel)] = "currentDevice.name"></ion-input>
+    </ion-item>
+      <ion-button (click)="deleteDevice()" color="danger" expand="block" fill="solid">
+        Delete Device
+      </ion-button>
+      <ion-grid >
+        <ion-row>
+          <ion-col size="6">
+            <ion-button (click)="cancel()" expand="block" fill="solid" >
+              Cancel
+            </ion-button>
+          </ion-col>
+          <ion-col size="6">
+            <ion-button (click)="save()" expand="block" fill="solid" >
+              Save
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    
+  </div>
+</ion-content>

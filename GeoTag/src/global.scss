@@ -35,4 +35,17 @@ ion-modal {
       width: 85% !important;
   }
 }
+.modal
+{
+    .modal-wrapper 
+    {
+        position: absolute !important;
+        width:100% !important;
+        bottom:0% !important;
+        height:30% !important;
+        overflow: hidden !important;
+        padding:0.6rem !important;
+        border-radius: 1.5rem !important;
+    }
+}
   

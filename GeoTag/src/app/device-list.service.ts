@@ -58,8 +58,14 @@ export class DeviceListService {
     this.devices = this.deviceCollection.valueChanges();
 
     this.createTestDevice()
-    return this.devices;
+    return this.devices; 
     */
+  }
+  getDevice(id:number){
+    return this.deviceList.find(x=>x.id == id);
+  }
+  deleteDevice(device:Device){
+    this.deviceList = this.deviceList.filter(x=>x!=device);
   }
 
   refreshDevices() {

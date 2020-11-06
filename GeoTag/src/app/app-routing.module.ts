@@ -49,6 +49,10 @@ const routes: Routes = [
   {
     path: 'icon-modal',
     loadChildren: () => import('./icon-modal/icon-modal.module').then( m => m.IconModalPageModule)
+  },
+  {
+    path: 'settings-modal',
+    loadChildren: () => import('./settings-modal/settings-modal.module').then( m => m.SettingsModalPageModule)
   }
 ];
 @NgModule({
