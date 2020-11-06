@@ -25,6 +25,7 @@ export class NotificationService {
 
 	addNotification (date:Date,device:Device) {
 		this.notificationList.push(new Notification(date,device));
+		this;this.notificationList.sort((a,b)=> b.date.getTime()-a.date.getTime())
 	}
 	getNotificationList (): Array<Notification> {
     return this.notificationList;
