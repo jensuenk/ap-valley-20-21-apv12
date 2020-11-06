@@ -52,7 +52,7 @@ export class DeviceDetailsPage {
       component: RingModalPage,
       swipeToClose: true,
       componentProps: {
-        'deviceName': this.currentDevice.name,
+        'device': this.currentDevice
       }
     });
     return await modal.present();
