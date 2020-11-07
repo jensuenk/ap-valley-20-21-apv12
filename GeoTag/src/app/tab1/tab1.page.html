@@ -20,9 +20,7 @@
                       </ion-row>
                       <ion-row>
                         <ion-col>
-                          <ion-icon *ngIf = "device.name == 'Keys'" name="key-outline" size="large"></ion-icon>
-                          <ion-icon *ngIf = "device.name == 'Wallet'" name="wallet-outline" size="large"></ion-icon>
-                          <ion-icon *ngIf = "device.name == 'Phone'" name="phone-portrait-outline" size="large"></ion-icon>
+                          <ion-icon name="{{ device.icon }}" size="large"></ion-icon>
                         </ion-col>
                       </ion-row>
                       <ion-row>
