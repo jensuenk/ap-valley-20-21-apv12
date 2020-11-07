@@ -20,7 +20,7 @@ export class DeviceDetailsPage {
   map: any;
   @ViewChild('map', { read: ElementRef, static: false }) mapRef: ElementRef;
 
-  currentDeviceId: Number
+  currentDeviceId: string
   currentDevice: Device
 
   currentPosLongitude: any = 0
@@ -41,7 +41,7 @@ export class DeviceDetailsPage {
       this.router.navigate(['login']);
     }
     this.createMarkers()
-    this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
+    this.currentDeviceId = this.route.snapshot.paramMap.get('id');
     this.findCurrentDevice()
   }
 

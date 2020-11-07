@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 
 @Injectable({
@@ -8,36 +7,64 @@ import { AuthService } from './auth/auth.service';
 })
 export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
-  
-  public deviceList: Array<Device> = []
-  
+
+  public deviceList: { id: string; name: string; location: Location; }[];
+  doc: any;
+
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
   createTestDevice() {
     let newDevice: Device = {
-      id: 10,
+      id: "",
       name: "Test",
       location: {
         latitude: 20,
         longitude: 20
       }
     }
-    this.add(newDevice);
+    this.addDevice(newDevice);
   }
 
   getDevices() {
-    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
+    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uid + '/Devices', ref => ref.orderBy('name', 'desc'));
     this.deviceCollection.valueChanges().subscribe((data) => {
       this.deviceList = data;
     })
+    /*
+    // Alternative method of retreiving data
+    this.deviceCollection.snapshotChanges().subscribe(res => {
+      if (res) {
+        this.deviceList = res.map(e => {
+          return {
+            id: e.payload.doc.id,
+            name: e.payload.doc.data()['name'],
+            location: e.payload.doc.data()['location']
+          }
+        })
+      }
+    })
+    */
   }
 
-  add(device: Device) {
-    this.deviceCollection.add(device);
+  addDevice(device: Device) {
+    const newId = this.afs.createId();
+    this.deviceCollection.doc(newId).set({
+      id: newId,
+      name: device.name,
+      location: device.location,
+    })
+  }
+
+  updateDevice(device: Device) {
+    return this.deviceCollection.doc(device.id).update(device);
+  }
+
+  deleteDevice(id: string) {
+    this.deviceCollection.doc(id).delete()
   }
 }
 export class Device {
-  id: number
+  id: string
   name: string
   location: Location
 }
