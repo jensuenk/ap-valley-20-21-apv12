@@ -15,7 +15,7 @@ export class AuthService {
   constructor(
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
-    public router: Router,  
+    public router: Router,
     public ngZone: NgZone,
     public alertController: AlertController
   ) {
@@ -34,48 +34,50 @@ export class AuthService {
   // Login in with email/password
   signIn(email, password) {
     return this.ngFireAuth.signInWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      this.insertUserData(userCredential)
-      .catch(error => {
-        this.dataSaveFailed(error)
-      });
-    })
+      .then(userCredential => {
+        this.insertUserData(userCredential)
+          .catch(error => {
+            this.dataSaveFailed(error)
+          });
+      })
   }
 
   // Register user with email/password
   registerUser(email, password) {
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
-      this.insertUserData(userCredential)
-      .catch(error => {
-        this.dataSaveFailed(error)
-      });
-    })
+      .then(userCredential => {
+        this.insertUserData(userCredential)
+          .catch(error => {
+            this.dataSaveFailed(error)
+          });
+      })
   }
 
   // Email verification when new user register
   sendVerificationMail() {
     return this.ngFireAuth.currentUser.then(u => u.sendEmailVerification())
-    .then(() => {
-      this.router.navigate(['verify-email']);
-    })
+      .then(() => {
+        this.router.navigate(['verify-email']);
+      })
   }
 
   // Recover password
   passwordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      this.resetSuccesAlert()
-    })
-    .catch((error) => {
-      this.resetFailedAlert(error)
-    })
+      .then(() => {
+        this.resetSuccesAlert()
+      })
+      .catch((error) => {
+        this.resetFailedAlert(error)
+      })
   }
 
   // Returns true when user is looged in
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user)
+    if (user != null) {
+      console.log(user);
+    }
     return (user !== null) ? true : false;
   }
 
@@ -119,7 +121,7 @@ export class AuthService {
     });
     await alert.present();
   }
-  
+
   async resetSuccesAlert() {
     const alert = await this.alertController.create({
       header: 'Password Reset',

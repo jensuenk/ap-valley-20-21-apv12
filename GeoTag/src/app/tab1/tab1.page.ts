@@ -18,27 +18,28 @@ export class Tab1Page {
 	@ViewChild('map', { read: ElementRef, static: false })
 	mapRef: ElementRef;
 
-	deviceList: Array<Device>;
 	currentPosLongitude: any = 0;
 	currentPosLatitude: any = 0;
 	infoWindows: any = [];
 	markers: Array<marker>
 
-	constructor(private geolocation: Geolocation, private auth: AuthService, private router: Router, private deviceListService: DeviceListService) {
-		if (!auth.isLoggedIn) {
-			this.router.navigate(['login']);
-		}
-		this.deviceList = deviceListService.getDevices();
-		this.createMarkers()
+	constructor(private geolocation: Geolocation, private auth: AuthService, private router: Router, public deviceListService: DeviceListService) {
+		this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {
+		  this.deviceListService.deviceList = data;
+		  this.createMarkers()
+		})
 	}
+
 	ionViewDidEnter() {
 		this.showMap();
 	}
+
 	createMarkers() {
 		this.markers = Array<marker>()
-		for (let device of this.deviceList) {
+		for (let device of this.deviceListService.deviceList) {
 			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
 		}
+		console.log(this.markers)
 	}
 	addMarkersToMap(markers) {
 		for (let marker of markers) {

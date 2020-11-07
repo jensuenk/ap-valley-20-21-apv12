@@ -7,42 +7,16 @@ import { AuthService } from './auth/auth.service';
   providedIn: 'root'
 })
 export class DeviceListService {
-  private deviceCollection: AngularFirestoreCollection<Device>;
+  public deviceCollection: AngularFirestoreCollection<Device>;
   
-  public deviceList: Array<Device> = [
-    {
-      id: 1,
-      name: "Keys",
-      location: {
-        latitude: 1,
-        longitude: 1
-      }
-    },
-    {
-      id: 2,
-      name: "Wallet",
-      location: {
-        latitude: 10,
-        longitude: 10
-      }
-    },
-    {
-      id: 3,
-      name: "Phone",
-      location: {
-        latitude: 20,
-        longitude: 20
-      }
-    },
-  ]
+  public deviceList: Array<Device> = []
   
-
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
   createTestDevice() {
     let newDevice: Device = {
       id: 10,
-      name: "Test Device",
+      name: "Test",
       location: {
         latitude: 20,
         longitude: 20
@@ -52,23 +26,10 @@ export class DeviceListService {
   }
 
   getDevices() {
-    return this.deviceList
-    /*
-    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
-    this.devices = this.deviceCollection.valueChanges();
-
-    this.createTestDevice()
-    return this.devices;
-    */
-  }
-
-  refreshDevices() {
-     this.createTestDevice()
     this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
     this.deviceCollection.valueChanges().subscribe((data) => {
       this.deviceList = data;
     })
-    console.log(this.deviceList)
   }
 
   add(device: Device) {

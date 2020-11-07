@@ -11,13 +11,12 @@ import { Device, DeviceListService } from '../../device-list.service';
 })
 export class DeviceListPage implements OnInit {
 
-  constructor(private devicelistService: DeviceListService, private alertController: AlertController, 
+  constructor(public devicelistService: DeviceListService, private alertController: AlertController, 
     private router: Router) { }
 
   deviceList: Array<Device>;
 
   ngOnInit() {
-    this.deviceList = this.devicelistService.getDevices();
   }
 
   addDevice() {

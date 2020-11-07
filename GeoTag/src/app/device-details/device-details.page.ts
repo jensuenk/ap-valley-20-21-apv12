@@ -23,7 +23,6 @@ export class DeviceDetailsPage {
   currentDeviceId: Number
   currentDevice: Device
 
-  deviceList: Array<Device>;
   currentPosLongitude: any = 0
   currentPosLatitude: any = 0
   infoWindows: any = [];
@@ -33,7 +32,7 @@ export class DeviceDetailsPage {
     private geolocation: Geolocation,
     private auth: AuthService,
     private router: Router,
-    private deviceListService: DeviceListService,
+    public deviceListService: DeviceListService,
     private route: ActivatedRoute,
     private modalController: ModalController) {
   }
@@ -41,7 +40,6 @@ export class DeviceDetailsPage {
     if (!this.auth.isLoggedIn) {
       this.router.navigate(['login']);
     }
-    this.deviceList = this.deviceListService.getDevices();
     this.createMarkers()
     this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
     this.findCurrentDevice()
@@ -67,7 +65,7 @@ export class DeviceDetailsPage {
   }
   createMarkers() {
     this.markers = Array<marker>()
-    for (let device of this.deviceList) {
+    for (let device of this.deviceListService.deviceList) {
       this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
     }
   }
