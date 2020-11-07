@@ -13,6 +13,8 @@ export class DeviceListService {
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
+  public currentAddress: string
+
   createTestDevice() {
     let newDevice: Device = {
       id: "",

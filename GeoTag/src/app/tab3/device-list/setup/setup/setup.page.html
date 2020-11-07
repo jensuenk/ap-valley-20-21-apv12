@@ -13,7 +13,7 @@
       <ion-col>
         <ion-item lines="none">
           <ion-icon (click)="presentModal()" name="{{ iconName }}" slot="start"></ion-icon>
-          <ion-input placeholder="Name"></ion-input>
+          <ion-input [(ngModel)]="name" placeholder="Name"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -23,7 +23,7 @@
       <ion-col>
         <ion-item lines="none">
           <ion-label position="fixed">Tag address</ion-label>
-          <ion-input value="{{ address }}" disabled></ion-input>
+          <ion-input value="{{ devicelistService.currentAddress }}" disabled></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>

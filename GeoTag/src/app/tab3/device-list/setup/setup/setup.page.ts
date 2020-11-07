@@ -12,34 +12,34 @@ import { Router } from '@angular/router';
 export class SetupPage implements OnInit {
 
   constructor(
-    public devicelistService: DeviceListService, 
+    public devicelistService: DeviceListService,
     private router: Router,
     private modalController: ModalController,
-    ) { }
+  ) { }
 
-  public address: string
   deviceList: Array<Device>;
 
   ngOnInit() {
   }
 
-  addDevice(name: string, icon: string) {
+  addDevice() {
     let newDevice: Device = {
       id: "",
-      name: name,
+      name: this.name,
       location: {
         latitude: 20,
         longitude: 20
       },
-      icon: icon,
-      address: this.address
+      icon: this.iconName,
+      address: this.devicelistService.currentAddress
     }
+    console.log(newDevice)
     this.devicelistService.addDevice(newDevice);
-
     this.router.navigate(['./device-list']);
   }
 
   iconName: string = 'key';
+  name: string
 
 
   async presentModal() {
@@ -48,7 +48,7 @@ export class SetupPage implements OnInit {
       swipeToClose: true,
       componentProps: {
         'iconName': 'key',
-      }    
+      }
     });
 
     await modal.present();
