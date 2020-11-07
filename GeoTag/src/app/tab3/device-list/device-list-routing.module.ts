@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'setup',
     loadChildren: () => import('./setup/setup/setup.module').then( m => m.SetupPageModule)
+  },
+  {
+    path: 'icon-picker',
+    loadChildren: () => import('./icon-picker/icon-picker.module').then( m => m.IconPickerPageModule)
   }
 ];
 

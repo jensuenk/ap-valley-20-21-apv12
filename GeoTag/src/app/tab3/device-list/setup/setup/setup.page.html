@@ -1,9 +1,38 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>setup</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tag Setup</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-icon (click)="presentModal()" name="{{ iconName }}" slot="start"></ion-icon>
+          <ion-input placeholder="Name"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-label position="fixed">Tag address</ion-label>
+          <ion-input value="{{ address }}" disabled></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" (click)="addDevice()" expand="block">Create Device</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
 </ion-content>

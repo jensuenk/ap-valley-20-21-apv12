@@ -8,7 +8,7 @@ import { AuthService } from './auth/auth.service';
 export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
 
-  public deviceList: { id: string; name: string; location: Location; }[];
+  public deviceList: Array<Device>;
   doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
@@ -20,7 +20,9 @@ export class DeviceListService {
       location: {
         latitude: 20,
         longitude: 20
-      }
+      },
+      icon: "",
+      address: ""
     }
     this.addDevice(newDevice);
   }
@@ -48,11 +50,9 @@ export class DeviceListService {
 
   addDevice(device: Device) {
     const newId = this.afs.createId();
-    this.deviceCollection.doc(newId).set({
-      id: newId,
-      name: device.name,
-      location: device.location,
-    })
+    device.id = newId;
+    this.deviceCollection.doc(newId).set(device)
+    return newId;
   }
 
   updateDevice(device: Device) {
@@ -67,6 +67,8 @@ export class Device {
   id: string
   name: string
   location: Location
+  icon: string
+  address: string
 }
 
 export class Location {

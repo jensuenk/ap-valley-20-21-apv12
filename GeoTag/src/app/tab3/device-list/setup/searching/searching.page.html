@@ -1,9 +1,15 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>searching</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <div class="instructions">
+    <h1>Searching...</h1>
+    <p>Trying to connect to your tag, this might take a few seconds.</p>
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
 </ion-content>
