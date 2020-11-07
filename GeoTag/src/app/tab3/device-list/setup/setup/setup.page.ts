@@ -84,7 +84,7 @@ export class SetupPage implements OnInit {
     const alert = await this.alertController.create({
       header: 'Could not get location',
       subHeader: 'An error accured trying to get your location:',
-      message: "message",
+      message: message,
       buttons: ['OK']
     });
     await alert.present();
