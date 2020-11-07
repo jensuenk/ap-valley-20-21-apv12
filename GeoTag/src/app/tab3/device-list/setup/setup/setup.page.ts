@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Device, DeviceListService } from 'src/app/device-list.service';
 import { IconPickerPage } from '../../icon-picker/icon-picker.page';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-setup',
@@ -15,20 +16,29 @@ export class SetupPage implements OnInit {
     public devicelistService: DeviceListService,
     private router: Router,
     private modalController: ModalController,
-  ) { }
+    private geolocation: Geolocation,
+    private alertController: AlertController
+  ) { 
+  }
 
   deviceList: Array<Device>;
+  currentPosLongitude: any = 0;
+  currentPosLatitude: any = 0;
 
   ngOnInit() {
+    this.getPostion();
   }
 
   addDevice() {
+    if (this.name == "") {
+      this.name = "No name"
+    }
     let newDevice: Device = {
       id: "",
       name: this.name,
       location: {
-        latitude: 20,
-        longitude: 20
+        latitude: this.currentPosLatitude,
+        longitude: this.currentPosLongitude
       },
       icon: this.iconName,
       address: this.devicelistService.currentAddress
@@ -39,7 +49,7 @@ export class SetupPage implements OnInit {
   }
 
   iconName: string = 'key';
-  name: string
+  name: string = ""
 
 
   async presentModal() {
@@ -56,5 +66,27 @@ export class SetupPage implements OnInit {
     const { data } = await modal.onDidDismiss();
     console.log(data);
     this.iconName = data.iconName;
+  }
+
+  getPostion() {
+		this.geolocation
+			.getCurrentPosition()
+			.then((resp) => {
+				this.currentPosLatitude = resp.coords.latitude;
+        this.currentPosLongitude = resp.coords.longitude;
+			})
+			.catch((error) => {
+				this.locationAlert(error)
+			});
+  }
+  
+  async locationAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Could not get location',
+      subHeader: 'An error accured trying to get your location:',
+      message: "message",
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 }
