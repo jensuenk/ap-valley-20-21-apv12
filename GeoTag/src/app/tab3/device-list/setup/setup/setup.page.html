@@ -28,6 +28,13 @@
       </ion-col>
     </ion-row>
   </ion-card>
+  <ion-card *ngIf="pingTest">
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" (click)="doPingTest()" expand="block">Ring Test</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
   <ion-card>
     <ion-row>
       <ion-col>

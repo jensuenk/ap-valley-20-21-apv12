@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 
 @Injectable({
@@ -11,12 +11,11 @@ export class BluetoothService {
     this.checkBluetoothEnabled();
   }
 
-  pairedList: pairedlist;
+  pairedList: Array<Device>;
   listToggle: boolean = false;
   pairedDeviceID: number = 0;
-  dataSend: string = "";
 
-  checkBluetoothEnabled() {
+  checkBluetoothEnabled(){
     this.bluetoothSerial.isEnabled().then(success => {
       this.listPairedDevices();
     }, error => {
@@ -27,6 +26,7 @@ export class BluetoothService {
   listPairedDevices() {
     this.bluetoothSerial.list().then(success => {
       this.pairedList = success;
+      console.log(this.pairedList)
       this.listToggle = true;
     }, error => {
       this.showError("Please Enable Bluetooth")
@@ -52,7 +52,7 @@ export class BluetoothService {
       this.deviceConnected();
       this.showToast("Successfully Connected");
     }, error => {
-      this.showError("Error:Connecting to Device");
+      this.showError("Error: Connecting to Device");
     });
   }
 
@@ -76,14 +76,14 @@ export class BluetoothService {
     this.showToast(data);
   }
 
-  sendData() {
-    this.dataSend+='\n';
-    this.showToast(this.dataSend);
+  sendData(dataSend) {
+    dataSend+='\n';
+    this.showToast(dataSend);
 
-    this.bluetoothSerial.write(this.dataSend).then(success => {
-      this.showToast(success);
+    this.bluetoothSerial.write(dataSend).then(success => {
+      console.log(success);
     }, error => {
-      this.showError(error)
+      console.log(error)
     });
   }
 
@@ -104,7 +104,7 @@ export class BluetoothService {
     await toast.present();
   }
 }
-interface pairedlist {
+interface Device {
   "class": number,
   "id": string,
   "address": string,

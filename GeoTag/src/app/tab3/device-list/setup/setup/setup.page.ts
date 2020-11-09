@@ -4,6 +4,7 @@ import { IconPickerPage } from '../../icon-picker/icon-picker.page';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { BluetoothService } from 'src/app/bluetooth.service';
 
 @Component({
   selector: 'app-setup',
@@ -17,9 +18,13 @@ export class SetupPage implements OnInit {
     private router: Router,
     private modalController: ModalController,
     private geolocation: Geolocation,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private bluetoothService: BluetoothService
   ) { 
   }
+
+  pingTest: boolean = true
+  lastPing = "B"
 
   deviceList: Array<Device>;
   currentPosLongitude: any = 0;
@@ -79,6 +84,18 @@ export class SetupPage implements OnInit {
 				this.locationAlert(error)
 			});
   }
+
+
+  doPingTest() {
+    if (this.lastPing == "S") {
+      this.bluetoothService.sendData("B")
+      this.lastPing = "B"
+    }
+    else {
+      this.bluetoothService.sendData("S")
+      this.lastPing = "S"
+    }
+  }
   
   async locationAlert(message) {
     const alert = await this.alertController.create({
@@ -89,4 +106,5 @@ export class SetupPage implements OnInit {
     });
     await alert.present();
   }
+
 }
