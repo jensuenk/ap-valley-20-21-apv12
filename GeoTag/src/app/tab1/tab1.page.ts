@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { title } from 'process';
 import { AuthService } from '../auth/auth.service';
 import { Device, DeviceListService } from '../device-list.service';
+import { LocalNotificationsService } from '../local-notifications.service';
 
 declare var google: any;
 
@@ -24,7 +25,12 @@ export class Tab1Page {
 	infoWindows: any = [];
 	markers: Array<marker>
 
-	constructor(private geolocation: Geolocation, private auth: AuthService, private router: Router, private deviceListService: DeviceListService) {
+	constructor(
+		private geolocation: Geolocation, 
+		private auth: AuthService, 
+		private router: Router, 
+		private deviceListService: DeviceListService,
+		private localNotifs: LocalNotificationsService) {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
 		}
@@ -33,6 +39,7 @@ export class Tab1Page {
 		this.deviceList = this.deviceListService.getDevices();
 		this.createMarkers()
 	}
+	
 	ionViewDidEnter() {
 		this.deviceList = this.deviceListService.getDevices();
 		this.createMarkers()
@@ -197,7 +204,7 @@ export class Tab1Page {
 	goToDetails() { }
 }
 
-class marker {
+export class marker {
 	title: string;
 	latitude: number;
 	longitude: number;

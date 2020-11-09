@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () => import('./device-details/device-details.module').then( m => m.DeviceDetailsPageModule)
   },
   {
-    path: 'alert-settings',
+    path: 'alert-settings/:id',
     loadChildren: () => import('./alert-settings/alert-settings.module').then( m => m.AlertSettingsPageModule)
   },
   {
@@ -53,7 +53,16 @@ const routes: Routes = [
   {
     path: 'settings-modal',
     loadChildren: () => import('./settings-modal/settings-modal.module').then( m => m.SettingsModalPageModule)
+  },
+  {
+    path: 'enabled-notif-times/:id',
+    loadChildren: () => import('./enabled-notif-times/enabled-notif-times.module').then( m => m.EnabledNotifTimesPageModule)
+  },
+  {
+    path: 'enabled-notif-locations/:id',
+    loadChildren: () => import('./enabled-notif-locations/enabled-notif-locations.module').then( m => m.EnabledNotifLocationsPageModule)
   }
+
 ];
 @NgModule({
   imports: [

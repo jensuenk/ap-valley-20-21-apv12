@@ -1,9 +1,42 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>AlertSettings</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Alert Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label slot="start">Enable</ion-label>
+      <ion-toggle slot="end" #toggleValue checked='notifsEnabled' (click)="setNotifsEnabled(!toggleValue.checked)">
+      </ion-toggle>
+    </ion-item>
+
+    <ion-item lines="none">
+      <ion-label slot="start">Notification Type</ion-label>
+      <ion-segment (ionChange)="segmentChanged($event)">
+        <ion-segment-button value="Vibration">
+          <ion-label>Vibration</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="Sound">
+          <ion-label>Sound</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item lines="none"  [routerLink]="['/','enabled-notif-locations', currentDeviceID]">
+      <ion-label slot="start">Enabled Locations</ion-label>
+    </ion-item>
+
+    <ion-item lines="none"  [routerLink]="['/','enabled-notif-times', currentDeviceID]">
+      <ion-label slot="start">Enabled Times</ion-label>
+    </ion-item>
+  </ion-list>
 
 </ion-content>
