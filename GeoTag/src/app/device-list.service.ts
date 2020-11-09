@@ -1,64 +1,52 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceListService {
-  private deviceCollection: AngularFirestoreCollection<Device>;
-  
-  public deviceList: Array<Device> = [
-    {
-      id: 1,
-      name: "Keys",
-      location: {
-        latitude: 1,
-        longitude: 1
-      }
-    },
-    {
-      id: 2,
-      name: "Wallet",
-      location: {
-        latitude: 10,
-        longitude: 10
-      }
-    },
-    {
-      id: 3,
-      name: "Phone",
-      location: {
-        latitude: 20,
-        longitude: 20
-      }
-    },
-  ]
-  
+  public deviceCollection: AngularFirestoreCollection<Device>;
+
+  public deviceList: Array<Device>;
+  doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
+  public currentAddress: string
+
   createTestDevice() {
     let newDevice: Device = {
-      id: 10,
-      name: "Test Device",
+      id: "",
+      name: "Test",
       location: {
         latitude: 20,
         longitude: 20
-      }
+      },
+      icon: "",
+      address: ""
     }
-    this.add(newDevice);
+    this.addDevice(newDevice);
   }
 
   getDevices() {
-    return this.deviceList
+    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uid + '/Devices', ref => ref.orderBy('name', 'desc'));
+    this.deviceCollection.valueChanges().subscribe((data) => {
+      this.deviceList = data;
+    })
     /*
-    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
-    this.devices = this.deviceCollection.valueChanges();
-
-    this.createTestDevice()
-    return this.devices; 
+    // Alternative method of retreiving data
+    this.deviceCollection.snapshotChanges().subscribe(res => {
+      if (res) {
+        this.deviceList = res.map(e => {
+          return {
+            id: e.payload.doc.id,
+            name: e.payload.doc.data()['name'],
+            location: e.payload.doc.data()['location']
+          }
+        })
+      }
+    })
     */
   }
   getDevice(id:number){
@@ -68,23 +56,27 @@ export class DeviceListService {
     this.deviceList = this.deviceList.filter(x=>x!=device);
   }
 
-  refreshDevices() {
-     this.createTestDevice()
-    this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uuid + '/Devices', ref => ref.orderBy('id', 'desc'));
-    this.deviceCollection.valueChanges().subscribe((data) => {
-      this.deviceList = data;
-    })
-    console.log(this.deviceList)
+  addDevice(device: Device) {
+    const newId = this.afs.createId();
+    device.id = newId;
+    this.deviceCollection.doc(newId).set(device)
+    return newId;
   }
 
-  add(device: Device) {
-    this.deviceCollection.add(device);
+  updateDevice(device: Device) {
+    return this.deviceCollection.doc(device.id).update(device);
+  }
+
+  deleteDevice(id: string) {
+    this.deviceCollection.doc(id).delete()
   }
 }
 export class Device {
-  id: number
+  id: string
   name: string
   location: Location
+  icon: string
+  address: string
 }
 
 export class Location {
