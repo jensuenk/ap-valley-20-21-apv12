@@ -49,13 +49,10 @@ export class DeviceListService {
     })
     */
   }
-  getDevice(id:number){
+  getDevice(id:string){
     return this.deviceList.find(x=>x.id == id);
   }
-  deleteDevice(device:Device){
-    this.deviceList = this.deviceList.filter(x=>x!=device);
-  }
-
+  
   addDevice(device: Device) {
     const newId = this.afs.createId();
     device.id = newId;

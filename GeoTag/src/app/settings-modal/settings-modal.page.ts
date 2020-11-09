@@ -9,7 +9,7 @@ import { Device, DeviceListService } from '../device-list.service';
 })
 export class SettingsModalPage implements OnInit {
 
-  @Input() id: number;
+  @Input() id: string;
   currentDevice :Device;
   originalName:string;
 
@@ -31,7 +31,7 @@ export class SettingsModalPage implements OnInit {
     });
   }
   deleteDevice(){
-    this.deviceListService.deleteDevice(this.currentDevice);
+    this.deviceListService.deleteDevice(this.currentDevice.id);
     this.modalCtrl.dismiss({
       'dismissed': true
     });
