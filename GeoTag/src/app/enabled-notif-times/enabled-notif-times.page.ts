@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-time-modal.page'
 
 @Component({
   selector: 'app-enabled-notif-times',
@@ -12,7 +14,8 @@ export class EnabledNotifTimesPage implements OnInit {
   enabledTimes: IEnabledTime[];
 
   constructor(
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private modalController: ModalController) { }
 
   ngOnInit() {
     this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
@@ -27,6 +30,19 @@ export class EnabledNotifTimesPage implements OnInit {
     newLoc.time = '12:00 - 13:00'
     this.enabledTimes.push(newLoc)
   }
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: NewEnabledTimeModalPage,
+      swipeToClose: true,
+      componentProps: {
+        'beginTime': null,
+        'endTime': null
+      }
+    });
+    return await modal.present();
+  }
+
 
 }
 
