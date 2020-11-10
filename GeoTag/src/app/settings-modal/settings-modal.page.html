@@ -2,10 +2,16 @@
 
 <ion-content>
   <div>
-    <ion-item lines="none">
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-icon (click)="presentModal()" name="{{ iconName }}" slot="start"></ion-icon>
+
       <ion-label position="floating">Change Name</ion-label>
-      <ion-input type="text" [(ngModel)] = "currentDevice.name"></ion-input>
-    </ion-item>
+          <ion-input [(ngModel)]="currentDevice.name" type="text"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
       <ion-button (click)="deleteDevice()" color="danger" expand="block" fill="solid">
         Delete Device
       </ion-button>
