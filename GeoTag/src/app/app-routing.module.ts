@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () => import('./device-details/device-details.module').then( m => m.DeviceDetailsPageModule)
   },
   {
-    path: 'alert-settings',
+    path: 'alert-settings/:id',
     loadChildren: () => import('./alert-settings/alert-settings.module').then( m => m.AlertSettingsPageModule)
   },
   {
