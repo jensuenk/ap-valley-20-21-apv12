@@ -9,26 +9,28 @@ export class NotificationService {
 		{
 			date: new Date(),
 			device:
+			{
+				id: "1",
+				name: 'Keys',
+				location:
 				{
-					id: 1,
-					name: 'Keys',
-					location:
-						{
-							latitude: 1,
-							longitude: 1
-						}
-				}
+					latitude: 1,
+					longitude: 1
+				},
+				icon: "",
+				address: ""
+			}
 		}
 	];
 
-	constructor () {}
+	constructor() { }
 
-	addNotification (date:Date,device:Device) {
-		this.notificationList.push(new Notification(date,device));
-		this;this.notificationList.sort((a,b)=> b.date.getTime()-a.date.getTime())
+	addNotification(date: Date, device: Device) {
+		this.notificationList.push(new Notification(date, device));
+		this; this.notificationList.sort((a, b) => b.date.getTime() - a.date.getTime())
 	}
-	getNotificationList (): Array<Notification> {
-    return this.notificationList;
+	getNotificationList(): Array<Notification> {
+		return this.notificationList;
 	}
 }
 
@@ -36,7 +38,7 @@ export class Notification {
 	date: Date;
 	device: Device;
 
-	constructor (date: Date, device: Device) {
+	constructor(date: Date, device: Device) {
 		this.date = date;
 		this.device = device;
 	}

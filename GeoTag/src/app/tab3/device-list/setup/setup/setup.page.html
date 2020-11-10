@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tag Setup</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-icon (click)="presentModal()" name="{{ iconName }}" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="name" placeholder="Name"></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-item lines="none">
+          <ion-label position="fixed">Tag address</ion-label>
+          <ion-input value="{{ devicelistService.currentAddress }}" disabled></ion-input>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card *ngIf="pingTest">
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" (click)="doPingTest()" expand="block">Ring Test</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+  <ion-card>
+    <ion-row>
+      <ion-col>
+        <ion-button type="submit" (click)="addDevice()" expand="block">Create Device</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>

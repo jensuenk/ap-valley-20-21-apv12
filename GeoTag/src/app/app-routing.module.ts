@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () => import('./device-details/device-details.module').then( m => m.DeviceDetailsPageModule)
   },
   {
-    path: 'alert-settings/:id',
+    path: 'alert-settings',
     loadChildren: () => import('./alert-settings/alert-settings.module').then( m => m.AlertSettingsPageModule)
   },
   {
@@ -55,18 +55,29 @@ const routes: Routes = [
     loadChildren: () => import('./settings-modal/settings-modal.module').then( m => m.SettingsModalPageModule)
   },
   {
+    path: 'setup/instructions',
+    loadChildren: () => import('./tab3/device-list/setup/instructions/instructions.module').then( m => m.InstructionsPageModule)
+  },
+  {
+    path: 'setup/searching',
+    loadChildren: () => import('./tab3/device-list/setup/searching/searching.module').then( m => m.SearchingPageModule)
+  },
+  {
+    path: 'setup/setup',
+    loadChildren: () => import('./tab3/device-list/setup/setup/setup.module').then( m => m.SetupPageModule)
+  },
+  {
     path: 'enabled-notif-times/:id',
     loadChildren: () => import('./enabled-notif-times/enabled-notif-times.module').then( m => m.EnabledNotifTimesPageModule)
   },
   {
     path: 'enabled-notif-locations/:id',
     loadChildren: () => import('./enabled-notif-locations/enabled-notif-locations.module').then( m => m.EnabledNotifLocationsPageModule)
-  },  {
+  },
+  {
     path: 'new-enabled-time-modal',
     loadChildren: () => import('./new-enabled-time-modal/new-enabled-time-modal.module').then( m => m.NewEnabledTimeModalPageModule)
   }
-
-
 ];
 @NgModule({
   imports: [
