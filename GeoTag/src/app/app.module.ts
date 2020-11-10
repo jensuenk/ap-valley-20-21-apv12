@@ -16,6 +16,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,7 +29,8 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule
+    AngularFirestoreModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,
@@ -35,8 +38,8 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
     Geolocation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFirestoreModule,
-    BluetoothSerial
-  ],
+    BluetoothSerial,
+    NativeStorage],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

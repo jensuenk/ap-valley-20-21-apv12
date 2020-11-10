@@ -65,6 +65,18 @@ const routes: Routes = [
   {
     path: 'setup/setup',
     loadChildren: () => import('./tab3/device-list/setup/setup/setup.module').then( m => m.SetupPageModule)
+  },
+  {
+    path: 'enabled-notif-times/:id',
+    loadChildren: () => import('./enabled-notif-times/enabled-notif-times.module').then( m => m.EnabledNotifTimesPageModule)
+  },
+  {
+    path: 'enabled-notif-locations/:id',
+    loadChildren: () => import('./enabled-notif-locations/enabled-notif-locations.module').then( m => m.EnabledNotifLocationsPageModule)
+  },
+  {
+    path: 'new-enabled-time-modal',
+    loadChildren: () => import('./new-enabled-time-modal/new-enabled-time-modal.module').then( m => m.NewEnabledTimeModalPageModule)
   }
 ];
 @NgModule({
