@@ -9,7 +9,7 @@
     <ion-row class="deviceList">
       <ion-col> 
           <ion-list>
-            <ion-card *ngFor = "let device of deviceList" [routerLink]="['/','device-details', device.id]">
+            <ion-card *ngFor = "let device of deviceListService.deviceList" [routerLink]="['/','device-details', device.id]">
               <ion-grid>
                 <ion-row>
                   <ion-col size="2">
@@ -20,9 +20,7 @@
                       </ion-row>
                       <ion-row>
                         <ion-col>
-                          <ion-icon *ngIf = "device.name == 'Keys'" name="key-outline" size="large"></ion-icon>
-                          <ion-icon *ngIf = "device.name == 'Wallet'" name="wallet-outline" size="large"></ion-icon>
-                          <ion-icon *ngIf = "device.name == 'Phone'" name="phone-portrait-outline" size="large"></ion-icon>
+                          <ion-icon name="{{ device.icon }}" size="large"></ion-icon>
                         </ion-col>
                       </ion-row>
                       <ion-row>

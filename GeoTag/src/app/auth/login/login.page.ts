@@ -1,6 +1,7 @@
 import { Component,OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AlertController, LoadingController } from '@ionic/angular';
+import { DeviceListService } from 'src/app/device-list.service';
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -15,7 +16,8 @@ export class LoginPage implements OnInit {
     public authService: AuthService,
     public router: Router,
     public alertController: AlertController,
-    public loadingController: LoadingController
+    public loadingController: LoadingController,
+    private deviceListService: DeviceListService
   ) {}
 
   ngOnInit() {}
@@ -29,10 +31,10 @@ export class LoginPage implements OnInit {
           await this.presentLoading()
           tries++;
           if (tries > 10) {
-            this.loginAlert("Could not retreive user data")
-            return
+            return;
           }
         }
+        this.deviceListService.getDevices()
         this.router.navigate(['home']);          
       }).catch((error) => {
         this.loginAlert(error.message)

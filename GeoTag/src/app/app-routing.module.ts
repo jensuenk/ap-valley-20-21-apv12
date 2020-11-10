@@ -53,6 +53,18 @@ const routes: Routes = [
   {
     path: 'settings-modal',
     loadChildren: () => import('./settings-modal/settings-modal.module').then( m => m.SettingsModalPageModule)
+  },
+  {
+    path: 'setup/instructions',
+    loadChildren: () => import('./tab3/device-list/setup/instructions/instructions.module').then( m => m.InstructionsPageModule)
+  },
+  {
+    path: 'setup/searching',
+    loadChildren: () => import('./tab3/device-list/setup/searching/searching.module').then( m => m.SearchingPageModule)
+  },
+  {
+    path: 'setup/setup',
+    loadChildren: () => import('./tab3/device-list/setup/setup/setup.module').then( m => m.SetupPageModule)
   }
 ];
 @NgModule({

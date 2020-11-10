@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Device, DeviceListService } from '../../device-list.service';
 import { ModalController } from '@ionic/angular';
@@ -11,12 +13,12 @@ import { SettingsModalPage } from '../../settings-modal/settings-modal.page';
 })
 export class DeviceListPage implements OnInit {
 
-  constructor(private devicelistService: DeviceListService, public modalController:ModalController) { }
+  constructor(private devicelistService: DeviceListService, public modalController:ModalController, private alertController: AlertController, 
+    private router: Router) { }
 
   deviceList: Array<Device>;
 
   ngOnInit() {
-    this.deviceList = this.devicelistService.getDevices();
   }
 
   async presentSettingsModal(id : number) {
@@ -35,4 +37,8 @@ export class DeviceListPage implements OnInit {
     return await modal.present();
   }
 
+
+  addDevice() {
+    this.router.navigate(['./setup/instructions']);
+  }
 }

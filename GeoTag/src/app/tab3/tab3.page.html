@@ -12,15 +12,14 @@
   </div>
 
   <div class="userInfo">
-    <h2>John Doe</h2>
-    <p>randomemail@gmail.com</p>
+    <h4>{{ auth.getUser().email }}</h4>
   </div>
 
   <div class="accountOptions">
     <ion-list>
       <ion-item lines="none" (click)="openDeviceList()">
         <ion-icon name="key" slot="start"></ion-icon>
-        <ion-label>My Devices</ion-label>
+        <ion-label>My GeoTags</ion-label>
       </ion-item>
     </ion-list>
     <ion-list>

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, defineInjectable } from '@angular/core';
+import { Component, ViewChild, ElementRef, defineInjectable, OnInit } from '@angular/core';
 import { disableDebugTools } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -13,37 +13,36 @@ declare var google: any;
 	templateUrl: 'tab1.page.html',
 	styleUrls: ['tab1.page.scss']
 })
-export class Tab1Page {
+export class Tab1Page implements OnInit {
 	map: any;
 	@ViewChild('map', { read: ElementRef, static: false })
 	mapRef: ElementRef;
 
-	deviceList: Array<Device>;
 	currentPosLongitude: any = 0;
 	currentPosLatitude: any = 0;
 	infoWindows: any = [];
 	markers: Array<marker>
 
-	constructor(private geolocation: Geolocation, private auth: AuthService, private router: Router, private deviceListService: DeviceListService) {
-		if (!auth.isLoggedIn) {
-			this.router.navigate(['login']);
-		}
+	constructor(private geolocation: Geolocation, private auth: AuthService, private router: Router, public deviceListService: DeviceListService) {
 	}
-	ngOnInit(){
-		this.deviceList = this.deviceListService.getDevices();
-		this.createMarkers()
+
+
+	ngOnInit() {
+
+		this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {
+			this.createMarkers();
+			this.showMap();
+		})
 	}
-	ionViewDidEnter() {
-		this.deviceList = this.deviceListService.getDevices();
-		this.createMarkers()
-		this.showMap();
-	}
+
 	createMarkers() {
 		this.markers = Array<marker>()
-		for (let device of this.deviceList) {
+		for (let device of this.deviceListService.deviceList) {
 			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
 		}
+		console.log(this.markers)
 	}
+
 	addMarkersToMap(markers) {
 		for (let marker of markers) {
 			let position = new google.maps.LatLng(marker.latitude, marker.longitude);
