@@ -54,6 +54,8 @@ void loop() {
 }
 //end commands
 
+//button readouts
+//short press
   if(digitalRead(button) == false){ //if button pressed
     Serial.println("pressed");
     digitalWrite(buzzerpin, false); //stop alarm
@@ -65,5 +67,6 @@ void loop() {
   }else{
     buttondebounce = false;
   }
+//long press
 delay(100);// prepare for next data ...
 }
