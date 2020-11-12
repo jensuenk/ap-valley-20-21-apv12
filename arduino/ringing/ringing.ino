@@ -4,7 +4,7 @@
 //pincode 1234
 
 bool noise = false;
-bool online = false;
+bool online = true;
 #include <SoftwareSerial.h>// import the serial library
 
 SoftwareSerial hc(10, 11); // RX, TX
@@ -30,6 +30,7 @@ void loop() {
       //work with the received data
    if(!hc.available()){
     if(noise == true){
+      online = false;
       digitalWrite(buzzerpin, true);
     }
    }
@@ -44,10 +45,12 @@ void loop() {
   }
   if (BluetoothData=='2'){// if number 0 pressed ....
       digitalWrite(ledpin,0);
+      noise = false;
       hc.println("buzzer off silent mode");
   }
     if (BluetoothData=='3'){// if number 0 pressed ....
       digitalWrite(ledpin,0);
+      noise = true;
       hc.println("buzzer on loud mode");
   }
 
@@ -60,7 +63,7 @@ void loop() {
     Serial.println("pressed");
     digitalWrite(buzzerpin, false); //stop alarm
     if(buttondebounce == false){ //if loop hasn't been completed once
-      hc.println("alarm"); //send alarm to phone
+      hc.println("ring"); //send alarm to phone
     }
     buttondebounce = true;
     
@@ -68,5 +71,6 @@ void loop() {
     buttondebounce = false;
   }
 //long press
-delay(100);// prepare for next data ...
+
+//delay(100);// prepare for next data ...
 }
