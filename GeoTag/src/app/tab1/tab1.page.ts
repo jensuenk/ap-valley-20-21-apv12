@@ -48,6 +48,7 @@ export class Tab1Page implements OnInit {
 			this.createMarkers();
 			this.showMap();
 		})
+		this.deviceListService.createTestDevice()
 	}
 
 	createMarkers() {

@@ -24,7 +24,8 @@ export class DeviceListService {
         longitude: 20
       },
       icon: "",
-      address: ""
+      address: "",
+      locationHistory :  []
     }
     this.addDevice(newDevice);
   }
@@ -67,6 +68,10 @@ export class DeviceListService {
   deleteDevice(id: string) {
     this.deviceCollection.doc(id).delete()
   }
+
+  addLocation(device :Device, location:Location, date:Date){
+    device.locationHistory.push(new LocationAndDate(location,date))
+  }
 }
 export class Device {
   id: string
@@ -74,9 +79,23 @@ export class Device {
   location: Location
   icon: string
   address: string
+  locationHistory: Array<LocationAndDate>
 }
-
 export class Location {
   latitude: number
   longitude: number
+
+  constructor (latitude: number,longitude:number){
+    this.latitude = latitude
+    this.longitude = longitude
+  }
+}
+export class LocationAndDate{
+location : Location
+date:Date
+
+constructor (location: Location, date:Date){
+this.location = location;
+this.date = date;
+}
 }

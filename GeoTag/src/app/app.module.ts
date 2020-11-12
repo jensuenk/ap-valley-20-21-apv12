@@ -16,7 +16,6 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,8 +27,7 @@ import { IonicStorageModule } from '@ionic/storage';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule,
-    IonicStorageModule.forRoot()
+    AngularFirestoreModule
   ],
   providers: [
     StatusBar,
