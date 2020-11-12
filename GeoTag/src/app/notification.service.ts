@@ -1,45 +1,75 @@
 import { Injectable } from '@angular/core';
-import { Device } from './device-list.service';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AuthService } from './auth/auth.service';
+import { Device, DeviceListService } from './device-list.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class NotificationService {
-	notificationList: Array<Notification> = [
-		{
+	public notificationCollection: AngularFirestoreCollection<Notification>;
+
+	public notificationList: Array<Notification>;
+
+	constructor(private afs: AngularFirestore, private auth: AuthService, private deviceListServcie: DeviceListService) { }
+
+	public currentAddress: string
+
+	createTestNotification() {
+		let notification: Notification = {
+			id: "",
+			message: "This is a notification discribtion",
 			date: new Date(),
-			device:
-			{
-				id: "1",
-				name: 'Keys',
-				location:
-				{
-					latitude: 1,
-					longitude: 1
-				},
-				icon: "",
-				address: ""
-			}
+			device: this.deviceListServcie.createTestDevice(),
+			icon: "notifications-outline"
 		}
-	];
-
-	constructor() { }
-
-	addNotification(date: Date, device: Device) {
-		this.notificationList.push(new Notification(date, device));
-		this; this.notificationList.sort((a, b) => b.date.getTime() - a.date.getTime())
+		this.addNotification(notification);
 	}
-	getNotificationList(): Array<Notification> {
-		return this.notificationList;
+
+	getNotifications() {
+		this.notificationCollection = this.afs.collection<Notification>('/Users/' + this.auth.getUser().uid + '/Notififcations', ref => ref.orderBy('date', 'desc'));
+		this.notificationCollection.valueChanges().subscribe((data) => {
+			this.notificationList = data;
+			this.notificationList.forEach(notification => {
+				notification.date = notification.date.toDate()
+			});
+			console.log(this.notificationList)
+		})
+		//this.notificationList.sort((a, b) => b.date.getTime() - a.date.getTime())
+	}
+
+	getNotification(id: string) {
+		return this.notificationList.find(x => x.id == id);
+	}
+
+	addNotification(notification: Notification) {
+		const newId = this.afs.createId();
+		notification.id = newId;
+		this.notificationCollection.doc(newId).set(notification)
+		return newId;
+	}
+
+	updateNotification(notification: Notification) {
+		return this.notificationCollection.doc(notification.id).update(notification);
+	}
+
+	deleteNotification(id: string) {
+		this.notificationCollection.doc(id).delete()
 	}
 }
 
 export class Notification {
-	date: Date;
+	id: string;
+	message: string
+	date: any;
 	device: Device;
+	icon: string
 
-	constructor(date: Date, device: Device) {
+	constructor(id: string, message: string, date: Date, device: Device, icon: string) {
+		this.id = id;
+		this.message = message;
 		this.date = date;
 		this.device = device;
+		this.icon = icon;
 	}
 }

@@ -9,7 +9,6 @@ export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
 
   public deviceList: Array<Device>;
-  doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
@@ -27,6 +26,7 @@ export class DeviceListService {
       address: ""
     }
     this.addDevice(newDevice);
+    return newDevice;
   }
 
   getDevices() {
