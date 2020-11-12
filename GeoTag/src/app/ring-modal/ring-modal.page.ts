@@ -23,9 +23,10 @@ export class RingModalPage implements OnInit {
 
 		let notification: Notification = {
 			id: "",
-			message: "This is a notification description",
+			message: "You ringed your " + this.device.name + ".",
 			date: new Date(),
-			device: this.device
+      device: this.device,
+      icon: "notifications-outline"
 		}
     this.notificationService.addNotification(notification)
   }

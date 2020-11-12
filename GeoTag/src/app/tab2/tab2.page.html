@@ -1,20 +1,20 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      Recent Notifications
+      Notifications
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
 
 <ion-content [fullscreen]="true">
-  <ion-card *ngFor = "let notification of notificationList">
+  <ion-card *ngFor = "let notification of notificationService.notificationList">
     <ion-grid fixed>
       <ion-row>
-        <ion-col class="iconCol" size="1.5"><ion-icon size="large" name="notifications-outline"></ion-icon></ion-col>
-        <ion-col size="10.5">
-          <h2>Ring - {{notification.date.getDate()}}/{{notification.date.getMonth()}}/{{notification.date.getFullYear()}} - {{notification.date.toLocaleTimeString().slice(0,5)}}</h2>
-          <p>you ringed your {{notification.device.name}}</p>
+        <ion-col class="iconCol" size="2"><ion-icon size="large" name="{{notification.icon}}"></ion-icon></ion-col>
+        <ion-col size="10">
+          <h4>{{notification.date.getDate()}}/{{notification.date.getMonth()}}/{{notification.date.getFullYear()}} - {{notification.date.toLocaleTimeString().slice(0,5)}}</h4>
+          <p>{{notification.message}}</p>
         </ion-col>
       </ion-row>
     </ion-grid>

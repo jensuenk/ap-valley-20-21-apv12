@@ -18,9 +18,10 @@ export class NotificationService {
 	createTestNotification() {
 		let notification: Notification = {
 			id: "",
-			message: "This is a notification",
+			message: "This is a notification discribtion",
 			date: new Date(),
-			device: this.deviceListServcie.createTestDevice()
+			device: this.deviceListServcie.createTestDevice(),
+			icon: "notifications-outline"
 		}
 		this.addNotification(notification);
 	}
@@ -29,6 +30,10 @@ export class NotificationService {
 		this.notificationCollection = this.afs.collection<Notification>('/Users/' + this.auth.getUser().uid + '/Notififcations', ref => ref.orderBy('date', 'desc'));
 		this.notificationCollection.valueChanges().subscribe((data) => {
 			this.notificationList = data;
+			this.notificationList.forEach(notification => {
+				notification.date = notification.date.toDate()
+			});
+			console.log(this.notificationList)
 		})
 		//this.notificationList.sort((a, b) => b.date.getTime() - a.date.getTime())
 	}
@@ -55,13 +60,16 @@ export class NotificationService {
 
 export class Notification {
 	id: string;
-	message?: string
-	date: Date;
+	message: string
+	date: any;
 	device: Device;
+	icon: string
 
-	constructor(id: string, date: Date, device: Device) {
+	constructor(id: string, message: string, date: Date, device: Device, icon: string) {
 		this.id = id;
+		this.message = message;
 		this.date = date;
 		this.device = device;
+		this.icon = icon;
 	}
 }
