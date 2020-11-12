@@ -5,6 +5,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
+import { LocationHistoryPage } from 'src/app/location-history/location-history.page';
 
 @Component({
   selector: 'app-setup',
@@ -46,7 +47,8 @@ export class SetupPage implements OnInit {
         longitude: this.currentPosLongitude
       },
       icon: this.iconName,
-      address: this.devicelistService.currentAddress
+      address: this.devicelistService.currentAddress,
+      locationHistory: []
     }
     console.log(newDevice)
     this.devicelistService.addDevice(newDevice);
