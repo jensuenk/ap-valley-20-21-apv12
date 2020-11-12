@@ -18,6 +18,7 @@ export class LocationHistoryPage implements OnInit {
     let location = new Location(1,1)
     let date = new Date();
     this.deviceListService.addLocation(this.currentDevice,location,date)
+    
   }
 
   findCurrentDevice() {

@@ -71,6 +71,8 @@ export class DeviceListService {
 
   addLocation(device :Device, location:Location, date:Date){
     device.locationHistory.push(new LocationAndDate(location,date))
+    console.log(device)
+    return this.deviceCollection.doc(device.id).update(device);
   }
 }
 export class Device {
