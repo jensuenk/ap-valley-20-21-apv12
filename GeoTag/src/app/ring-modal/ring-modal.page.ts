@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { Device } from '../device-list.service';
-import { NotificationService } from '../notification.service';
+import { NotificationService, Notification } from '../notification.service';
 
 @Component({
   selector: 'app-ring-modal',
@@ -20,7 +20,14 @@ export class RingModalPage implements OnInit {
 
   ngOnInit() {
     this.bluetoothSerial.write(true);
-    this.notificationService.addNotification(new Date(), this.device)
+
+		let notification: Notification = {
+			id: "",
+			message: "This is a notification description",
+			date: new Date(),
+			device: this.device
+		}
+    this.notificationService.addNotification(notification)
   }
 
   dismiss() {
