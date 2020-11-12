@@ -15,10 +15,16 @@ export class LocationHistoryPage implements OnInit {
 
   ngOnInit() {
     this.findCurrentDevice()
-    let location = new Location(1,1)
-    let date = new Date();
-    this.deviceListService.addLocation(this.currentDevice,location,date)
-    
+
+    let locationAndDate = {
+      location: {
+        latitude: 1,
+        longitude: 1
+      },
+      date: new Date()
+    }
+    this.currentDevice.locationHistory.push(locationAndDate)
+    this.deviceListService.updateDevice(this.currentDevice)
   }
 
   findCurrentDevice() {

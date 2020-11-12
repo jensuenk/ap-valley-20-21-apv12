@@ -16,6 +16,13 @@ export class DeviceListService {
   public currentAddress: string
 
   createTestDevice() {
+    let LocationAndDate = {
+      location: {
+        latitude: 20,
+        longitude: 20
+      },
+      date: new Date()
+    }
     let newDevice: Device = {
       id: "",
       name: "Test",
@@ -25,7 +32,7 @@ export class DeviceListService {
       },
       icon: "",
       address: "",
-      locationHistory :  []
+      locationHistory: [LocationAndDate]
     }
     this.addDevice(newDevice);
   }
@@ -34,6 +41,11 @@ export class DeviceListService {
     this.deviceCollection = this.afs.collection<Device>('/Users/' + this.auth.getUser().uid + '/Devices', ref => ref.orderBy('name', 'desc'));
     this.deviceCollection.valueChanges().subscribe((data) => {
       this.deviceList = data;
+      this.deviceList.forEach(device => {
+        device.locationHistory.forEach(history => {
+          history.date = history.date.toDate()
+        })
+      });
     })
     /*
     // Alternative method of retreiving data
@@ -50,10 +62,10 @@ export class DeviceListService {
     })
     */
   }
-  getDevice(id:string){
-    return this.deviceList.find(x=>x.id == id);
+  getDevice(id: string) {
+    return this.deviceList.find(x => x.id == id);
   }
-  
+
   addDevice(device: Device) {
     const newId = this.afs.createId();
     device.id = newId;
@@ -62,6 +74,7 @@ export class DeviceListService {
   }
 
   updateDevice(device: Device) {
+    console.log(device)
     return this.deviceCollection.doc(device.id).update(device);
   }
 
@@ -69,8 +82,12 @@ export class DeviceListService {
     this.deviceCollection.doc(id).delete()
   }
 
-  addLocation(device :Device, location:Location, date:Date){
-    device.locationHistory.push(new LocationAndDate(location,date))
+  addLocation(device: Device, location: Location, date: Date) {
+    let LocationAndDate = {
+      location: location,
+      date: date
+    }
+    device.locationHistory.push(LocationAndDate)
     console.log(device)
     return this.deviceCollection.doc(device.id).update(device);
   }
@@ -87,17 +104,17 @@ export class Location {
   latitude: number
   longitude: number
 
-  constructor (latitude: number,longitude:number){
+  constructor(latitude: number, longitude: number) {
     this.latitude = latitude
     this.longitude = longitude
   }
 }
-export class LocationAndDate{
-location : Location
-date:Date
+export class LocationAndDate {
+  location: Location
+  date: any
 
-constructor (location: Location, date:Date){
-this.location = location;
-this.date = date;
-}
+  constructor(location: Location, date: Date) {
+    this.location = location;
+    this.date = date;
+  }
 }
