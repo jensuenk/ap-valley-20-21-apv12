@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 import { DeviceListService } from './device-list.service';
+import { NotificationService } from './notification.service';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent {
     private statusBar: StatusBar,
     private auth: AuthService, 
     private router: Router, 
-    public deviceListService: DeviceListService
+    public deviceListService: DeviceListService, 
+    public notificationService: NotificationService
   ) {
     this.initializeApp();
 		if (!auth.isLoggedIn) {
@@ -27,6 +29,7 @@ export class AppComponent {
       return;
 		}
 		deviceListService.getDevices()
+		notificationService.getNotifications()
   }
 
   initializeApp() {
