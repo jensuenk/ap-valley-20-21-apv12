@@ -31,7 +31,7 @@ const routes: Routes = [
     loadChildren: () => import('./alert-settings/alert-settings.module').then( m => m.AlertSettingsPageModule)
   },
   {
-    path: 'location-history',
+    path: 'location-history/:id',
     loadChildren: () => import('./location-history/location-history.module').then( m => m.LocationHistoryPageModule)
   },
   {

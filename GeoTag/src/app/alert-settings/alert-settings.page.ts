@@ -21,7 +21,6 @@ export class AlertSettingsPage implements OnInit {
     private route: ActivatedRoute) { }
 
   async ngOnInit() {
-    await this.localNotifs.getNotifsEnabled(this.currentDeviceID);
     this.notifsEnabled = this.localNotifs.notifsEnabled;
     console.log(this.notifsEnabled);
 
@@ -29,7 +28,6 @@ export class AlertSettingsPage implements OnInit {
   }
 
   setNotifsEnabled(val: boolean){
-    this.localNotifs.setNotifsEnabled(val, this.currentDeviceID);
   }
 
   segmentChanged(ev: any) {
