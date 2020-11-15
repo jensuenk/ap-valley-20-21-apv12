@@ -1,0 +1,47 @@
+#map{
+    height: 22em;
+    position: relative;
+}
+.mapRow{
+    position: relative;
+}
+#firstHeading{
+    color:black !important
+}
+p{
+    color:black;
+    margin-left: 0 !important;
+}
+.storemapper-iw-container{
+    background-color: black !important;
+}
+
+.icon{
+    width: 30%;
+    height: 100%;
+}
+
+.mapPlaceholder{
+    height: 22em;
+}
+
+.deviceList{
+    height: 100%;
+}
+
+ion-card{
+    height: 7em;
+}
+
+ion-col h1{
+    margin-bottom: 0em;
+    margin-top: 15px;
+    margin-left: 20px;
+    color: rgb(175, 175, 175);
+}
+ion-col p{
+    margin-top: 0em;
+    margin-bottom: 15px;
+    margin-left: 20px;
+    color:  rgb(175, 175, 175);
+}

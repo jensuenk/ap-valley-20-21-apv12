@@ -1,9 +1,44 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>LocationHistory</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-<p *ngFor = "let notif of currentDevice.locationHistory">{{notif.date}}</p>
+  <div #map id="map" slot="fixed"></div>
+
+  <ion-grid>
+    <ion-row class="mapPlaceholder">
+      <ion-col>
+      </ion-col>
+    </ion-row>
+    <ion-row class="deviceList">
+      <ion-col> 
+          <ion-list>
+            <ion-card *ngFor = "let notif of currentDevice.locationHistory" (click)=  "moveCamera(notif.location.longitude,notif.location.latitude)" >
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="2">
+                    <ion-grid>
+                      <ion-row>
+                        <ion-col>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                          <ion-icon name="alert-outline" size="large"></ion-icon>
+                        </ion-col>
+                      </ion-row>
+                      <ion-row>
+                        <ion-col>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                  </ion-col>
+                  <ion-col size="10">
+                    <h2>{{currentDevice.name}} disconnected</h2>
+                    <p>{{notif.date.getDate()}}/{{notif.date.getMonth()}}/{{notif.date.getFullYear()}} - {{notif.date.toLocaleTimeString().slice(0,5)}}</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card>
+          </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
+
