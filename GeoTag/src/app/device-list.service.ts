@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Settings } from 'http2';
 import { AuthService } from './auth/auth.service';
+import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-routing.module';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,8 @@ import { AuthService } from './auth/auth.service';
 export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
 
-  public deviceList: Array<Device>;
+  public deviceList: Device[] = [];
+  doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
@@ -24,14 +27,34 @@ export class DeviceListService {
     }
     let newDevice: Device = {
       id: "",
-      name: "Test",
+      name: "TestDevice",
       location: {
         latitude: 20,
         longitude: 20
       },
-      icon: "",
+      locationHistory: [LocationAndDate],
+      icon: "home",
       address: "",
-      locationHistory: [LocationAndDate]
+      settings: {
+        alertType: 'Vibration',
+        alertsEnabled: true,
+        timeAlertsEnabled: true,
+        locationAlertsEnabled: true,
+        enabledLocations: [
+        {
+          nickname: 'Home',
+          latitude: 1,
+          longitude: 1,
+          enabled: true
+        }],
+        enabledTimes: [
+          {
+            nickname: 'Lunch Time',
+            beginTime: 1300,
+            endTime: 1400,
+            enabled: true
+        }]
+      }
     }
     this.addDevice(newDevice);
     return newDevice;
@@ -99,6 +122,7 @@ export class Device {
   icon: string
   address: string
   locationHistory: Array<LocationAndDate>
+  settings: AlertSettings
 }
 export class Location {
   latitude: number
@@ -117,4 +141,27 @@ export class LocationAndDate {
     this.location = location;
     this.date = date;
   }
+}
+
+export class AlertSettings{
+  alertType: string;
+  alertsEnabled: boolean;
+  timeAlertsEnabled: boolean;
+  locationAlertsEnabled: boolean;
+  enabledTimes: EnabledTime[];
+  enabledLocations: EnabledLocation[];
+}
+
+export class EnabledTime{
+  nickname: string;
+  beginTime: number;
+  endTime: number; 
+  enabled: boolean;
+}
+
+export class EnabledLocation{
+  nickname: string;
+  latitude: number;
+  longitude: number;
+  enabled: boolean;
 }
