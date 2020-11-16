@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
+import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Settings } from 'http2';
 import { AuthService } from './auth/auth.service';
 import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-routing.module';
+
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +13,13 @@ import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-
 export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
 
-  public deviceList: Device[] = [];
+  public deviceList: Array<Device>;
   doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
   public currentAddress: string
+
 
   createTestDevice() {
     let LocationAndDate = {
@@ -43,15 +47,17 @@ export class DeviceListService {
         enabledLocations: [
         {
           nickname: 'Home',
-          latitude: 1,
-          longitude: 1,
+          icon: 'home',
+          latitude: "1",
+          longitude: "1",
           enabled: true
         }],
         enabledTimes: [
           {
             nickname: 'Lunch Time',
-            beginTime: 1300,
-            endTime: 1400,
+            icon: 'fast-food',
+            beginTime: "12:00",
+            endTime: "14:00",
             enabled: true
         }]
       }
@@ -99,6 +105,13 @@ export class DeviceListService {
   updateDevice(device: Device) {
     console.log(device)
     return this.deviceCollection.doc(device.id).update(device);
+  }
+
+  addEnabledTime(device: Device, enabledTime: EnabledTime){
+    device.settings.enabledTimes.push(enabledTime)
+    return this.deviceCollection.doc(device.id).update({
+      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledTime)
+    });
   }
 
   deleteDevice(id: string) {
@@ -154,14 +167,32 @@ export class AlertSettings{
 
 export class EnabledTime{
   nickname: string;
-  beginTime: number;
-  endTime: number; 
+  icon: string;
+  beginTime: string;
+  endTime: string; 
   enabled: boolean;
+
+  constructor(nickname: string, icon: string, beginTime: string, endTime: string) {
+    this.nickname = nickname;
+    this.icon = icon;
+    this.beginTime = beginTime;
+    this.endTime = endTime; 
+    this.enabled = true;
+  }
 }
 
 export class EnabledLocation{
   nickname: string;
-  latitude: number;
-  longitude: number;
+  icon: string;
+  latitude: string;
+  longitude: string;
   enabled: boolean;
+
+  constructor(nickname: string, icon: string, latitude: string, longitude: string) {
+    this.nickname = nickname;
+    this.icon = icon;
+    this.latitude = latitude;
+    this.longitude = longitude; 
+    this.enabled = true;
+  }
 }

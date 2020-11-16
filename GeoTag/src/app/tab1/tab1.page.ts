@@ -55,7 +55,7 @@ export class Tab1Page implements OnInit {
 		for (let device of this.deviceListService.deviceList) {
 			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
 		}
-		console.log(this.markers)
+		//console.log(this.markers)
 	}
 
 	addMarkersToMap(markers) {

@@ -13,6 +13,7 @@ export class AlertSettingsPage implements OnInit {
   currentID: string;
   currentDevice: Device;
 
+  private notifsEnabled: boolean;
 
   constructor(
     private localNotifs: LocalNotificationsService,
@@ -21,7 +22,7 @@ export class AlertSettingsPage implements OnInit {
 
   async ngOnInit() {
     this.notifsEnabled = this.localNotifs.notifsEnabled;
-    console.log(this.notifsEnabled);
+    //console.log(this.notifsEnabled);
     await this.deviceListService.getDevices();
     this.currentID = this.route.snapshot.paramMap.get('id');
     this.currentDevice = await this.deviceListService.getDevice(this.currentID)
