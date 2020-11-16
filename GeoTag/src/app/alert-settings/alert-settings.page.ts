@@ -10,10 +10,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AlertSettingsPage implements OnInit {
 
-  notifsEnabled: boolean;
+  currentID: string;
+  currentDevice: Device;
 
-  currentDeviceID: string;
-
+  private notifsEnabled: boolean;
 
   constructor(
     private localNotifs: LocalNotificationsService,
@@ -22,18 +22,31 @@ export class AlertSettingsPage implements OnInit {
 
   async ngOnInit() {
     this.notifsEnabled = this.localNotifs.notifsEnabled;
-    console.log(this.notifsEnabled);
-
-    this.currentDeviceID = this.route.snapshot.paramMap.get('id');
+    //console.log(this.notifsEnabled);
+    await this.deviceListService.getDevices();
+    this.currentID = this.route.snapshot.paramMap.get('id');
+    this.currentDevice = await this.deviceListService.getDevice(this.currentID)
+    console.log(this.currentDevice);
   }
 
-  setNotifsEnabled(val: boolean){
+  saveSettings(){
+    this.deviceListService.updateDevice(this.currentDevice);
   }
 
-  segmentChanged(ev: any) {
+  setNotifsEnabled(ev: any){
+    var newSetting;
+    if (ev.detail.value == "true")
+      newSetting = true;
+    else
+      newSetting = false;
+    this.currentDevice.settings.alertsEnabled = newSetting;
+    console.log('Notifications have been set to: ' + newSetting);
+    this.deviceListService.updateDevice(this.currentDevice);
+  }
+
+  changeAlertType(ev: any) {
+    this.currentDevice.settings.alertType = ev.detail.value;
     console.log('Notification type has been changed to: ', ev.detail.value);
+    this.deviceListService.updateDevice(this.currentDevice);
   }
-
-
-
 }

@@ -6,13 +6,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
+<ion-content fullscreen *ngIf="this.currentDevice">
   
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list>
-          <ion-card *ngFor = "let location of enabledLocations">
+          <ion-card *ngFor = "let location of currentDevice.settings.enabledLocations">
             <ion-grid>
               <ion-row>
                 <ion-col size="2">
@@ -23,7 +23,7 @@
                     </ion-row>
                     <ion-row>
                       <ion-col>
-                        <ion-icon name="home-outline" size="large"></ion-icon>
+                        <ion-icon [name]="location.icon" size="large"></ion-icon>
                       </ion-col>
                     </ion-row>
                     <ion-row>
@@ -33,13 +33,13 @@
                   </ion-grid>
                 </ion-col>
                 <ion-col size="8">
-                  <h1>{{location.name}}</h1>
-                  <p>{{location.address}}</p>
+                  <h1>{{location.longitude}}</h1>
+                  <p>{{location.latitude}}</p>
                 </ion-col>
               </ion-row>
             </ion-grid>
           </ion-card>
-          <ion-card>
+          <ion-card (click)="presentModal()">
             <ion-grid>
               <ion-row>
                 <ion-col size="2">

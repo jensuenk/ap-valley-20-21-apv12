@@ -33,7 +33,7 @@ export class NotificationService {
 			this.notificationList.forEach(notification => {
 				notification.date = notification.date.toDate()
 			});
-			console.log(this.notificationList)
+			//console.log(this.notificationList)
 		})
 		//this.notificationList.sort((a, b) => b.date.getTime() - a.date.getTime())
 	}

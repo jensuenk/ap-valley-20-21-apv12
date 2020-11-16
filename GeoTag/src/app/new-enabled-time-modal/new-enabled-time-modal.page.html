@@ -1,3 +1,47 @@
 <ion-content>
 
+    <ion-list>
+        <ion-item lines="none">
+            <ion-label position="floating">Nickname</ion-label>
+            <ion-input [(ngModel)]="nickname"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" (click)="presentModal()">
+            <ion-label slot="start">Choose Icon</ion-label>
+            <ion-icon slot="end" [name]="this.iconName"></ion-icon>
+        </ion-item>
+        <br>
+        <br>
+
+        <ion-item lines="none">
+            <ion-label slot="start">Begin Time</ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+            <ion-label position="floating">Hour</ion-label>
+            <ion-input [(ngModel)]="beginTimeHour"></ion-input>
+        </ion-item>
+        
+        <ion-item lines="none">
+            <ion-label position="floating">Minutes</ion-label>
+            <ion-input [(ngModel)]="beginTimeMinutes"></ion-input>
+        </ion-item>
+        <br>
+
+        <ion-item lines="none">
+            <ion-label slot="start">Begin Time</ion-label>
+        </ion-item>
+
+        <ion-item lines="none">
+            <ion-label position="floating">Hour</ion-label>
+            <ion-input [(ngModel)]="endTimeHour"></ion-input>
+        </ion-item>
+        
+        <ion-item lines="none">
+            <ion-label position="floating">Minutes</ion-label>
+            <ion-input [(ngModel)]="endTimeMinutes"></ion-input>
+        </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" (click)="dismiss()">Save</ion-button>
 </ion-content>

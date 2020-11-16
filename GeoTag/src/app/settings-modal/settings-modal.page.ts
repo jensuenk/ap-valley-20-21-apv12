@@ -24,12 +24,14 @@ export class SettingsModalPage implements OnInit {
   }
   save() {
     this.currentDevice.icon = this.iconName
+    this.deviceListService.updateDevice(this.currentDevice);
     this.modalCtrl.dismiss({
       'dismissed': true
     });
   }
   cancel() {
     this.currentDevice.name = this.originalName;
+    this.deviceListService.updateDevice(this.currentDevice);
     this.modalCtrl.dismiss({
       'dismissed': true
     });

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { DeviceListService, EnabledTime } from '../device-list.service';
 import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-time-modal.page'
+import { Device } from '../device-list.service'
 
 @Component({
   selector: 'app-enabled-notif-times',
@@ -10,25 +12,17 @@ import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-t
 })
 export class EnabledNotifTimesPage implements OnInit {
 
-  currentDeviceId: Number
-  enabledTimes: IEnabledTime[];
+  currentDeviceID: string;
+  currentDevice: Device;
 
   constructor(
     private route: ActivatedRoute,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private deviceListService: DeviceListService) { }
 
-  ngOnInit() {
-    this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
-    this.fillLocations();
-  }
-
-  fillLocations(){
-    this.enabledTimes = [];
-
-    var newLoc = new IEnabledTime();
-    newLoc.name = 'Lunch Time';
-    newLoc.time = '12:00 - 13:00'
-    this.enabledTimes.push(newLoc)
+  async ngOnInit() {
+    this.currentDeviceID = this.route.snapshot.paramMap.get('id');
+    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceID)
   }
 
   async presentModal() {
@@ -36,17 +30,15 @@ export class EnabledNotifTimesPage implements OnInit {
       component: NewEnabledTimeModalPage,
       swipeToClose: true,
       componentProps: {
-        'beginTime': null,
-        'endTime': null
+        'beginTime': '0000',
+        'endTime': '0000',
+        'nickname': 'New Device',
+        'iconName': 'keys'
       }
     });
-    return await modal.present();
+    await modal.present();
+
+    const { data } = await modal.onDidDismiss();
+    this.deviceListService.addEnabledTime(this.currentDevice, new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime));
   }
-
-
-}
-
-export class IEnabledTime{
-  time: string;
-  name: string;
 }

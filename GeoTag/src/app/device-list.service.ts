@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
+import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Settings } from 'http2';
 import { AuthService } from './auth/auth.service';
+import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-routing.module';
+
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +14,12 @@ export class DeviceListService {
   public deviceCollection: AngularFirestoreCollection<Device>;
 
   public deviceList: Array<Device>;
+  doc: any;
 
   constructor(private afs: AngularFirestore, private auth: AuthService) { }
 
   public currentAddress: string
+
 
   createTestDevice() {
     let LocationAndDate = {
@@ -24,14 +31,36 @@ export class DeviceListService {
     }
     let newDevice: Device = {
       id: "",
-      name: "Test",
+      name: "TestDevice",
       location: {
         latitude: 20,
         longitude: 20
       },
-      icon: "",
+      locationHistory: [LocationAndDate],
+      icon: "home",
       address: "",
-      locationHistory: [LocationAndDate]
+      settings: {
+        alertType: 'Vibration',
+        alertsEnabled: true,
+        timeAlertsEnabled: true,
+        locationAlertsEnabled: true,
+        enabledLocations: [
+        {
+          nickname: 'Home',
+          icon: 'home',
+          latitude: "1",
+          longitude: "1",
+          enabled: true
+        }],
+        enabledTimes: [
+          {
+            nickname: 'Lunch Time',
+            icon: 'fast-food',
+            beginTime: "12:00",
+            endTime: "14:00",
+            enabled: true
+        }]
+      }
     }
     this.addDevice(newDevice);
     return newDevice;
@@ -78,6 +107,21 @@ export class DeviceListService {
     return this.deviceCollection.doc(device.id).update(device);
   }
 
+  addEnabledTime(device: Device, enabledTime: EnabledTime){
+    device.settings.enabledTimes.push(enabledTime)
+    return this.deviceCollection.doc(device.id).update({
+      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledTime)
+    });
+  }
+
+  addEnabledLocation(device: Device, enabledLocation: EnabledLocation){
+    device.settings.enabledLocations.push(enabledLocation)
+    return this.deviceCollection.doc(device.id).update({
+      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledLocation)
+    });
+  }
+
+
   deleteDevice(id: string) {
     this.deviceCollection.doc(id).delete()
   }
@@ -99,6 +143,7 @@ export class Device {
   icon: string
   address: string
   locationHistory: Array<LocationAndDate>
+  settings: AlertSettings
 }
 export class Location {
   latitude: number
@@ -116,5 +161,46 @@ export class LocationAndDate {
   constructor(location: Location, date: Date) {
     this.location = location;
     this.date = date;
+  }
+}
+
+export class AlertSettings{
+  alertType: string;
+  alertsEnabled: boolean;
+  timeAlertsEnabled: boolean;
+  locationAlertsEnabled: boolean;
+  enabledTimes: EnabledTime[];
+  enabledLocations: EnabledLocation[];
+}
+
+export class EnabledTime{
+  nickname: string;
+  icon: string;
+  beginTime: string;
+  endTime: string; 
+  enabled: boolean;
+
+  constructor(nickname: string, icon: string, beginTime: string, endTime: string) {
+    this.nickname = nickname;
+    this.icon = icon;
+    this.beginTime = beginTime;
+    this.endTime = endTime; 
+    this.enabled = true;
+  }
+}
+
+export class EnabledLocation{
+  nickname: string;
+  icon: string;
+  latitude: string;
+  longitude: string;
+  enabled: boolean;
+
+  constructor(nickname: string, icon: string, latitude: string, longitude: string) {
+    this.nickname = nickname;
+    this.icon = icon;
+    this.latitude = latitude;
+    this.longitude = longitude; 
+    this.enabled = true;
   }
 }
