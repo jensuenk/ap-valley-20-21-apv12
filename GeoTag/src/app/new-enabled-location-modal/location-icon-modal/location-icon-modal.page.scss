@@ -1,0 +1,25 @@
+ion-title{
+    text-align: center;
+}
+ion-icon {
+    font-size: 3em;
+}
+.title{
+    text-align: center;
+    margin-top: 1.5em;
+    p{
+        font-weight: bold;
+        margin: 0 auto 1em;
+        width: 60%;
+        font-size: 12pt;
+        color: rgb(175, 175, 175);
+    }
+}
+
+.imageHolder{
+    text-align: center;
+    border-radius: 100%;
+    img{
+        border-radius: 100%;
+    }
+}

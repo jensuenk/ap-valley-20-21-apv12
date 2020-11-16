@@ -1,0 +1,23 @@
+<ion-content>
+  <ion-list>
+    <ion-item lines="none">
+      <ion-label position="floating">Nickname</ion-label>
+      <ion-input [(ngModel)]="nickname"></ion-input>
+    </ion-item>
+    <ion-item lines="none" (click)="presentModal()">
+      <ion-label slot="start">Choose Icon</ion-label>
+      <ion-icon [name]="iconName"></ion-icon>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating">longitude</ion-label>
+      <ion-input [(ngModel)]="longitude"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating">latitude</ion-label>
+      <ion-input [(ngModel)]="latitude"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-button expand="block" (click)="dismiss()">Save</ion-button>
+</ion-content>

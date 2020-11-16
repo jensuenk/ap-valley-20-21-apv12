@@ -77,7 +77,11 @@ const routes: Routes = [
   {
     path: 'new-enabled-time-modal',
     loadChildren: () => import('./new-enabled-time-modal/new-enabled-time-modal.module').then( m => m.NewEnabledTimeModalPageModule)
+  },  {
+    path: 'new-enabled-location-modal',
+    loadChildren: () => import('./new-enabled-location-modal/new-enabled-location-modal.module').then( m => m.NewEnabledLocationModalPageModule)
   }
+
 ];
 @NgModule({
   imports: [

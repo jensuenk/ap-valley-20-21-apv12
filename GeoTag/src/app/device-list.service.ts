@@ -114,6 +114,14 @@ export class DeviceListService {
     });
   }
 
+  addEnabledLocation(device: Device, enabledLocation: EnabledLocation){
+    device.settings.enabledLocations.push(enabledLocation)
+    return this.deviceCollection.doc(device.id).update({
+      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledLocation)
+    });
+  }
+
+
   deleteDevice(id: string) {
     this.deviceCollection.doc(id).delete()
   }

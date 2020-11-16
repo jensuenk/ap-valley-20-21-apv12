@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { DeviceListService, EnabledLocation } from '../device-list.service';
+import { NewEnabledLocationModalPage } from '../new-enabled-location-modal/new-enabled-location-modal.page';
+import { Device } from '../device-list.service'
 
 declare var google: any;
 
@@ -10,25 +14,37 @@ declare var google: any;
 })
 export class EnabledNotifLocationsPage implements OnInit {
 
-  currentDeviceId: Number
-  enabledLocations: IEnabledLocation[];
+  currentDeviceID: string;
+  currentDevice: Device;
 
   constructor(
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private modalController: ModalController,
+    private deviceListService: DeviceListService) { }
 
-  ngOnInit() {
-    this.currentDeviceId = parseInt(this.route.snapshot.paramMap.get('id'));
-    this.fillLocations();
+  async ngOnInit() {
+    this.currentDeviceID = this.route.snapshot.paramMap.get('id');
+    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceID)
   }
 
-  fillLocations(){
-    this.enabledLocations = [];
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: NewEnabledLocationModalPage,
+      swipeToClose: true,
+      componentProps: {
+        'longitude': '0000',
+        'latitude': '0000',
+        'nickname': 'New Device',
+        'iconName': 'keys'
+      }
+    });
+    await modal.present();
 
-    var newLoc = new IEnabledLocation();
-    newLoc.name = 'Home';
-    newLoc.address = 'Hendrik van Uffelslaan'
-    this.enabledLocations.push(newLoc)
+    const { data } = await modal.onDidDismiss();
+    this.currentDevice.settings.enabledLocations.push(new EnabledLocation(data.nickname, data.iconName, data.latitude, data.longitude))
+    //this.deviceListService.addEnabledLocation(this.currentDevice, new EnabledLocation(data.nickname, data.iconName, data.longitude, data.latitude));
   }
+
 
 }
 
