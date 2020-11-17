@@ -118,13 +118,13 @@ export class SetupPage implements OnInit {
 
 
   doPingTest() {
-    if (this.lastPing == "S") {
-      this.bluetoothService.sendData("B")
-      this.lastPing = "B"
+    if (this.lastPing == "ring") {
+      this.bluetoothService.sendData("stop")
+      this.lastPing = "stop"
     }
     else {
-      this.bluetoothService.sendData("S")
-      this.lastPing = "S"
+      this.bluetoothService.sendData("ring")
+      this.lastPing = "ring"
     }
   }
   
