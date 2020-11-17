@@ -77,21 +77,11 @@ export class SetupPage implements OnInit {
       }
     }
     console.log(newDevice)
+
     this.devicelistService.addDevice(newDevice);
+    this.bluetoothService.startDisconnectSubscriber(newDevice);
     this.router.navigate(['./device-list']);
 
-    this.bluetoothSerial.connect(newDevice.address).subscribe(success => {
-    }, error => {
-      let notification: Notification = {
-        id: "",
-        message: "You forgot or lost your " + newDevice.name + ".",
-        date: new Date(),
-        device: newDevice,
-        icon: "notifications-outline",
-        alert: true
-      }
-      this.notificationService.addNotification(notification)
-    });
   }
 
   iconName: string = 'key';
