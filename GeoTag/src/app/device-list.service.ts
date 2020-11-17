@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Settings } from 'http2';
 import { AuthService } from './auth/auth.service';
 import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-routing.module';
 

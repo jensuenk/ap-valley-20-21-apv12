@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
 import { LocationHistoryPage } from 'src/app/location-history/location-history.page';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { NotificationService, Notification } from 'src/app/notification.service';
 
 @Component({
   selector: 'app-setup',
@@ -20,7 +22,9 @@ export class SetupPage implements OnInit {
     private modalController: ModalController,
     private geolocation: Geolocation,
     private alertController: AlertController,
-    private bluetoothService: BluetoothService
+    private bluetoothService: BluetoothService,
+    private bluetoothSerial: BluetoothSerial,
+    private notificationService: NotificationService
   ) { 
   }
 
@@ -48,11 +52,46 @@ export class SetupPage implements OnInit {
       },
       icon: this.iconName,
       address: this.devicelistService.currentAddress,
-      locationHistory: []
+      locationHistory: [],
+      settings: {
+        alertType: 'Vibration',
+        alertsEnabled: true,
+        timeAlertsEnabled: true,
+        locationAlertsEnabled: true,
+        enabledLocations: [
+        {
+          nickname: 'Home',
+          icon: 'home',
+          latitude: "1",
+          longitude: "1",
+          enabled: true
+        }],
+        enabledTimes: [
+          {
+            nickname: 'Lunch Time',
+            icon: 'fast-food',
+            beginTime: "12:00",
+            endTime: "14:00",
+            enabled: true
+        }]
+      }
     }
     console.log(newDevice)
     this.devicelistService.addDevice(newDevice);
     this.router.navigate(['./device-list']);
+
+    this.bluetoothSerial.connect(newDevice.address).subscribe(success => {
+    }, error => {
+      let notification: Notification = {
+        id: "",
+        message: "You forgot or lost your " + newDevice.name + ".",
+        date: new Date(),
+        device: newDevice,
+        icon: "notifications-outline",
+        alert: true
+      }
+      this.notificationService.addNotification(notification)
+    });
   }
 
   iconName: string = 'key';

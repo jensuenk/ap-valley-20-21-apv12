@@ -26,7 +26,8 @@ export class RingModalPage implements OnInit {
 			message: "You ringed your " + this.device.name + ".",
 			date: new Date(),
       device: this.device,
-      icon: "notifications-outline"
+      icon: "notifications-outline",
+			alert: false
 		}
     this.notificationService.addNotification(notification)
   }

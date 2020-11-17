@@ -52,7 +52,7 @@ export class BluetoothService {
       this.deviceConnected();
       this.showToast("Successfully Connected");
     }, error => {
-      this.showError("Error: Connecting to Device");
+    
     });
   }
 
