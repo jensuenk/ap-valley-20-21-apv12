@@ -39,7 +39,6 @@ export class DeviceListPage implements OnInit {
 
 
   addDevice() {
-		this.devicelistService.createTestDevice()
-    //this.router.navigate(['./setup/instructions']);
+    this.router.navigate(['./setup/instructions']);
   }
 }

@@ -27,6 +27,7 @@ export class SearchingPage implements OnInit {
           this.bluetoothSerial.connect(device.address).subscribe(success => {
             this.deviceListService.currentAddress = device.address
             this.router.navigate(['./setup/setup']);
+            this.bluetoothService.deviceDisconnected()
           }, error => {
             this.bluetoothService.showError("Error: Connecting to Device");
             this.router.navigate(['./setup/instructions']);

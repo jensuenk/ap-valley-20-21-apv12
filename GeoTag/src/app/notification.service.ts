@@ -1,7 +1,9 @@
+import { flatten } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth/auth.service';
 import { Device, DeviceListService } from './device-list.service';
+import { LocalNotificationsService } from './local-notifications.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,7 +13,12 @@ export class NotificationService {
 
 	public notificationList: Array<Notification>;
 
-	constructor(private afs: AngularFirestore, private auth: AuthService, private deviceListServcie: DeviceListService) { }
+	constructor(
+		private afs: AngularFirestore, 
+		private auth: AuthService, 
+		private deviceListServcie: DeviceListService,
+		private localNotificationsService: LocalNotificationsService
+		) { }
 
 	public currentAddress: string
 
@@ -21,7 +28,8 @@ export class NotificationService {
 			message: "This is a notification discribtion",
 			date: new Date(),
 			device: this.deviceListServcie.createTestDevice(),
-			icon: "notifications-outline"
+			icon: "notifications-outline",
+			alert: false
 		}
 		this.addNotification(notification);
 	}
@@ -43,6 +51,9 @@ export class NotificationService {
 	}
 
 	addNotification(notification: Notification) {
+		if (notification.alert) {
+			this.localNotificationsService.sendNotification(notification)
+		}
 		const newId = this.afs.createId();
 		notification.id = newId;
 		this.notificationCollection.doc(newId).set(notification)
@@ -64,12 +75,14 @@ export class Notification {
 	date: any;
 	device: Device;
 	icon: string
+	alert: boolean
 
-	constructor(id: string, message: string, date: Date, device: Device, icon: string) {
+	constructor(id: string, message: string, date: Date, device: Device, icon: string, alert: boolean) {
 		this.id = id;
 		this.message = message;
 		this.date = date;
 		this.device = device;
 		this.icon = icon;
+		this.alert = alert
 	}
 }
