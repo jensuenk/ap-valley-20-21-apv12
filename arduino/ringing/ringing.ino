@@ -19,12 +19,15 @@ void setup() {
   hc.begin(9600);
   hc.println("Bluetooth On please press 1 or 0 blink LED ..");
   pinMode(ledpin,OUTPUT);
-  pinMode(button, INPUT_PULLUP);
+  pinMode(button, INPUT_PULLUP); //standaard hoog
+  pinMode(A0, INPUT);
 }
 
 bool buttondebounce = false;
+long timer = 0;
+double battery_voltage;
 void loop() {
-    //commands
+    //commands lezen van de bluetooth module
    if (hc.available()){
       BluetoothData=hc.read();
       //work with the received data
@@ -56,21 +59,24 @@ void loop() {
 
 }
 //end commands
-
-//button readouts
-//short press
+//button code
   if(digitalRead(button) == false){ //if button pressed
     Serial.println("pressed");
     digitalWrite(buzzerpin, false); //stop alarm
     if(buttondebounce == false){ //if loop hasn't been completed once
-      hc.println("ring"); //send alarm to phone
+      hc.println("ringing"); //send alarm to phone
     }
     buttondebounce = true;
     
   }else{
     buttondebounce = false;
   }
-//long press
-
-//delay(100);// prepare for next data ...
+delay(1);// prepare for next data ... //wait here to reduce cpu usage, and save some power
+timer += 1;
+if(timer > 60000){
+  batteryvoltage = analogRead(A0);
+  battery_percentage = ((battery_voltage - 3)/ 1.2) * 100; //returns battery percentage (battery voltage between 3 and 4.2V)
+  timer == 0;
+  hc.println((String)battery_percentage);
+}
 }
