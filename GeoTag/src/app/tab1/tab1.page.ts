@@ -6,6 +6,8 @@ import { title } from 'process';
 import { AuthService } from '../auth/auth.service';
 import { Device, DeviceListService } from '../device-list.service';
 import { LocalNotificationsService } from '../local-notifications.service';
+import { WorkingNotifServiceService } from '../working-notif-service.service';
+
 
 declare var google: any;
 
@@ -30,7 +32,7 @@ export class Tab1Page implements OnInit {
 		private auth: AuthService, 
 		private router: Router, 
 		private deviceListService: DeviceListService,
-		private localNotifs: LocalNotificationsService) {
+		private notificationService:WorkingNotifServiceService) {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
 		}
