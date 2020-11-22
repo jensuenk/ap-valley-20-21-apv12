@@ -92,6 +92,7 @@ export class BluetoothService {
       console.log("Connected Successfullly");
     }, error => {
       this.showError(error);
+      console.log("device not connected");
     });
   }
 
@@ -101,8 +102,17 @@ export class BluetoothService {
     console.log("Device Disconnected");
   }
 
+  batterijpercentage:number = 0;
   handleData(data) {
     console.log(data);
+    if(data == "ringing"){
+      //do option ringing
+      //console.log("ringing from cube");
+    }
+    if(data = Number){
+      //most likely battery percentage
+      this.batterijpercentage = data;
+    }
   }
 
   sendData(dataSend) {
