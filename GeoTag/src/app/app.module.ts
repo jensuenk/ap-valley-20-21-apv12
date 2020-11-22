@@ -17,6 +17,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
+import {LocalNotifications} from '@ionic-native/local-notifications/ngx'
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -33,6 +35,7 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
     StatusBar,
     SplashScreen,
     Geolocation,
+    LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFirestoreModule,
     BluetoothSerial],
