@@ -22,6 +22,7 @@ void setup() {
   pinMode(ledpin,OUTPUT);
   pinMode(button, INPUT_PULLUP); //standaard hoog
   pinMode(A0, INPUT); //battery probe
+  online = false;
 }
 
 bool buttondebounce = false;
@@ -35,9 +36,10 @@ void loop() {
     //commands lezen van de bluetooth module
    if (hc.available()){
       BluetoothData=hc.read();
+      online = true;
       //work with the received data
    if(!hc.available()){
-    if(noise == true){
+    if(noise == true && online == true){
       online = false;
       digitalWrite(buzzerpin, true);
     }
