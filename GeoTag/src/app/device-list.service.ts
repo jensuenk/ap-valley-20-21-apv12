@@ -31,6 +31,7 @@ export class DeviceListService {
     let newDevice: Device = {
       id: "",
       name: "TestDevice",
+      isConnected:true,
       location: {
         latitude: 20,
         longitude: 20
@@ -143,6 +144,7 @@ export class Device {
   address: string
   locationHistory: Array<LocationAndDate>
   settings: AlertSettings
+  isConnected:boolean
 }
 export class Location {
   latitude: number
