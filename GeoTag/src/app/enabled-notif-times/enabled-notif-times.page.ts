@@ -23,6 +23,47 @@ export class EnabledNotifTimesPage implements OnInit {
   async ngOnInit() {
     this.currentDeviceID = this.route.snapshot.paramMap.get('id');
     this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceID)
+    /*if (this.currentDevice == null){
+      this.currentDevice = {
+        id: "",
+        name: "TestDevice",
+        location: {
+          latitude: 20,
+          longitude: 20
+        },
+        locationHistory: [{
+          location: {
+            latitude: 20,
+            longitude: 20
+          },
+          date: new Date()
+        }],
+        icon: "home",
+        address: "",
+        settings: {
+          alertType: 'Vibration',
+          alertsEnabled: true,
+          timeAlertsEnabled: true,
+          locationAlertsEnabled: true,
+          enabledLocations: [
+          {
+            nickname: 'Home',
+            icon: 'home',
+            latitude: "1",
+            longitude: "1",
+            enabled: true
+          }],
+          enabledTimes: [
+            {
+              nickname: 'Lunch Time',
+              icon: 'fast-food',
+              beginTime: "12:00",
+              endTime: "14:00",
+              enabled: true
+          }]
+        }
+      }
+    }*/
   }
 
   async presentModal() {
@@ -30,15 +71,16 @@ export class EnabledNotifTimesPage implements OnInit {
       component: NewEnabledTimeModalPage,
       swipeToClose: true,
       componentProps: {
-        'beginTime': '0000',
-        'endTime': '0000',
-        'nickname': 'New Device',
-        'iconName': 'keys'
+        'beginTime': null,
+        'endTime': null,
+        'nickname': null,
+        'iconName': null
       }
     });
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
+    console.log(data);
     this.deviceListService.addEnabledTime(this.currentDevice, new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime));
   }
 }

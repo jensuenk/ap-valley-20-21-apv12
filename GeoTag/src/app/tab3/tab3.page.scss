@@ -9,7 +9,7 @@ div{
     height: 25%;
     img{
         position: relative;
-        top: 20%;
+        top: 35%;
         border-radius: 100%;
         object-fit: cover;        
         width: 8em;
@@ -18,9 +18,11 @@ div{
 }
 
 div{
+    color: black;
     h2{
-        margin-top: 1em;
+        margin-top: 2em;
         margin-bottom: 0em;
+
     }
     p{
         margin-top: 0em;
@@ -35,4 +37,12 @@ ion-list{
 
 ion-header, ion-toolbar, ion-title{
     //border: solid white 1px;
+}
+
+ion-icon{
+    color: black;
+}
+
+ion-item{
+    color: black;
 }

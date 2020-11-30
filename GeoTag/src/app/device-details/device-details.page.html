@@ -3,6 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+    <ion-title class="title">
+      {{currentDevice.name}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -16,12 +19,6 @@
     </ion-row>
     <ion-row class="deviceList">
       <ion-col>
-
-        <div class="title">
-          <h1>{{currentDevice.name}}</h1>
-          <p>Last seen 3 min ago</p>
-        </div>
-        <br>
 
         <ion-list>
           <ion-item lines="none" (click)="presentModal()">
@@ -51,5 +48,8 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  
+  <img class="svgImage" src="../../assets/images/method-draw-image (1).svg">
+
 
 </ion-content>
