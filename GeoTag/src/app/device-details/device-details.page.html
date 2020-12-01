@@ -20,15 +20,15 @@
     <ion-row class="deviceList">
       <ion-col>
 
-        <ion-list>
-          <ion-item lines="none" (click)="presentModal()">
-            <ion-icon name="notifications-outline"></ion-icon>            
-            <ion-label>
+        <div class="ringDiv">
+          <ion-card class="ringCard" (click)="presentModal()">
+            <ion-icon name="notifications-outline" size="large"></ion-icon>
+            <ion-card-title>
               <h2>Ring</h2>
-              <p>Ring your {{currentDevice.name | lowercase}}</p>
-            </ion-label>          
-          </ion-item>
-        </ion-list>
+            </ion-card-title>
+          </ion-card>
+        </div>
+
         <ion-item lines="none" [routerLink]="['/','alert-settings', currentDevice.id]">
           <ion-icon name="settings-outline"></ion-icon>            
           <ion-label>
