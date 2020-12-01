@@ -9,10 +9,10 @@ bool online = true;
 //#include <SoftwareSerial.h>// import the serial library
 
 //SoftwareSerial hc(10, 11); // RX, TX
-int ledpin=13; // led on D13 will show blink on / off
+int ledpin=4; // led on D13 will show blink on / off
 int BluetoothData; // the data given from Computer
-int button = 6; //button pin, active low
-int buzzerpin = 13; //dc buzzer for beeps
+int button = 5; //button pin, active low
+int buzzerpin = 4; //dc buzzer for beeps
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,7 +33,7 @@ double battery_voltage;
 double battery_percentage;
 void loop() {
 
-   //LowPower.idle(SLEEP_1S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART0_OFF, TWI_OFF); //low power mode for 8 seconds
+   LowPower.idle(SLEEP_1S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART0_ON, TWI_OFF); //low power mode for 8 seconds
                 
     //commands lezen van de bluetooth module
    if (Serial.available() > 0) {
@@ -67,6 +67,7 @@ void loop() {
       noise = true;
       Serial.println("buzzer on loud mode");
   }
+  BluetoothData = '4';
 
 
 //end commands
