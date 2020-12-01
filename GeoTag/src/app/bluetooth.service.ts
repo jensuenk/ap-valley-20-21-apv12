@@ -48,17 +48,16 @@ export class BluetoothService {
       alert: true
     }
     this.notificationService.addNotification(notification);
+    this.isConnected(device);
   }
 
   isConnected(device: Device) {
     this.ble.isConnected(device.address)
       .then(function () {
-        console.log("Device is connected")
-        return true;
+        device.isConnected = true;
       })
       .catch(function () {
-        console.log("Device is not connected")
-        return false;
+        device.isConnected = false;
       });
   }
 
