@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { IonSlides, ModalController } from '@ionic/angular';
 import { IconPickerPage } from '../tab3/device-list/icon-picker/icon-picker.page';
 import { TimeIconModalPage } from './time-icon-modal/time-icon-modal.page';
 
@@ -15,14 +15,17 @@ export class NewEnabledTimeModalPage implements OnInit {
   @Input() beginTime: string;
   @Input() endTime: string;
 
-  private beginTimeHour: string;
-  private beginTimeMinutes: string;
+  private beginTimeDate: Date;
+  private endTimeDate: Date;
 
-  private endTimeHour: string;
-  private endTimeMinutes: string;
+  slideOpts = {
+    initialSlide: 0,
+    speed: 400
+  };
 
   constructor(
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private slides: IonSlides
   ) { }
 
   ngOnInit() {
@@ -34,7 +37,8 @@ export class NewEnabledTimeModalPage implements OnInit {
       swipeToClose: true,
       componentProps: {
         'iconName': this.iconName
-      }
+      },
+      cssClass: "accentModal"
     });
     await modal.present();
 
@@ -46,9 +50,38 @@ export class NewEnabledTimeModalPage implements OnInit {
     this.modalCtrl.dismiss({
       'iconName': this.iconName,
       'nickname': this.nickname,
-      'endTime': this.endTimeHour + ":" + this.endTimeMinutes,
-      'beginTime': this.beginTimeHour + ":" + this.beginTimeMinutes
+      'endTime': this.endTime,
+      'beginTime': this.beginTime
     });
+  }
+
+  InputChanged(){
+    console.log("value changed");
+    this.beginTime = this.beginTime;
+    this.endTime = this.endTime;
+  }
+
+  MarcoNextSlide(){
+    this.slides.slideNext();
+  }
+
+  BeginDateChanged(ev: any){
+    this.beginTime = ev.detail.value.slice(11,16)
+    console.log(this.beginTime)
+  }
+
+  EndDateChanged(ev: any){
+    this.endTime = ev.detail.value.slice(11,16)
+    console.log(this.endTime)
+  }
+
+  NicknameChanged(ev: any){
+    console.log(ev);
+    this.nickname = ev;
+  }
+
+  IconChange(newIcon: string){
+    this.iconName = newIcon;
   }
 
 }

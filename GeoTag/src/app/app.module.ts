@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy, IonSlides } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -17,6 +17,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { BLE } from '@ionic-native/ble/ngx';
+import { FormBuilder } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +38,11 @@ import { BLE } from '@ionic-native/ble/ngx';
     Geolocation,
     LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AngularFirestoreModule],
+    AngularFirestoreModule,
+    AngularFirestoreModule,
+    FormBuilder,
+    IonSlides],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

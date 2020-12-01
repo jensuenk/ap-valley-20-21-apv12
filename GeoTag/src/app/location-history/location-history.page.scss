@@ -31,17 +31,20 @@ p{
 
 ion-card{
     height: 7em;
+    --background:rgb(238,162,43) !important;
+        --background: linear-gradient(30deg, rgba(238,162,43,1) 31%, rgba(238,60,13,1) 100%) !important;
+        color: white;
 }
 
 ion-col h1{
     margin-bottom: 0em;
     margin-top: 15px;
     margin-left: 20px;
-    color: rgb(175, 175, 175);
+    color: white;
 }
 ion-col p{
     margin-top: 0em;
     margin-bottom: 15px;
     margin-left: 20px;
-    color:  rgb(175, 175, 175);
+    color:  white;
 }

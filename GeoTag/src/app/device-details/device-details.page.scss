@@ -1,3 +1,11 @@
+ion-title{
+    color: black;
+}
+
+ion-back-button{
+    color: black;
+}
+
 #map{
     height: 13em;
     position: relative;
@@ -32,15 +40,7 @@ ion-card{
     height: 7em;
 }
 
-.title{
-    margin-top: 1em;
-    text-align:center;
-}
 
-div h1{
-    margin: 0 auto;
-    color: rgb(175, 175, 175);
-}
 div p{
     margin: 0 auto;
     color:  rgb(175, 175, 175);
@@ -74,3 +74,35 @@ ion-header{
     --ion-color-base: transparent !important;
 }
 
+.svgImage{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+}
+
+.ringCard{
+    h2{
+        color: white;
+    }
+    width: 30%;
+    background:rgb(238,162,43) !important;
+    background: linear-gradient(30deg, rgba(238,162,43,1) 31%, rgba(238,60,13,1) 100%) !important;
+    color: white;
+    text-align: center;
+    ion-icon{
+        position: absolute;
+        top: 50%;
+        left: 35%;
+        margin: 0;
+        padding: 0;
+    }
+    margin: 0 auto;
+    border-radius: 30%;
+}
+
+.ringDiv{
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 2rem;
+}
