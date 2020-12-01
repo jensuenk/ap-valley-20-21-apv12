@@ -5,8 +5,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
-import { LocationHistoryPage } from 'src/app/location-history/location-history.page';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { NotificationService, Notification } from 'src/app/notification.service';
 
 @Component({
@@ -23,7 +21,6 @@ export class SetupPage implements OnInit {
     private geolocation: Geolocation,
     private alertController: AlertController,
     private bluetoothService: BluetoothService,
-    private bluetoothSerial: BluetoothSerial,
     private notificationService: NotificationService
   ) { 
   }
@@ -79,7 +76,6 @@ export class SetupPage implements OnInit {
     console.log(newDevice)
 
     this.devicelistService.addDevice(newDevice);
-    this.bluetoothService.startDisconnectSubscriber(newDevice);
     this.router.navigate(['./device-list']);
 
   }
@@ -116,18 +112,6 @@ export class SetupPage implements OnInit {
 			});
   }
 
-
-  doPingTest() {
-    if (this.lastPing == "ring") {
-      this.bluetoothService.sendData("stop")
-      this.lastPing = "stop"
-    }
-    else {
-      this.bluetoothService.sendData("ring")
-      this.lastPing = "ring"
-    }
-  }
-  
   async locationAlert(message) {
     const alert = await this.alertController.create({
       header: 'Could not get location',
