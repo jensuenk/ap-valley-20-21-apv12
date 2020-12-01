@@ -33,26 +33,10 @@ export class SearchingPage implements OnInit {
   }
 
   onDeviceDiscovered(device) {
-    console.log(device)
     if (device.name == this.bluetoothService.deviceName) {
       console.log('Discovered ' + JSON.stringify(device, null, 2));
-      this.ngZone.run(() => {
-          this.connect(device)
-      });
+      this.deviceListService.currentAddress = device.id
+      this.router.navigate(['./setup/setup']);
     }
-  }
-
-  connect(device) {
-    console.log('Connecting to ' + device.name || device.id);
-    this.ble.connect(device.id).subscribe(
-      device => this.onConnected(device),
-      device => this.bluetoothService.onDeviceDisconnected(device)
-    );
-  }
-
-  onConnected(device) {
-    console.log('Successfully connected to ' + (device.name || device.id));
-    this.deviceListService.currentAddress = device.id
-    this.router.navigate(['./setup/setup']);
   }
 }
