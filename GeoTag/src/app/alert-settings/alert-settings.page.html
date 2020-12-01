@@ -12,7 +12,7 @@
   <ion-list>
     <ion-item lines="none">
       <ion-label slot="start">Enabled</ion-label>
-      <ion-segment [(ngModel)]="currentDevice.settings.alertsEnabled" (ionChange)="setNotifsEnabled($event)">
+      <ion-segment mode="ios" [(ngModel)]="currentDevice.settings.alertsEnabled" (ionChange)="setNotifsEnabled($event)">
         <ion-segment-button value="false">
           <ion-label>Off</ion-label>
         </ion-segment-button>
@@ -21,10 +21,10 @@
         </ion-segment-button>
       </ion-segment>
     </ion-item>
-
+        
     <ion-item lines="none">
       <ion-label slot="start">Notification Type</ion-label>
-      <ion-segment [(ngModel)]="currentDevice.settings.alertType" (ionChange)="changeAlertType($event)">
+      <ion-segment mode="ios" [(ngModel)]="currentDevice.settings.alertType" (ionChange)="changeAlertType($event)">
         <ion-segment-button value="Vibration">
           <ion-label>Vibration</ion-label>
         </ion-segment-button>
@@ -44,5 +44,6 @@
       <ion-label slot="start">Enabled Times</ion-label>
     </ion-item>
   </ion-list>
+
 
 </ion-content>

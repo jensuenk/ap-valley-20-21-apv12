@@ -105,7 +105,7 @@ export class LocationHistoryPage implements OnInit {
 		const options = {
 			center: location,
 			zoom: 15,
-			disableDefaultUI: true,
+			disableDefaultUI: true/*,
 			styles:
 				[
 					{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -186,7 +186,7 @@ export class LocationHistoryPage implements OnInit {
 						elementType: 'labels.text.stroke',
 						stylers: [{ color: '#17263c' }]
 					}
-				]
+				]*/
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
     this.addMarkersToMap(this.markers);

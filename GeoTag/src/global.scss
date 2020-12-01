@@ -29,10 +29,49 @@
   color: black;
 }
 
+ion-list{
+  background: transparent !important;
+}
+
+.deviceCard{
+  --background:rgb(238,162,43) !important;
+  --background: linear-gradient(30deg, rgba(238,162,43,1) 31%, rgba(238,60,13,1) 100%) !important;
+  color: white;
+}
+
+ion-content{
+  //--background:rgb(28,30,33) !important;
+  //--background: linear-gradient(70deg, rgb(24, 26, 29) 16%, rgb(20, 22, 24) 72%) !important;
+  --background: rgb(254,254,254) !important;
+}
+
+ion-item{
+  background: transparent !important;
+  --background: transparent !important;
+  color: black;
+}
+
+ion-tab-bar{
+  background: transparent !important;
+  --background:  rgb(254,254,254) !important; 
+  --border: solid rgb(238,162,43) 2px !important;
+
+}
+
 ion-modal {
   .modal-wrapper {
       height: 50% !important;
       width: 85% !important;
+      border-radius: 5% !important;
+      ion-content{
+        --background:rgb(238,162,43) !important;
+        --background: linear-gradient(30deg, rgba(238,162,43,1) 31%, rgba(238,60,13,1) 100%) !important;
+        //--background: rgb(97,50,168) !important;
+        //--background: linear-gradient(30deg, rgba(97,50,168,1) 0%, rgba(49,73,190,1) 100%) !important;
+        h1{
+          color: white;
+        }
+      }
   }
 }
 .modal
@@ -48,4 +87,5 @@ ion-modal {
         border-radius: 1.5rem 1.5rem 0rem 0rem !important;
     }
 }
+
   
