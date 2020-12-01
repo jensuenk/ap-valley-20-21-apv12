@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { BLE } from '@ionic-native/ble/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Device } from './device-list.service';
-import { WorkingNotifServiceService } from './working-notif-service.service';
+import { Notification, NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BluetoothService {
 
-  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: WorkingNotifServiceService) {
+  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService) {
   }
 
   deviceName: string = "Bluno";
@@ -39,14 +39,33 @@ export class BluetoothService {
   }
 
   async onDeviceDisconnected(device: Device) {
-    var id = new Date().getUTCMilliseconds();
-    this.notificationService.generateNotif(id, "You forgot or lost your " + device.name + ".")
+    let notification: Notification = {
+      id: "",
+      message: "You lost or forgot your " + device.name + "!",
+      date: new Date(),
+      device: device,
+      icon: device.icon,
+      alert: true
+    }
+    this.notificationService.addNotification(notification);
+  }
+
+  isConnected(device: Device) {
+    this.ble.isConnected(device.address)
+      .then(function () {
+        console.log("Device is connected")
+        return true;
+      })
+      .catch(function () {
+        console.log("Device is not connected")
+        return false;
+      });
   }
 
   ring(device: Device) {
     this.sendData(device.address, "ring");
   }
-  
+
   stopRing(device: Device) {
     this.sendData(device.address, "stop");
   }
