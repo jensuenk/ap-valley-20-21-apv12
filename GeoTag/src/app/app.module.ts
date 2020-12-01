@@ -28,10 +28,10 @@ import { BLE } from '@ionic-native/ble/ngx';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    AngularFirestoreModule,
-    BLE
+    AngularFirestoreModule
   ],
   providers: [
+    BLE,
     StatusBar,
     SplashScreen,
     Geolocation,
