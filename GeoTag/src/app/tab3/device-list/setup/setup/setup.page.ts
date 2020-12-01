@@ -39,6 +39,7 @@ export class SetupPage implements OnInit {
       latitude: this.currentPosLatitude,
       longitude: this.currentPosLongitude
     },
+    isConnected: true,
     icon: this.iconName,
     address: this.devicelistService.currentAddress,
     locationHistory: [],
