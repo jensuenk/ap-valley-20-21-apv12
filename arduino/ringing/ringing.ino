@@ -1,3 +1,5 @@
+void setup() {
+  Serial.begin(115200);  //initial the Serial
 // D11   >>>  Rx
 // D10   >>>  Tx
 #include <LowPower.h>;
@@ -27,12 +29,7 @@ void setup() {
   
 }
 
-bool buttondebounce = false;
-long timer = 0;
-double battery_voltage;
-double battery_percentage;
 void loop() {
-
    LowPower.idle(SLEEP_1S, ADC_OFF, TIMER2_OFF, TIMER1_OFF, TIMER0_OFF, SPI_OFF, USART0_ON, TWI_OFF); //low power mode for 8 seconds
                 
     //commands lezen van de bluetooth module

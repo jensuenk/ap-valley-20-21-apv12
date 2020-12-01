@@ -15,10 +15,9 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
+import { BLE } from '@ionic-native/ble/ngx';
 import { FormBuilder } from '@angular/forms';
-
-import {LocalNotifications} from '@ionic-native/local-notifications/ngx'
 
 @NgModule({
   declarations: [AppComponent],
@@ -33,15 +32,17 @@ import {LocalNotifications} from '@ionic-native/local-notifications/ngx'
     AngularFirestoreModule
   ],
   providers: [
+    BLE,
     StatusBar,
     SplashScreen,
     Geolocation,
     LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFirestoreModule,
-    BluetoothSerial,
+    AngularFirestoreModule,
     FormBuilder,
     IonSlides],
+
   bootstrap: [AppComponent]
 })
 export class AppModule {}

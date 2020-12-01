@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BLE } from '@ionic-native/ble/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
 import { DeviceListService } from 'src/app/device-list.service';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @Component({
   selector: 'app-searching',
@@ -11,37 +11,32 @@ import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 })
 export class SearchingPage implements OnInit {
 
-  constructor(private router: Router, private deviceListService: DeviceListService, private bluetoothService: BluetoothService, private bluetoothSerial: BluetoothSerial) { }
+  constructor(
+    private router: Router, 
+    private ble: BLE,
+    private deviceListService: DeviceListService,
+    private bluetoothService: BluetoothService,
+    private ngZone: NgZone
+    ) { }
 
   ngOnInit() {
-    this.bluetoothSerial.isEnabled().then(success => {
+    this.scan();
+  }
 
-      this.bluetoothSerial.list().then(success => {
-        this.bluetoothService.pairedList = success;
-        console.log(this.bluetoothService.pairedList)
+  scan() {
+    console.log('Scanning for Bluetooth LE Device');
 
-        this.bluetoothService.pairedList.forEach(device => {
-          console.log(device)
-          
-          // Attempt to connect device with specified address, call app.deviceConnected if success
-          this.bluetoothSerial.connect(device.address).subscribe(success => {
-            this.deviceListService.currentAddress = device.address
-            this.router.navigate(['./setup/setup']);
-            this.bluetoothService.deviceDisconnected()
-          }, error => {
-            this.bluetoothService.showError("Error: Connecting to Device");
-            this.router.navigate(['./setup/instructions']);
-          });
-  
-        });
-      }, error => {
-        this.bluetoothService.showError("Could not found a GeoTag")
-        this.router.navigate(['./setup/instructions']);
-      });
+    this.ble.scan([], 5).subscribe(
+      device => this.onDeviceDiscovered(device),
+      error => this.bluetoothService.showError(error)
+    );
+  }
 
-    }, error => {
-      this.bluetoothService.showError("Please Enable Bluetooth")
-      this.router.navigate(['./setup/instructions']);
-    });
+  onDeviceDiscovered(device) {
+    if (device.name == this.bluetoothService.deviceName) {
+      console.log('Discovered ' + JSON.stringify(device, null, 2));
+      this.deviceListService.currentAddress = device.id
+      this.router.navigate(['./setup/setup']);
+    }
   }
 }

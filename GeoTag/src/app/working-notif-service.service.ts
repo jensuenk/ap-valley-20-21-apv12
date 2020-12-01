@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { Notification } from './notification.service';
 import {LocalNotifications} from '@ionic-native/local-notifications/ngx'
 
 @Injectable({
@@ -8,13 +6,16 @@ import {LocalNotifications} from '@ionic-native/local-notifications/ngx'
 })
 export class WorkingNotifServiceService {
 
-  notifsEnabled:boolean
+  notifsEnabled: boolean
   constructor(
     private localNotifications: LocalNotifications
   ) { }
 
   generateNotif(id:number, text:string){
+
+		console.log("Sending notification with id " + id + " and message " + text);
 		this.localNotifications.schedule({
+			title: "GeoTag Alert",
 			id: id,
 			text: text,
 			sound: 'file://beep.caf',

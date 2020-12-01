@@ -1,151 +1,92 @@
 import { Injectable } from '@angular/core';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { BLE } from '@ionic-native/ble/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { NotificationService, Notification } from './notification.service';
-import { Device } from 'src/app/device-list.service';
+import { Device } from './device-list.service';
+import { Notification, NotificationService } from './notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BluetoothService {
 
-  constructor(public navCtrl: NavController, private alertController: AlertController, private bluetoothSerial: BluetoothSerial, private toastCtrl: ToastController, private notificationService: NotificationService) {
-    this.checkBluetoothEnabled();
+  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService) {
   }
 
-  pairedList: Array<Tag>;
-  listToggle: boolean = false;
-  pairedDeviceID: number = 0;
+  deviceName: string = "Bluno";
 
-  connectedDevicesList: Array<Device> = [];
+  bytesToString(buffer) {
+    return String.fromCharCode.apply(null, new Uint8Array(buffer));
+  }
 
-  startDisconnectSubscriber(newDevice: Device) {
-    this.bluetoothSerial.connect(newDevice.address).subscribe(success => {
-      this.showToast(newDevice.name + " connected successfully")
-      this.connectedDevicesList.push(newDevice)
-    }, error => {
-      console.log(error)
-      if (this.connectedDevicesList.includes(newDevice)) {
-        console.log(error)
-        let notification: Notification = {
-          id: "",
-          message: "You forgot or lost your " + newDevice.name + ".",
-          date: new Date(),
-          device: newDevice,
-          icon: "notifications-outline",
-          alert: true
-          
-        }
-        this.notificationService.addNotification(notification)
-      }
-      this.connectedDevicesList.forEach( (item, index) => {
-        if(item === newDevice) this.connectedDevicesList.splice(index,1);
+  stringToBytes(string) {
+    var array = new Uint8Array(string.length);
+    for (var i = 0, l = string.length; i < l; i++) {
+      array[i] = string.charCodeAt(i);
+    }
+    return array.buffer;
+  }
+
+  connect(device: Device) {
+    console.log('Connecting to ' + device.name || device.address);
+    this.ble.connect(device.address).subscribe(
+      device => this.onConnected(device),
+      device => this.onDeviceDisconnected(device)
+    );
+  }
+
+  onConnected(device: Device) {
+    console.log('Successfully connected to ' + (device.name || device.address));
+  }
+
+  async onDeviceDisconnected(device: Device) {
+    let notification: Notification = {
+      id: "",
+      message: "You lost or forgot your " + device.name + "!",
+      date: new Date(),
+      device: device,
+      icon: device.icon,
+      alert: true
+    }
+    this.notificationService.addNotification(notification);
+  }
+
+  isConnected(device: Device) {
+    this.ble.isConnected(device.address)
+      .then(function () {
+        console.log("Device is connected")
+        return true;
+      })
+      .catch(function () {
+        console.log("Device is not connected")
+        return false;
       });
-      this.startDisconnectSubscriber(newDevice)
-    });
-  }
-  checkBluetoothEnabled(){
-    this.bluetoothSerial.isEnabled().then(success => {
-      this.listPairedDevices();
-    }, error => {
-      this.showError("Please Enable Bluetooth")
-    });
   }
 
-  listPairedDevices() {
-    this.bluetoothSerial.list().then(success => {
-      this.pairedList = success;
-      console.log(this.pairedList)
-      this.listToggle = true;
-    }, error => {
-      this.showError("Please Enable Bluetooth")
-      this.listToggle = false;
-    });
+  ring(device: Device) {
+    this.sendData(device.address, "ring");
   }
 
-  selectDevice() {
-    let connectedDevice = this.pairedList[this.pairedDeviceID];
-    if (!connectedDevice.address) {
-      this.showError('Select Paired Device to connect');
-      return;
-    }
-    let address = connectedDevice.address;
-    let name = connectedDevice.name;
-
-    this.connect(address);
+  stopRing(device: Device) {
+    this.sendData(device.address, "stop");
   }
 
-  connect(address) {
-    // Attempt to connect device with specified address, call app.deviceConnected if success
-    this.bluetoothSerial.connect(address).subscribe(success => {
-      this.deviceConnected();
-      console.log("Successfully Connected");
-    }, error => {
-    
-    });
+  sendData(address, data: string) {
+    var bytes = this.stringToBytes(data);
+    this.ble.write(address, 'dfb0', 'dfb1', bytes)
+      .then(function (result) {
+        console.log("Got a response, successfully sent data.")
+      })
+      .catch(function (error) {
+        console.log(error)
+      });
   }
 
-  deviceConnected() {
-    // Subscribe to data receiving as soon as the delimiter is read
-    this.bluetoothSerial.subscribe('\n').subscribe(success => {
-      this.handleData(success);
-      console.log("Connected Successfullly");
-    }, error => {
-      this.showError(error);
-      console.log("device not connected");
-    });
-  }
-
-  deviceDisconnected() {
-    // Unsubscribe from data receiving
-    this.bluetoothSerial.disconnect();
-    console.log("Device Disconnected");
-  }
-
-  batterijpercentage:number = 0;
-  handleData(data) {
-    console.log(data);
-    if(data == "ringing"){
-      //do option ringing
-      //console.log("ringing from cube");
-    }
-    if(data = Number){
-      //most likely battery percentage
-      this.batterijpercentage = data;
-    }
-  }
-
-  sendData(dataSend) {
-    dataSend+='\n';
-    console.log(dataSend);
-
-    this.bluetoothSerial.write(dataSend).then(success => {
-      console.log(success);
-    }, error => {
-      console.log(error)
-    });
-  }
-
-  async showError(error) {
+  async showError(message) {
     const alert = await this.alertController.create({
-      header: 'Error',
-      message: error,
+      header: 'Bluetooth error',
+      message: message,
       buttons: ['OK']
     });
     await alert.present();
   }
-
-  async showToast(msj) {
-    const toast = await this.toastCtrl.create({
-      message: msj,
-      duration: 1000
-    });
-    await toast.present();
-  }
-}
-interface Tag {
-  "class": number,
-  "id": string,
-  "address": string,
-  "name": string
 }

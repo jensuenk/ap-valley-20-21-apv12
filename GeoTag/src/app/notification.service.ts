@@ -1,9 +1,8 @@
-import { flatten } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth/auth.service';
 import { Device, DeviceListService } from './device-list.service';
-import { LocalNotificationsService } from './local-notifications.service';
+import { WorkingNotifServiceService } from './working-notif-service.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +16,7 @@ export class NotificationService {
 		private afs: AngularFirestore, 
 		private auth: AuthService, 
 		private deviceListServcie: DeviceListService,
-		private localNotificationsService: LocalNotificationsService
+		private notificationService: WorkingNotifServiceService
 		) { }
 
 	public currentAddress: string
@@ -52,7 +51,8 @@ export class NotificationService {
 
 	addNotification(notification: Notification) {
 		if (notification.alert) {
-			this.localNotificationsService.sendNotification(notification)
+			var id = new Date().getUTCMilliseconds();
+			this.notificationService.generateNotif(id, notification.message)
 		}
 		const newId = this.afs.createId();
 		notification.id = newId;

@@ -19,7 +19,7 @@ export class RingModalPage implements OnInit {
                 private bluetoothService: BluetoothService, private notificationService:NotificationService) { }
 
   ngOnInit() {
-    this.bluetoothService.sendData("ring")
+    this.bluetoothService.ring(this.device);
 
 		let notification: Notification = {
 			id: "",
@@ -33,7 +33,7 @@ export class RingModalPage implements OnInit {
   }
 
   dismiss() {
-    this.bluetoothService.sendData("stop")
+    this.bluetoothService.stopRing(this.device);
 
     this.modalCtrl.dismiss({
       'dismissed': true
