@@ -113,7 +113,8 @@ export class DeviceDetailsPage {
     const options = {
       center: location,
       zoom: 15,
-      disableDefaultUI: true,
+      disableDefaultUI: true
+      /*,
       styles: [
         { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
         { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -128,7 +129,8 @@ export class DeviceDetailsPage {
           elementType: "labels.text.fill",
           stylers: [{ color: "#d59563" }],
         },
-        {
+        {   
+          
           featureType: "poi.park",
           elementType: "geometry",
           stylers: [{ color: "#263c3f" }],
@@ -193,7 +195,7 @@ export class DeviceDetailsPage {
           elementType: "labels.text.stroke",
           stylers: [{ color: "#17263c" }],
         },
-      ],
+      ]*/,
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options,);
     this.updatePostion()

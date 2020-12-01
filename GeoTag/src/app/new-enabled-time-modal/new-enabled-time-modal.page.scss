@@ -1,3 +1,61 @@
+
+
 ion-grid, ion-col, ion-row{
-    border: solid white 1px;
+    //border: solid white 1px;
+}
+
+/* Without setting height the slides will take up the height of the slide's content */
+ion-slides {
+    height: 100%;
+    text-align: center;
+}
+
+ion-card{
+    height: 3em;
+    --background:rgb(255, 255, 255) !important;
+}
+
+ion-input, ion-datetime{
+    --color:black;
+    color: black;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1{
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+  .no-scroll {
+    --overflow: hidden;
+}
+
+ion-button{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    width: 90%;
+    font-family: 'Montserrat', sans-serif;
+    --background:rgb(43,186,238) !important;
+    --background: linear-gradient(90deg, rgba(43,186,238,1) 16%, rgba(13,152,238,1) 72%) !important;
+}
+
+ion-icon {
+    font-size: 3em;
+    color: white;
+}
+.imageHolder{
+    text-align: center;
+    border-radius: 100%;
+    padding: 3px;
+    img{
+        border-radius: 100%;
+        
+    }
+    :hover{
+        border-radius: 20%;
+        background: rgba(168, 168, 168, 0.199);
+    }
 }

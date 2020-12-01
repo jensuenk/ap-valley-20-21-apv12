@@ -46,7 +46,7 @@ ion-content{
       margin-left: -100%;
       margin-top: -100%;
       border-radius: 100%;
-      background-color: #01a4e9;
+      background-color: #e5ff00;
       animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
     }
     
@@ -85,4 +85,8 @@ ion-content{
     100% {
       transform: scale(.8);
     }
+  }
+
+  h1, p, ion-icon{
+    color: white;
   }

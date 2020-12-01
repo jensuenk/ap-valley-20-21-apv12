@@ -7,3 +7,12 @@ ion-title{
     align-items: center !important;
     justify-content: center ;
 }
+
+h4, p{
+    color: black;
+}
+
+ion-item{
+    color: black;
+    --border-color: rgba(58, 58, 58, 0.164);
+}

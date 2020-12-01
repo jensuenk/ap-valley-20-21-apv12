@@ -1,47 +1,166 @@
-<ion-content>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+</style>
 
-    <ion-list>
+<ion-content class="no-scroll">
+
+    <!--<ion-list>
         <ion-item lines="none">
-            <ion-label position="floating">Nickname</ion-label>
-            <ion-input [(ngModel)]="nickname"></ion-input>
+            <ion-input placeholder="Time Name" [(ngModel)]="nickname"></ion-input>
         </ion-item>
 
         <ion-item lines="none" (click)="presentModal()">
             <ion-label slot="start">Choose Icon</ion-label>
             <ion-icon slot="end" [name]="this.iconName"></ion-icon>
         </ion-item>
-        <br>
-        <br>
 
         <ion-item lines="none">
-            <ion-label slot="start">Begin Time</ion-label>
-        </ion-item>
-
-        <ion-item lines="none">
-            <ion-label position="floating">Hour</ion-label>
-            <ion-input [(ngModel)]="beginTimeHour"></ion-input>
-        </ion-item>
-        
-        <ion-item lines="none">
-            <ion-label position="floating">Minutes</ion-label>
-            <ion-input [(ngModel)]="beginTimeMinutes"></ion-input>
-        </ion-item>
-        <br>
-
-        <ion-item lines="none">
-            <ion-label slot="start">Begin Time</ion-label>
+            <ion-label>Begin Time</ion-label>
+            <ion-datetime [(ngModel)]="beginTimeDate" displayFormat="HH:mm"
+                minuteValues="0,15,30,45"></ion-datetime>
         </ion-item>
 
         <ion-item lines="none">
-            <ion-label position="floating">Hour</ion-label>
-            <ion-input [(ngModel)]="endTimeHour"></ion-input>
+            <ion-label>End Time</ion-label>
+            <ion-datetime [(ngModel)]="endTimeDate" displayFormat="HH:mm"
+                minuteValues="0,15,30,45"></ion-datetime>
         </ion-item>
-        
-        <ion-item lines="none">
-            <ion-label position="floating">Minutes</ion-label>
-            <ion-input [(ngModel)]="endTimeMinutes"></ion-input>
-        </ion-item>
-    </ion-list>
+    </ion-list>-->
 
-    <ion-button expand="block" (click)="dismiss()">Save</ion-button>
+    <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h1>Enter Name</h1>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-card>
+                            <ion-input #input (ionBlur)="NicknameChanged(input.value)" placeholder="Time Name" [(ngModel)]="nickname"></ion-input>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-slide>
+        <ion-slide>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h1>Pick An Icon</h1>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-grid>
+                            <ion-row>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('airplaine-outline')">
+                                  <ion-icon name="airplane-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('fast-food-outline')">
+                                  <ion-icon name="fast-food-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('home-outline')">
+                                  <ion-icon name="home-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('baseball-outline')">
+                                  <ion-icon name="baseball-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                            <ion-row>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('book-outline')">
+                                  <ion-icon name="book-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('car-sport-outline')">
+                                  <ion-icon name="car-sport-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('desktop-outline')">
+                                  <ion-icon name="desktop-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('newspaper-outline')">
+                                  <ion-icon name="newspaper-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                            <ion-row>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('play-circle-outline')">
+                                  <ion-icon name="play-circle-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('train-outline')">
+                                  <ion-icon name="train-outline"></ion-icon>
+                                </div>
+                              </ion-col>        
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('hammer-outline')">
+                                  <ion-icon name="hammer-outline"></ion-icon>
+                                </div>
+                              </ion-col>        
+                              <ion-col>
+                                <div class="imageHolder" (click)="IconChange('train-outline')">
+                                  <ion-icon name="train-outline"></ion-icon>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+          
+        </ion-slide>
+        <ion-slide>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h1>Start Time</h1>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-card>
+                            <ion-datetime (ionChange)="BeginDateChanged($event)" [(ngModel)]="beginTimeDate" displayFormat="HH:mm" minuteValues="0,15,30,45">
+                            </ion-datetime>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-slide>
+        <ion-slide>
+            <ion-grid>
+                <ion-row>
+                    <ion-col>
+                        <h1>Ending Time</h1>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <ion-card>
+                            <ion-datetime (ionChange)="EndDateChanged($event)" [(ngModel)]="endTimeDate" displayFormat="HH:mm" minuteValues="0,15,30,45">
+                            </ion-datetime>
+                        </ion-card>
+                    </ion-col>
+                </ion-row>
+                <ion-button expand="block" (click)="dismiss()">Save</ion-button>
+            </ion-grid>
+        </ion-slide>
+    </ion-slides>
+
 </ion-content>

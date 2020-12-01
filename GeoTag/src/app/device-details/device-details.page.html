@@ -3,6 +3,9 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
+    <ion-title class="title">
+      {{currentDevice.name}}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -17,21 +20,15 @@
     <ion-row class="deviceList">
       <ion-col>
 
-        <div class="title">
-          <h1>{{currentDevice.name}}</h1>
-          <p>Last seen 3 min ago</p>
-        </div>
-        <br>
-
-        <ion-list>
-          <ion-item lines="none" (click)="presentModal()">
-            <ion-icon name="notifications-outline"></ion-icon>            
-            <ion-label>
+        <div class="ringDiv">
+          <ion-card class="ringCard" (click)="presentModal()">
+            <ion-icon name="notifications-outline" size="large"></ion-icon>
+            <ion-card-title>
               <h2>Ring</h2>
-              <p>Ring your {{currentDevice.name | lowercase}}</p>
-            </ion-label>          
-          </ion-item>
-        </ion-list>
+            </ion-card-title>
+          </ion-card>
+        </div>
+
         <ion-item lines="none" [routerLink]="['/','alert-settings', currentDevice.id]">
           <ion-icon name="settings-outline"></ion-icon>            
           <ion-label>
@@ -51,5 +48,8 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+  
+  <img class="svgImage" src="../../assets/images/method-draw-image (1).svg">
+
 
 </ion-content>
