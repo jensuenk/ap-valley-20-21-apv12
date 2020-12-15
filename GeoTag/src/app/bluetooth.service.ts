@@ -26,11 +26,21 @@ export class BluetoothService {
     return array.buffer;
   }
 
+  async scan() {
+    return new Promise((resolve, reject) => {
+      this.ble.scan([], 5).subscribe(
+        device => resolve,
+        error => reject
+      );
+    })
+  }
+
   connect(device: Device) {
     console.log('Connecting to ' + device.name || device.address);
+    console.log(device.address)
     this.ble.connect(device.address).subscribe(
-      device => this.onConnected(device),
-      device => this.onDeviceDisconnected(device)
+      connectCallback => this.onConnected(device),
+      disconnectCallback => this.onDeviceDisconnected(device)
     );
   }
 
