@@ -3,6 +3,10 @@ import { BLE } from '@ionic-native/ble/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Device } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
+import { interval } from 'rxjs';
+
+const SERVICE_UUID = 'dfb0';
+const CHARACTERISTIC_UUID = 'dfb1';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +15,6 @@ export class BluetoothService {
 
   constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService) {
   }
-
   deviceName: string = "Bluno";
 
   bytesToString(buffer) {
@@ -27,15 +30,34 @@ export class BluetoothService {
   }
 
   connect(device: Device) {
-    console.log('Connecting to ' + device.name || device.address);
+    console.log('Connecting to ' + device.name + ' ' + device.address);
     this.ble.connect(device.address).subscribe(
-      device => this.onConnected(device),
-      device => this.onDeviceDisconnected(device)
+      response => this.onConnected(device),
+      response => this.onDeviceDisconnected(device)
     );
   }
 
   onConnected(device: Device) {
-    console.log('Successfully connected to ' + (device.name || device.address));
+    console.log('Successfully connected to ' + device.name + ' ' + device.address);
+    
+    /*
+    this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
+      data => console.log(data),
+      () => this.showError('Failed to subscribe for service state changes')
+    )
+    */
+
+    
+
+      interval(1000).subscribe(x => {
+        this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID)
+          .then(function (data) {
+            console.log(data)
+          })
+          .catch(function (failure) {
+            console.log(failure)
+        });
+      });
   }
 
   async onDeviceDisconnected(device: Device) {
@@ -71,7 +93,7 @@ export class BluetoothService {
 
   sendData(address, data: string) {
     var bytes = this.stringToBytes(data);
-    this.ble.write(address, 'dfb0', 'dfb1', bytes)
+    this.ble.write(address, SERVICE_UUID, CHARACTERISTIC_UUID, bytes)
       .then(function (result) {
         console.log("Got a response, successfully sent data.")
       })
@@ -79,6 +101,8 @@ export class BluetoothService {
         console.log(error)
       });
   }
+
+  
 
   async showError(message) {
     const alert = await this.alertController.create({
