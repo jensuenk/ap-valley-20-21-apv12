@@ -9,7 +9,6 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -18,6 +17,10 @@ import { environment } from '../environments/environment';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { BLE } from '@ionic-native/ble/ngx';
 import { FormBuilder } from '@angular/forms';
+
+//IMPORT THE PLUGINS
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,7 +38,9 @@ import { FormBuilder } from '@angular/forms';
     BLE,
     StatusBar,
     SplashScreen,
-    Geolocation,
+    //ADD GEOLOCATION Y GEOCODER ON THE PROVIDERS.
+    Geolocation,    
+    NativeGeocoder,
     LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFirestoreModule,

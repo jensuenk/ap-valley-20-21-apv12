@@ -35,13 +35,14 @@ export class EnabledNotifLocationsPage implements OnInit {
         'longitude': '0000',
         'latitude': '0000',
         'nickname': 'New Device',
-        'iconName': 'keys'
+        'iconName': 'keys',
+        'secondaryText': ''
       }
     });
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    this.currentDevice.settings.enabledLocations.push(new EnabledLocation(data.nickname, data.iconName, data.latitude, data.longitude))
+    this.currentDevice.settings.enabledLocations.push(new EnabledLocation(data.nickname, data.iconName, data.latitude, data.longitude, data.secondaryText))
     //this.deviceListService.addEnabledLocation(this.currentDevice, new EnabledLocation(data.nickname, data.iconName, data.longitude, data.latitude));
   }
 

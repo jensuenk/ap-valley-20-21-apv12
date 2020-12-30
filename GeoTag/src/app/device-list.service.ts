@@ -50,7 +50,8 @@ export class DeviceListService {
           icon: 'home',
           latitude: "1",
           longitude: "1",
-          enabled: true
+          enabled: true,
+          secondaryText: "home second"
         }],
         enabledTimes: [
           {
@@ -196,12 +197,14 @@ export class EnabledLocation{
   latitude: string;
   longitude: string;
   enabled: boolean;
+  secondaryText: string;
 
-  constructor(nickname: string, icon: string, latitude: string, longitude: string) {
+  constructor(nickname: string, icon: string, latitude: string, longitude: string, secondaryText: string) {
     this.nickname = nickname;
     this.icon = icon;
     this.latitude = latitude;
     this.longitude = longitude; 
     this.enabled = true;
+    this.secondaryText = secondaryText
   }
 }

@@ -54,7 +54,8 @@ export class SetupPage implements OnInit {
         icon: 'home',
         latitude: "1",
         longitude: "1",
-        enabled: true
+        enabled: true,
+        secondaryText: "Home second"
       }],
       enabledTimes: [
         {
