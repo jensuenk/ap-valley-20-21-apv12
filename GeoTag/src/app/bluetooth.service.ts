@@ -39,7 +39,7 @@ export class BluetoothService {
 
   onConnected(device: Device) {
     console.log('Successfully connected to ' + device.name + ' ' + device.address);
-    
+
     /*
     this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
       data => console.log(data),
@@ -47,7 +47,17 @@ export class BluetoothService {
     )
     */
 
-    
+    this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
+      data => this.onDataChange(data),
+      () => this.showError('Failed to subscribe for service state changes')
+    )
+
+    // Read the current value of the characteristic
+    this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).then(
+      data => this.onReadData(data),
+      () => this.showError('Failed to read')
+    )
+    /*
 
       interval(1000).subscribe(x => {
         this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID)
@@ -58,8 +68,20 @@ export class BluetoothService {
             console.log(failure)
         });
       });
+      */
+  }
+  onDataChange(buffer:ArrayBuffer) {
+    var data = new Uint8Array(buffer);
+    // You will get the notification data here
+    console.log(data);
   }
 
+  onReadData(buffer: ArrayBuffer) {
+    var data = new Uint8Array(buffer);
+    // You will get the read data here
+    console.log(data);
+
+  }
   async onDeviceDisconnected(device: Device) {
     let notification: Notification = {
       id: "",
@@ -95,14 +117,14 @@ export class BluetoothService {
     var bytes = this.stringToBytes(data);
     this.ble.write(address, SERVICE_UUID, CHARACTERISTIC_UUID, bytes)
       .then(function (result) {
-        console.log("Got a response, successfully sent data.")
+        console.log("Got a response, successfully sent data.", result)
       })
       .catch(function (error) {
         console.log(error)
       });
   }
 
-  
+
 
   async showError(message) {
     const alert = await this.alertController.create({
