@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
     "@ionic-native/ble": "^5.30.0",
+    "@ionic-native/bluetooth-le": "^5.30.0",
     "@ionic-native/bluetooth-serial": "^5.29.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/geolocation": "^5.29.0",
@@ -30,7 +31,6 @@
     "@ionic/angular": "^5.0.0",
     "cordova-ios": "^5.1.1",
     "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-ble-central": "^1.3.1",
     "cordova-plugin-bluetooth-serial": "^0.4.7",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
@@ -53,6 +53,9 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "cordova-android": "^9.0.0",
+    "cordova-plugin-ble-central": "file:../../cordova-plugin-ble-central",
+    "cordova-plugin-bluetooth-peripheral-usage-description": "^1.0.1",
+    "cordova-plugin-bluetoothle": "^6.2.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^4.0.0",
@@ -84,7 +87,14 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-ble-central": {}
+      "cordova-plugin-bluetoothle": {},
+      "cordova-plugin-bluetooth-peripheral-usage-description": {
+        "TEXT": "This app requires bluetooth access"
+      },
+      "cordova-plugin-ble-central": {
+        "BLUETOOTH_USAGE_DESCRIPTION": "Requires bluetooth access",
+        "IOS_INIT_ON_LOAD": "true"
+      }
     },
     "platforms": [
       "ios",

@@ -40,47 +40,37 @@ export class BluetoothService {
   onConnected(device: Device) {
     console.log('Successfully connected to ' + device.name + ' ' + device.address);
 
-    /*
     this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
-      data => console.log(data),
+      data => {
+        this.onDataChange(device, data)
+      },
       () => this.showError('Failed to subscribe for service state changes')
     )
-    */
+  }
 
-    this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
-      data => this.onDataChange(data),
-      () => this.showError('Failed to subscribe for service state changes')
-    )
+  onDataChange(device, buffer: ArrayBuffer) {
+    var data = new Uint8Array(buffer);
 
-    // Read the current value of the characteristic
     this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).then(
-      data => this.onReadData(data),
-      () => this.showError('Failed to read')
+      data => this.onReadData(device, data),
+      () => this.showError('Failed to read incoming message')
     )
-    /*
-
-      interval(1000).subscribe(x => {
-        this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID)
-          .then(function (data) {
-            console.log(data)
-          })
-          .catch(function (failure) {
-            console.log(failure)
-        });
-      });
-      */
-  }
-  onDataChange(buffer:ArrayBuffer) {
-    var data = new Uint8Array(buffer);
-    // You will get the notification data here
-    console.log(data);
   }
 
-  onReadData(buffer: ArrayBuffer) {
-    var data = new Uint8Array(buffer);
-    // You will get the read data here
-    console.log(data);
-
+  onReadData(device, buffer: ArrayBuffer) {
+    var data = this.bytesToString(buffer);
+    console.log("Read: ", data);
+    if (data == "r") {
+      let notification: Notification = {
+        id: "",
+        message: "You are ringing your phone from " + device.name + "!",
+        date: new Date(),
+        device: device,
+        icon: device.icon,
+        alert: true
+      }
+      this.notificationService.addNotification(notification);
+    }
   }
   async onDeviceDisconnected(device: Device) {
     let notification: Notification = {
