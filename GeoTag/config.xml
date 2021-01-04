@@ -19,6 +19,11 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="3000" />
     <platform name="ios">
+        <config-file parent="UIBackgroundModes" target="*-Info.plist">
+            <array>
+                <string>bluetooth-central</string>
+            </array>
+        </config-file>
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
             <string>We use your location for full functionality of certain app features.</string>
         </edit-config>
@@ -78,5 +83,5 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <allow-navigation href="http://localhost:8100" sessionid="59c18a6b" />
     <allow-navigation href="http://192.168.0.104:8100" sessionid="c70a121c" />
-    <allow-navigation href="http://192.168.0.105:8100" sessionid="1b3b2e50" />
+    <allow-navigation href="http://192.168.0.105:8100" sessionid="64785aa7" />
 </widget>

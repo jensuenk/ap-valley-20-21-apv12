@@ -3,7 +3,6 @@ import { BLE } from '@ionic-native/ble/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Device } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
-import { interval } from 'rxjs';
 
 const SERVICE_UUID = 'dfb0';
 const CHARACTERISTIC_UUID = 'dfb1';
@@ -39,7 +38,7 @@ export class BluetoothService {
 
   onConnected(device: Device) {
     console.log('Successfully connected to ' + device.name + ' ' + device.address);
-
+    
     this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
       data => {
         this.onDataChange(device, data)
@@ -103,7 +102,7 @@ export class BluetoothService {
     this.sendData(device.address, "stop");
   }
 
-  sendData(address, data: string) {
+  sendData(address: string, data: string) {
     var bytes = this.stringToBytes(data);
     this.ble.write(address, SERVICE_UUID, CHARACTERISTIC_UUID, bytes)
       .then(function (result) {
