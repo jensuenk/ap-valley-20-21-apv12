@@ -145,7 +145,7 @@ export class Device {
   locationHistory: Array<LocationAndDate>
   settings: AlertSettings
   isConnected:boolean
-}
+} 
 export class Location {
   latitude: number
   longitude: number
