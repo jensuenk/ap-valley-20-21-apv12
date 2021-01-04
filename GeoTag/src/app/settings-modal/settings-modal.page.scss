@@ -1,7 +1,7 @@
 
 ion-item{
     border-radius: 0.8rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0rem;
 }
 ion-content {
     // overwrite inline styles
@@ -13,12 +13,14 @@ ion-content {
   }
   div{
       padding:2rem;
+      padding-top: 4em;
+      padding-bottom: 0em;
   }
   ion-col{
       padding:0rem;
   }
   ion-grid{
-    padding:0rem;
+    padding: -1rem;
 }
 
 ion-icon {

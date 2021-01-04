@@ -115,6 +115,20 @@ export class DeviceListService {
     });
   }
 
+  deleteEnabledTime(device: Device, enabledTime: EnabledTime){
+    const index = device.settings.enabledTimes.indexOf(enabledTime, 0);
+    if (index > -1) {
+      device.settings.enabledTimes.splice(index, 1);
+    }  
+  }
+
+  deleteEnabledLocation(device: Device, enabledLocation: EnabledLocation){
+    const index = device.settings.enabledLocations.indexOf(enabledLocation, 0);
+    if (index > -1) {
+      device.settings.enabledTimes.splice(index, 1);
+    }  
+  }
+
   addEnabledLocation(device: Device, enabledLocation: EnabledLocation){
     device.settings.enabledLocations.push(enabledLocation)
     return this.deviceCollection.doc(device.id).update({

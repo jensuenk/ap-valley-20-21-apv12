@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { DeviceListService, EnabledLocation } from '../device-list.service';
 import { NewEnabledLocationModalPage } from '../new-enabled-location-modal/new-enabled-location-modal.page';
 import { Device } from '../device-list.service'
@@ -20,7 +20,8 @@ export class EnabledNotifLocationsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private modalController: ModalController,
-    private deviceListService: DeviceListService) { }
+    private deviceListService: DeviceListService,
+    private alertController: AlertController) { }
 
   async ngOnInit() {
     this.currentDeviceID = this.route.snapshot.paramMap.get('id');
@@ -46,6 +47,31 @@ export class EnabledNotifLocationsPage implements OnInit {
     //this.deviceListService.addEnabledLocation(this.currentDevice, new EnabledLocation(data.nickname, data.iconName, data.longitude, data.latitude));
   }
 
+  deleteLocation(enabledLocation: EnabledLocation){
+    this.showAlert(enabledLocation)
+  }
+
+  showAlert(enabledLocation: EnabledLocation) {
+
+    this.alertController.create({
+      header: 'Alert',
+      message: 'Are you sure you want to delete this setting?',
+      buttons: [
+        'Cancel', 
+        {
+          text: 'OK',
+          handler: (data: any) =>{
+            this.deviceListService.deleteEnabledLocation(this.currentDevice, enabledLocation)
+          }
+        }
+      ]
+    }).then(res => {
+
+      res.present();
+
+    });
+
+  }
 
 }
 
