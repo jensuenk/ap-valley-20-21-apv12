@@ -23,7 +23,7 @@ export class SetupPage implements OnInit {
     private alertController: AlertController,
     private ngZone: NgZone,
     private bluetoothService: BluetoothService
-  ) { 
+  ) {
   }
 
   currentPosLongitude: any = 0;
@@ -32,50 +32,52 @@ export class SetupPage implements OnInit {
   name: string = ""
 
 
-  device: Device = {
-    id: "",
-    name: this.name,
-    location: {
-      latitude: this.currentPosLatitude,
-      longitude: this.currentPosLongitude
-    },
-    isConnected: true,
-    icon: this.iconName,
-    address: this.devicelistService.currentAddress,
-    locationHistory: [],
-    settings: {
-      alertType: 'Vibration',
-      alertsEnabled: true,
-      timeAlertsEnabled: true,
-      locationAlertsEnabled: true,
-      enabledLocations: [
-      {
-        nickname: 'Home',
-        icon: 'home',
-        latitude: "1",
-        longitude: "1",
-        enabled: true,
-        secondaryText: "Home second"
-      }],
-      enabledTimes: [
-        {
-          nickname: 'Lunch Time',
-          icon: 'fast-food',
-          beginTime: "12:00",
-          endTime: "14:00",
-          enabled: true
-      }]
-    }
-  }
+  device: Device;
+
   ngOnInit() {
-    this.createDevice();
-    this.ngZone.run(() => {
-      this.bluetoothService.connect(this.device);
-    });
     this.getPostion();
   }
 
   createDevice() {
+    this.device = {
+      id: "",
+      name: this.name,
+      location: {
+        latitude: this.currentPosLatitude,
+        longitude: this.currentPosLongitude
+      },
+      isConnected: true,
+      icon: this.iconName,
+      address: this.devicelistService.currentAddress,
+      locationHistory: [],
+      settings: {
+        alertType: 'Vibration',
+        alertsEnabled: true,
+        timeAlertsEnabled: true,
+        locationAlertsEnabled: true,
+        enabledLocations: [
+          {
+            nickname: 'Home',
+            icon: 'home',
+            latitude: this.currentPosLatitude,
+            longitude: this.currentPosLongitude,
+            enabled: true,
+            secondaryText: ""
+          }],
+        enabledTimes: [
+          {
+            nickname: 'Lunch Time',
+            icon: 'fast-food',
+            beginTime: "12:00",
+            endTime: "14:00",
+            enabled: true
+          }]
+      }
+    }
+
+    this.ngZone.run(() => {
+      this.bluetoothService.connect(this.device);
+    });
   }
 
   saveDevice() {
@@ -85,7 +87,7 @@ export class SetupPage implements OnInit {
     }
     this.device.name = this.name;
     this.device.icon = this.iconName;
-    
+
     this.devicelistService.addDevice(this.device);
     this.router.navigate(['./device-list']);
   }
@@ -108,15 +110,16 @@ export class SetupPage implements OnInit {
   }
 
   getPostion() {
-		this.geolocation
-			.getCurrentPosition()
-			.then((resp) => {
-				this.currentPosLatitude = resp.coords.latitude;
+    this.geolocation.getCurrentPosition()
+      .then((resp) => {
+        this.currentPosLatitude = resp.coords.latitude;
         this.currentPosLongitude = resp.coords.longitude;
-			})
-			.catch((error) => {
-				this.locationAlert(error)
-			});
+
+        this.createDevice();
+      })
+      .catch((error) => {
+        this.locationAlert(error)
+      });
   }
 
   async locationAlert(message) {
@@ -130,5 +133,5 @@ export class SetupPage implements OnInit {
   }
 
 
-  
+
 }

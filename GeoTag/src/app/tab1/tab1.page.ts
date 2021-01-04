@@ -127,11 +127,10 @@ export class Tab1Page implements OnInit {
 		}
 	}
 
-	ionViewDidEnter() {
+	async ionViewDidEnter() {
 		this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {
-			this.createMarkers();
-			this.showMap();
 		})
+		this.showMap();
 	}
 
 	async ngOnInit() {
@@ -139,10 +138,10 @@ export class Tab1Page implements OnInit {
 		this.bluetoothService.scan();
 		await new Promise(resolve => setTimeout(resolve, 3000));
 		this.deviceListService.deviceCollection.valueChanges().subscribe(data => {
-			this.createMarkers();
-			this.showMap();
 			this.connectDevices();
 		});
+		await new Promise(resolve => setTimeout(resolve, 1000));
+		this.showMap();
 	}
 
 	connectDevices() {
@@ -195,7 +194,7 @@ export class Tab1Page implements OnInit {
 	createMarkers() {
 		this.markers = Array<marker>()
 		for (let device of this.deviceListService.deviceList) {
-			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
+			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude, connectionStatus: device.isConnected });
 		}
 	}
 
@@ -210,22 +209,23 @@ export class Tab1Page implements OnInit {
 			});
 
 			mapMarker.setMap(this.map);
-			this.addInfoWindowToMarker(mapMarker);
+			this.addInfoWindowToMarker(mapMarker, marker.connectionStatus);
 		}
 	}
-	addInfoWindowToMarker(marker) {
+	addInfoWindowToMarker(marker, status) {
+		let connectionStatus = "Not Connected";
+		
+		if (status) {
+			connectionStatus = "Connected";
+		}
 		let infoWindowContent =
 			'<div id="content">' +
 			'<h2 id="firstHeading" class"firstHeading">' +
 			marker.title +
 			'</h2>' +
-			'<p>Latitude: ' +
-			marker.latitude +
-			'</p>' +
-			'<p>Longitude: ' +
-			marker.longitude +
-			'</p>' +
-			'</div>';
+			'<p>Status: ' +
+			connectionStatus +
+			'</p></div>'
 
 		let infoWindow = new google.maps.InfoWindow({
 			content: infoWindowContent
@@ -244,7 +244,7 @@ export class Tab1Page implements OnInit {
 		}
 	}
 
-	showMap() {
+	async showMap() {
 		const location = new google.maps.LatLng(this.currentPosLatitude, this.currentPosLongitude);
 		const options = {
 			center: location,
@@ -334,6 +334,9 @@ export class Tab1Page implements OnInit {
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
 		this.updatePostion();
+		await new Promise(resolve => setTimeout(resolve, 1000));
+
+		this.createMarkers();
 		this.addMarkersToMap(this.markers);
 	}
 
@@ -356,4 +359,5 @@ export class marker {
 	title: string;
 	latitude: number;
 	longitude: number;
+	connectionStatus: boolean;
 }

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BLE } from '@ionic-native/ble/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
-import { Device } from './device-list.service';
+import { Device, DeviceListService } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
 
 const SERVICE_UUID = 'dfb0';
@@ -12,7 +13,7 @@ const CHARACTERISTIC_UUID = 'dfb1';
 })
 export class BluetoothService {
 
-  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService) {
+  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService, private deviceListService: DeviceListService, private geolocation: Geolocation) {
   }
   deviceName: string = "Bluno";
 
@@ -91,6 +92,23 @@ export class BluetoothService {
     }
     this.notificationService.addNotification(notification);
     this.isConnected(device);
+
+
+    this.geolocation.getCurrentPosition()
+      .then((resp) => {
+        let locationAndDate = {
+          location: {
+            latitude: resp.coords.latitude,
+            longitude: resp.coords.longitude
+          },
+          date: new Date()
+        }
+        device.locationHistory.push(locationAndDate);
+        this.deviceListService.updateDevice(device);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   }
 
   isConnected(device: Device) {

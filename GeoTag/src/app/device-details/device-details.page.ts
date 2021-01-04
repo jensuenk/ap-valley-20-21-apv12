@@ -42,7 +42,7 @@ export class DeviceDetailsPage {
     }
     this.createMarkers()
     this.currentDeviceId = this.route.snapshot.paramMap.get('id');
-    this.findCurrentDevice()
+    this.findCurrentDevice();
   }
 
   async presentModal() {
@@ -86,9 +86,7 @@ export class DeviceDetailsPage {
   }
   addInfoWindowToMarker(marker) {
     let infoWindowContent = '<div id="content">' +
-      '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>' +
-      '<p>Latitude: ' + marker.latitude + '</p>' +
-      '<p>Longitude: ' + marker.longitude + '</p>' +
+      '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>'
       '</div>';
 
     let infoWindow = new google.maps.InfoWindow({
