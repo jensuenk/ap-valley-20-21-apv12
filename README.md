@@ -21,55 +21,63 @@
 </p>
 
 <p align="center">
+  <a href="#about">About</a> •
   <a href="#key-features">Key Features</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#download">Download</a> •
-  <a href="#credits">Credits</a> •
+  <a href="#credits">Contributions</a> •
   <a href="#more-info">More info</a> •
   <a href="#license">License</a>
 </p>
 
+## About
+This project consists of a Ionic app and a Arduino project created to work for a geotag device. This device connects to the app on your phone over bluetooth. You can hang this to your favorite items to track them and never lose them again.
+
 
 ## Key Features
 
-* LivePreview - Make changes, See changes
-  - Instantly see what your Markdown documents look like in HTML as you create them.
-* Sync Scrolling
-  - While you type, LivePreview will automatically scroll to the current location you're editing.
-* GitHub Flavored Markdown  
-* Syntax highlighting
-* [KaTeX](https://khan.github.io/KaTeX/) Support
-* Dark/Light mode
-* Toolbar for basic Markdown formatting
-* Supports multiple cursors
-* Save the Markdown preview as PDF
-* Emoji support in preview :tada:
-* App will keep alive in tray for quick usage
-* Full screen mode
-  - Write distraction free.
-* Cross platform
-  - Windows, macOS and Linux ready.
+* Cross platform ionic app
+* Viewing all devices on a map
+* Realtime location of all connected tags
+* Realtime connection status of your tags
+* Notification history
+* Location history
+* Ringing in both directions
+* Configurable notifications
+* All data is stored in a cloud database
+* Receiving alerts in background
+* Communicating data over bluetooth low energy
 
 ## How To Use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
 
+**Setup the app**
 ```bash
 # Clone this repository
-$ git clone https://github.com/amitmerchant1990/electron-markdownify
+$ git clone https://github.com/AP-Elektronica-ICT/ap-valley-20-21-apv12/
 
 # Go into the repository
-$ cd electron-markdownify
+$ cd ap-valley-20-21-apv12
+
+# Install the ionic CLI globally
+$ npm install -g ionic
 
 # Install dependencies
 $ npm install
 
-# Run the app
+# Run the app on your browser
 $ npm start
 ```
 
-Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+**Run the app on your device**
+```bash
+# Install the Cordova globally
+$ npm install -g cordova
 
+# Run the app
+$ ionic cordova run (android or ios) --device
+```
 
 ## Download
 
@@ -82,14 +90,14 @@ This project has been made possible by:
 
 - [Jens Uenk](https://github.com/jensuenk)
 - [Matisse Faes](https://github.com/Matisse-Git)
-- [Jordy ](https://github.com/jorre127)
-- [Quinten](https://github.com/quintenvg1)
+- [Jordy De Jonghe](https://github.com/jorre127)
+- [Quinten Van Ginderen](https://github.com/quintenvg1)
 
 
 ## More info
 
-[Confluence](https://confluence.ap.be/x/hwBiAg) - Our Confluence
-[Jira](https://jira.ap.be/projects/APV12/summary) - Our Jira
+- [Confluence](https://confluence.ap.be/x/hwBiAg) - Our Confluence
+- [Jira](https://jira.ap.be/projects/APV12/summary) - Our Jira
 
 ## License
 
@@ -98,4 +106,4 @@ MIT
 ---
 
 > [geotag.store](https://geotag.store) &nbsp;&middot;&nbsp;
-> GitHub [@ap-valley-20-21-apv12](https://github.com/AP-Elektronica-ICT/ap-valley-20-21-apv12) &nbsp;&middot;&nbsp;
+> GitHub [@ap-valley-20-21-apv12](https://github.com/AP-Elektronica-ICT/ap-valley-20-21-apv12)
