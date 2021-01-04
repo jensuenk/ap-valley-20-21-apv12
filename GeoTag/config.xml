@@ -3,7 +3,7 @@
     <name>GeoTag</name>
     <description>Never lose your stuff again.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">AP Group 12</author>
-    <content original-src="index.html" src="http://192.168.0.105:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
