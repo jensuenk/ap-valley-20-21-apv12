@@ -37,6 +37,8 @@ export class BluetoothService {
   connect(device: Device) {
     console.log('Connecting to ' + device.name + ' ' + device.address + '...');
     this.ble.autoConnect(device.address, this.onConnected.bind(this, device), this.onDisconnected.bind(this, device));
+  }
+
 
   onConnected(device: Device) {
     console.log('Successfully connected to ' + device.name + ' ' + device.address);
@@ -73,7 +75,7 @@ export class BluetoothService {
       this.notificationService.addNotification(notification);
     }
   }
-  
+
   async onDisconnected(device: Device, error?) {
     console.log("Error:", error);
     let notification: Notification = {

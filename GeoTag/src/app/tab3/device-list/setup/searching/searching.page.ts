@@ -28,7 +28,7 @@ export class SearchingPage implements OnInit {
 
     this.ble.scan([], 5).subscribe(
       device => this.onDeviceDiscovered(device),
-      error => this.bluetoothService.showError(error)
+      error => console.log(error)
     );
   }
 
