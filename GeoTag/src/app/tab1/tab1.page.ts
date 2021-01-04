@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, defineInjectable, OnInit, NgZone } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AuthService } from '../auth/auth.service';
@@ -120,6 +120,7 @@ export class Tab1Page implements OnInit {
 		private router: Router,
 		private deviceListService: DeviceListService,
 		private bluetoothService: BluetoothService,
+		private notificationService: WorkingNotifServiceService,
 		private ngZone: NgZone) {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
@@ -133,8 +134,10 @@ export class Tab1Page implements OnInit {
 		})
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
+		await new Promise(resolve => setTimeout(resolve, 1000));
 		this.bluetoothService.scan();
+		await new Promise(resolve => setTimeout(resolve, 3000));
 		this.deviceListService.deviceCollection.valueChanges().subscribe(data => {
 			this.createMarkers();
 			this.showMap();
@@ -143,11 +146,11 @@ export class Tab1Page implements OnInit {
 	}
 
 	connectDevices() {
-			this.deviceListService.deviceList.forEach((device) => {
-				this.ngZone.run(() => {
-					this.bluetoothService.connect(device);
-				  });
+		this.deviceListService.deviceList.forEach((device) => {
+			this.ngZone.run(() => {
+				this.bluetoothService.connect(device);
 			});
+		});
 	}
 
 	showDeviceList() {
@@ -194,7 +197,6 @@ export class Tab1Page implements OnInit {
 		for (let device of this.deviceListService.deviceList) {
 			this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
 		}
-		//console.log(this.markers)
 	}
 
 	addMarkersToMap(markers) {
