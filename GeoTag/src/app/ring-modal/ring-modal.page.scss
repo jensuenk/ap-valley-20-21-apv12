@@ -1,7 +1,6 @@
 div{
     text-align: center;
     width: 100%;
-    //border: solid white 1px;
     position: absolute;
     top: 50%;
 
@@ -23,7 +22,7 @@ ion-icon{
 }
 
 ion-content{
-    --ion-background-color: #1b1b1b !important;  
+  --ion-background-color: #1b1b1b !important;  
 }
 
 
@@ -88,5 +87,5 @@ ion-content{
   }
 
   h1, p, ion-icon{
-    color: white;
+    color: black;
   }

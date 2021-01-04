@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Device, DeviceListService } from '../device-list.service';
 import { IconPickerPage } from '../tab3/device-list/icon-picker/icon-picker.page';
 
@@ -14,7 +14,7 @@ export class SettingsModalPage implements OnInit {
   currentDevice: Device;
   originalName: string;
 
-  constructor(private deviceListService: DeviceListService, private modalCtrl: ModalController) { }
+  constructor(private deviceListService: DeviceListService, private modalCtrl: ModalController, public alertController: AlertController) { }
 
   iconName: string
   ngOnInit() {
@@ -56,5 +56,28 @@ export class SettingsModalPage implements OnInit {
     const { data } = await modal.onDidDismiss();
     console.log(data);
     this.iconName = data.iconName;
+  }
+
+  showAlert() {
+
+    this.alertController.create({
+      header: 'Alert',
+      subHeader: 'Are you sure?',
+      message: 'By deleting this device, you are also deleting all the settings for it. Are you sure you want to continue?',
+      buttons: [
+        'Cancel', 
+        {
+          text: 'OK',
+          handler: (data: any) =>{
+            this.deleteDevice()
+          }
+        }
+      ]
+    }).then(res => {
+
+      res.present();
+
+    });
+
   }
 }

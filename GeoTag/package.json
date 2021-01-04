@@ -56,7 +56,6 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "cordova-plugin-add-swift-support": "^2.0.2",
-    "cordova-plugin-device": "2.0.2",
     "cordova-android": "^9.0.0",
     "cordova-custom-config": "^5.1.0",
     "cordova-plugin-background-mode": "^0.7.3",

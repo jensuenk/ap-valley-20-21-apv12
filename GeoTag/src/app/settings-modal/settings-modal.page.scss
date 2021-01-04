@@ -1,7 +1,4 @@
 
-ion-content{
-    --ion-background-color: #1b1b1b !important;  
-}
 ion-item{
     border-radius: 0.8rem;
     margin-bottom: 1rem;
@@ -25,5 +22,11 @@ ion-content {
 }
 
 ion-icon {
-    font-size: 3em;
+    font-size: 3rem;
+}
+.trashIcon{
+    display: flex;
+    align-self: center;
+    font-size:2rem;
+    color: red;
 }
