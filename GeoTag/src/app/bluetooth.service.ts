@@ -39,6 +39,9 @@ export class BluetoothService {
     this.ble.autoConnect(device.address, this.onConnected.bind(this, device), this.onDisconnected.bind(this, device));
   }
 
+  disconnect(address: string) {
+    this.ble.disconnect(address);
+  }
 
   onConnected(device: Device) {
     console.log('Successfully connected to ' + device.name + ' ' + device.address);

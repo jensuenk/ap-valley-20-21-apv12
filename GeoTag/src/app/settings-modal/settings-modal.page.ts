@@ -37,6 +37,7 @@ export class SettingsModalPage implements OnInit {
     });
   }
   deleteDevice() {
+    this.bluetoothService.disconnect(this.currentDevice.address);
     this.deviceListService.deleteDevice(this.currentDevice.id);
     this.modalCtrl.dismiss({
       'dismissed': true
