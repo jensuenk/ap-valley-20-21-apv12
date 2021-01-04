@@ -4,6 +4,9 @@ import { AlertController, NavController, ToastController } from '@ionic/angular'
 import { Device } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
 
+const SERVICE_UUID = 'dfb0';
+const CHARACTERISTIC_UUID = 'dfb1';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,7 +14,6 @@ export class BluetoothService {
 
   constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService) {
   }
-
   deviceName: string = "Bluno";
 
   bytesToString(buffer) {
@@ -27,17 +29,48 @@ export class BluetoothService {
   }
 
   connect(device: Device) {
-    console.log('Connecting to ' + device.name || device.address);
+    console.log('Connecting to ' + device.name + ' ' + device.address);
     this.ble.connect(device.address).subscribe(
-      device => this.onConnected(device),
-      device => this.onDeviceDisconnected(device)
+      response => this.onConnected(device),
+      response => this.onDeviceDisconnected(device)
     );
   }
 
   onConnected(device: Device) {
-    console.log('Successfully connected to ' + (device.name || device.address));
+    console.log('Successfully connected to ' + device.name + ' ' + device.address);
+    
+    this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
+      data => {
+        this.onDataChange(device, data)
+      },
+      () => this.showError('Failed to subscribe for service state changes')
+    )
   }
 
+  onDataChange(device, buffer: ArrayBuffer) {
+    var data = new Uint8Array(buffer);
+
+    this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).then(
+      data => this.onReadData(device, data),
+      () => this.showError('Failed to read incoming message')
+    )
+  }
+
+  onReadData(device, buffer: ArrayBuffer) {
+    var data = this.bytesToString(buffer);
+    console.log("Read: ", data);
+    if (data == "r") {
+      let notification: Notification = {
+        id: "",
+        message: "You are ringing your phone from " + device.name + "!",
+        date: new Date(),
+        device: device,
+        icon: device.icon,
+        alert: true
+      }
+      this.notificationService.addNotification(notification);
+    }
+  }
   async onDeviceDisconnected(device: Device) {
     let notification: Notification = {
       id: "",
@@ -69,16 +102,18 @@ export class BluetoothService {
     this.sendData(device.address, "stop");
   }
 
-  sendData(address, data: string) {
+  sendData(address: string, data: string) {
     var bytes = this.stringToBytes(data);
-    this.ble.write(address, 'dfb0', 'dfb1', bytes)
+    this.ble.write(address, SERVICE_UUID, CHARACTERISTIC_UUID, bytes)
       .then(function (result) {
-        console.log("Got a response, successfully sent data.")
+        console.log("Got a response, successfully sent data.", result)
       })
       .catch(function (error) {
         console.log(error)
       });
   }
+
+
 
   async showError(message) {
     const alert = await this.alertController.create({
