@@ -125,7 +125,7 @@ export class DeviceListService {
   deleteEnabledLocation(device: Device, enabledLocation: EnabledLocation){
     const index = device.settings.enabledLocations.indexOf(enabledLocation, 0);
     if (index > -1) {
-      device.settings.enabledTimes.splice(index, 1);
+      device.settings.enabledLocations.splice(index, 1);
     }  
   }
 
