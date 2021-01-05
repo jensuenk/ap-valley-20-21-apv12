@@ -36,7 +36,16 @@
             <p>Settings for when you get alerted when leaving</p>
           </ion-label>          
         </ion-item>
-        <ion-item lines="none" [routerLink]="['/','location-history', currentDeviceId]">
+
+        <ion-item *ngIf="currentDevice.locationHistory.length != 0" lines="none" [routerLink]="['/','location-history', currentDeviceId]">
+          <ion-icon name="compass-outline"></ion-icon>          
+          <ion-label>
+            <h2>Location History</h2>
+            <p>Show previous locations from your device</p>
+          </ion-label>          
+        </ion-item>
+
+        <ion-item *ngIf="currentDevice.locationHistory.length == 0" lines="none">
           <ion-icon name="compass-outline"></ion-icon>          
           <ion-label>
             <h2>Location History</h2>

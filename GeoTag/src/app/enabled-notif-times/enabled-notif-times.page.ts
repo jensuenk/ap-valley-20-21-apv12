@@ -4,6 +4,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { DeviceListService, EnabledTime } from '../device-list.service';
 import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-time-modal.page'
 import { Device } from '../device-list.service'
+import { BluetoothService } from '../bluetooth.service';
 
 @Component({
   selector: 'app-enabled-notif-times',
@@ -19,7 +20,8 @@ export class EnabledNotifTimesPage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private deviceListService: DeviceListService,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private bluetoothService: BluetoothService) { }
 
   async ngOnInit() {
     this.currentDeviceID = this.route.snapshot.paramMap.get('id');
@@ -82,7 +84,9 @@ export class EnabledNotifTimesPage implements OnInit {
 
     const { data } = await modal.onDidDismiss();
     console.log(data);
-    this.deviceListService.addEnabledTime(this.currentDevice, new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime));
+    this.currentDevice.settings.enabledTimes.push(new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime))
+    this.bluetoothService.syncData(this.currentDevice);
+    this.deviceListService.updateDevice(this.currentDevice);
   }
 
   deleteTime(enabledTime: EnabledTime){

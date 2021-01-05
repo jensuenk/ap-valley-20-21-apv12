@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
+import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
 import { IconPickerPage } from '../tab3/device-list/icon-picker/icon-picker.page';
 
@@ -14,7 +15,7 @@ export class SettingsModalPage implements OnInit {
   currentDevice: Device;
   originalName: string;
 
-  constructor(private deviceListService: DeviceListService, private modalCtrl: ModalController, public alertController: AlertController) { }
+  constructor(private bluetoothService: BluetoothService, private deviceListService: DeviceListService, private modalCtrl: ModalController, public alertController: AlertController) { }
 
   iconName: string
   ngOnInit() {
@@ -37,6 +38,7 @@ export class SettingsModalPage implements OnInit {
     });
   }
   deleteDevice() {
+    this.bluetoothService.disconnect(this.currentDevice);
     this.deviceListService.deleteDevice(this.currentDevice.id);
     this.modalCtrl.dismiss({
       'dismissed': true

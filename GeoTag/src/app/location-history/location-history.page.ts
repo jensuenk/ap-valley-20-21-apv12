@@ -1,56 +1,45 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Device, DeviceListService, Location } from '../device-list.service';
-import { marker } from '../tab1/tab1.page';
 
 declare var google: any;
 
 @Component({
-  selector: 'app-location-history',
-  templateUrl: './location-history.page.html',
-  styleUrls: ['./location-history.page.scss'],
+	selector: 'app-location-history',
+	templateUrl: './location-history.page.html',
+	styleUrls: ['./location-history.page.scss'],
 })
 export class LocationHistoryPage implements OnInit {
 
-  currentDevice : Device
+	currentDevice: Device
 
-  constructor(private deviceListService:DeviceListService, private route: ActivatedRoute) { }
+	constructor(private deviceListService: DeviceListService, private route: ActivatedRoute) { }
 
-  map: any;
+	map: any;
 	@ViewChild('map', { read: ElementRef, static: false })
-  mapRef: ElementRef;
+	mapRef: ElementRef;
 
-  infoWindows: any = [];
+	infoWindows: any = [];
 	markers: Array<marker>
-  
-  ngOnInit() {
-    this.findCurrentDevice()
 
-    let locationAndDate = {
-      location: {
-        latitude: 1,
-        longitude: 1
-      },
-      date: new Date()
-    }
-    this.currentDevice.locationHistory.push(locationAndDate)
-    this.deviceListService.updateDevice(this.currentDevice)
-    this.currentDevice.locationHistory.sort((a, b) => b.date.getTime() - a.date.getTime())
-  }
-  findCurrentDevice() {
-    this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.route.snapshot.paramMap.get('id'))
-  }
+	ngOnInit() {
+		this.findCurrentDevice()
+		this.currentDevice.locationHistory.sort((a, b) => b.date.getTime() - a.date.getTime())
+	}
+	findCurrentDevice() {
+		this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.route.snapshot.paramMap.get('id'))
+	}
 
-  ionViewDidEnter() {
-			this.createMarkers();
-      this.showMap();
-      this.currentDevice.locationHistory.sort((a, b) => b.date.getTime() - a.date.getTime())
-  }
+	ionViewDidEnter() {
+		this.createMarkers();
+		this.showMap();
+		this.currentDevice.locationHistory.sort((a, b) => b.date.getTime() - a.date.getTime())
+	}
 
-  createMarkers() {
+	createMarkers() {
 		this.markers = Array<marker>()
 		for (let notif of this.currentDevice.locationHistory) {
-			this.markers.push({ title: "Lost "+ this.currentDevice.name, latitude: notif.location.latitude, longitude: notif.location.longitude });
+			this.markers.push({ title: "Lost " + this.currentDevice.name, latitude: notif.location.latitude, longitude: notif.location.longitude });
 		}
 		console.log(this.markers)
 	}
@@ -75,12 +64,6 @@ export class LocationHistoryPage implements OnInit {
 			'<h2 id="firstHeading" class"firstHeading">' +
 			marker.title +
 			'</h2>' +
-			'<p>Latitude: ' +
-			marker.latitude +
-			'</p>' +
-			'<p>Longitude: ' +
-			marker.longitude +
-			'</p>' +
 			'</div>';
 
 		let infoWindow = new google.maps.InfoWindow({
@@ -100,7 +83,7 @@ export class LocationHistoryPage implements OnInit {
 		}
 	}
 
-	showMap(latitude:number = this.currentDevice.locationHistory[0].location.latitude, longitude:number =this.currentDevice.locationHistory[0].location.longitude ) {
+	showMap(latitude: number = this.currentDevice.locationHistory[0].location.latitude, longitude: number = this.currentDevice.locationHistory[0].location.longitude) {
 		const location = new google.maps.LatLng(latitude, longitude);
 		const options = {
 			center: location,
@@ -189,16 +172,17 @@ export class LocationHistoryPage implements OnInit {
 				]*/
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
-    this.addMarkersToMap(this.markers);
-    console.log(this.markers)
-  }
-  
-  moveCamera(longitude: number, latitude:number){
-    this.showMap(longitude,latitude)
-  }
+		this.addMarkersToMap(this.markers);
+		console.log(this.markers)
+	}
 
-  
+	moveCamera(longitude: number, latitude: number) {
+		this.showMap(latitude, longitude)
+	}
+}
 
-
-
+export class marker {
+	title: string;
+	latitude: number;
+	longitude: number;
 }

@@ -4,6 +4,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { DeviceListService, EnabledLocation } from '../device-list.service';
 import { NewEnabledLocationModalPage } from '../new-enabled-location-modal/new-enabled-location-modal.page';
 import { Device } from '../device-list.service'
+import { BluetoothService } from '../bluetooth.service';
 
 declare var google: any;
 
@@ -21,7 +22,8 @@ export class EnabledNotifLocationsPage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private deviceListService: DeviceListService,
-    private alertController: AlertController) { }
+    private alertController: AlertController,
+    private bluetoothService: BluetoothService) { }
 
   async ngOnInit() {
     this.currentDeviceID = this.route.snapshot.paramMap.get('id');
@@ -45,6 +47,8 @@ export class EnabledNotifLocationsPage implements OnInit {
     const { data } = await modal.onDidDismiss();
     this.currentDevice.settings.enabledLocations.push(new EnabledLocation(data.nickname, data.iconName, data.latitude, data.longitude, data.secondaryText))
     //this.deviceListService.addEnabledLocation(this.currentDevice, new EnabledLocation(data.nickname, data.iconName, data.longitude, data.latitude));
+    this.bluetoothService.syncData(this.currentDevice);
+    this.deviceListService.updateDevice(this.currentDevice);
   }
 
   deleteLocation(enabledLocation: EnabledLocation){
