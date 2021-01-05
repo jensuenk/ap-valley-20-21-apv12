@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LocalNotificationsService } from '../local-notifications.service';
 import { Device, DeviceListService } from '../device-list.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BluetoothService } from '../bluetooth.service';
 
 @Component({
   selector: 'app-alert-settings',
@@ -18,6 +19,7 @@ export class AlertSettingsPage implements OnInit {
   constructor(
     private localNotifs: LocalNotificationsService,
     private deviceListService: DeviceListService,
+    private bluetoothService: BluetoothService,
     private route: ActivatedRoute) { }
 
   async ngOnInit() {
@@ -42,11 +44,23 @@ export class AlertSettingsPage implements OnInit {
     this.currentDevice.settings.alertsEnabled = newSetting;
     console.log('Notifications have been set to: ' + newSetting);
     this.deviceListService.updateDevice(this.currentDevice);
+    if (ev.detail.value == "On") {
+      this.bluetoothService.enableRing(this.currentDevice);
+    }
+    else if (ev.detail.value == "Off") {
+      this.bluetoothService.disableRing(this.currentDevice);
+    }
   }
 
   changeAlertType(ev: any) {
     this.currentDevice.settings.alertType = ev.detail.value;
     console.log('Notification type has been changed to: ', ev.detail.value);
     this.deviceListService.updateDevice(this.currentDevice);
+    if (ev.detail.value == "Sound") {
+      this.bluetoothService.enableSound(this.currentDevice);
+    }
+    else if (ev.detail.value == "Vibration") {
+      this.bluetoothService.enableVibration(this.currentDevice);
+    }
   }
 }

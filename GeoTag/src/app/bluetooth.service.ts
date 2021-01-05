@@ -8,6 +8,7 @@ import { Notification, NotificationService } from './notification.service';
 const SERVICE_UUID = 'dfb0';
 const CHARACTERISTIC_UUID = 'dfb1';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -67,7 +68,7 @@ export class BluetoothService {
   onReadData(device, buffer: ArrayBuffer) {
     var data = this.bytesToString(buffer);
     console.log("Read: ", data);
-    if (data == "r") {
+    if (data == "a") {
       let notification: Notification = {
         id: "",
         message: "You are ringing your phone from " + device.name + "!",
@@ -122,11 +123,30 @@ export class BluetoothService {
   }
 
   ring(device: Device) {
-    this.sendData(device.address, "ring");
+    this.sendData(device.address, "r");
   }
 
   stopRing(device: Device) {
-    this.sendData(device.address, "stop");
+    this.sendData(device.address, "p");
+  }
+
+  enableVibration(device: Device) {
+    this.sendData(device.address, "s");
+  }
+
+  enableSound(device: Device) {
+    this.sendData(device.address, "l");
+  }
+
+  disableRing(device: Device) {
+    this.sendData(device.address, "x");
+  }
+
+  enableRing(device: Device) {
+    this.sendData(device.address, "z");
+  }
+
+  scudulePings(device: Device, delay: number) {
   }
 
   sendData(address: string, data: string) {
