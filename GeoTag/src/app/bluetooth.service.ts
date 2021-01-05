@@ -94,34 +94,36 @@ export class BluetoothService {
   }
 
   async onDisconnected(device: Device, error?) {
-    console.log("Error:", error);
-    let notification: Notification = {
-      id: "",
-      message: "You lost or forgot your " + device.name + "!",
-      date: new Date(),
-      device: device,
-      icon: device.icon,
-      alert: true
+    if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device)) {
+      let notification: Notification = {
+        id: "",
+        message: "You lost or forgot your " + device.name + "!",
+        date: new Date(),
+        device: device,
+        icon: device.icon,
+        alert: true
+      }
+      this.notificationService.addNotification(notification);
+      this.isConnected(device);
+  
+  
+      this.geolocation.getCurrentPosition()
+        .then((resp) => {
+          let locationAndDate = {
+            location: {
+              latitude: resp.coords.latitude,
+              longitude: resp.coords.longitude
+            },
+            date: new Date()
+          }
+          device.locationHistory.push(locationAndDate);
+          //this.deviceListService.updateDevice(device);
+        })
+        .catch((error) => {
+          console.log(error)
+        });
     }
-    this.notificationService.addNotification(notification);
-    this.isConnected(device);
-
-
-    this.geolocation.getCurrentPosition()
-      .then((resp) => {
-        let locationAndDate = {
-          location: {
-            latitude: resp.coords.latitude,
-            longitude: resp.coords.longitude
-          },
-          date: new Date()
-        }
-        device.locationHistory.push(locationAndDate);
-        //this.deviceListService.updateDevice(device);
-      })
-      .catch((error) => {
-        console.log(error)
-      });
+    console.log("Disconnected:", error);
   }
 
   isConnected(device: Device) {
@@ -175,6 +177,14 @@ export class BluetoothService {
     else {
       this.disableRing(device);
     }
+    if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device)) {
+      console.log("Should ring now")
+      this.enableRing(device);
+    }
+    else {
+      console.log("Should not ring now")
+      this.disableRing(device);
+    }
   }
 
   scedulePings() {
@@ -183,6 +193,37 @@ export class BluetoothService {
         this.sendPing(device);
       }
     });
+  }
+
+  shouldRingAtCurrentLocation(device: Device): boolean {
+    var should: boolean = false;
+    device.settings.enabledLocations.forEach(enabledLocation => {
+      if (enabledLocation.nickname == "Home") {
+        should = true;
+      }
+    });
+    return should;
+  }
+
+  shouldRingAtCurrentTime(device: Device): boolean {
+    var now = new Date();
+    now.setHours(now.getHours() + 1);
+    var should: boolean = false;
+    device.settings.enabledTimes.forEach(enabledTime => {
+      var beginHours = enabledTime.beginTime.split(":");
+      var beginDate = new Date();
+      beginDate.setHours(parseInt(beginHours[0])+1, parseInt(beginHours[1]));
+      var endHours = enabledTime.endTime.split(":");
+      var endDate = new Date();
+      endDate.setHours(parseInt(endHours[0])+1, parseInt(endHours[1]));
+
+      console.log("now", now, "begindate", beginDate, "enddate", endDate, now > beginDate && now < endDate)
+
+      if (now > beginDate && now < endDate) {
+        should = true;
+      }
+    });
+    return should;
   }
 
   sendData(address: string, data: string) {
