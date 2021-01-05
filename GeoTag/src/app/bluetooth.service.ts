@@ -4,19 +4,25 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Device, DeviceListService } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
+import { interval, Subscription } from 'rxjs';
 
 const SERVICE_UUID = 'dfb0';
 const CHARACTERISTIC_UUID = 'dfb1';
 
-
+const source = interval(10000);
 
 @Injectable({
   providedIn: 'root'
 })
 export class BluetoothService {
+  connectedDevices: Device[] = [];
+  pingInterval;
 
   constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService, private deviceListService: DeviceListService, private geolocation: Geolocation) {
+    
+    const subscribe = source.subscribe(val => this.scedulePings());
   }
+
   deviceName: string = "Bluno";
 
   bytesToString(buffer) {
@@ -42,8 +48,11 @@ export class BluetoothService {
     this.ble.autoConnect(device.address, this.onConnected.bind(this, device), this.onDisconnected.bind(this, device));
   }
 
-  disconnect(address: string) {
-    this.ble.disconnect(address);
+  async disconnect(device: Device) {
+    this.sendData(device.address, "d");
+    device.isConnected = false;
+		await new Promise(resolve => setTimeout(resolve, 1000));
+    this.ble.disconnect(device.address);
   }
 
   onConnected(device: Device) {
@@ -56,6 +65,7 @@ export class BluetoothService {
       () => console.log('Failed to subscribe for service state changes')
     )
     this.syncData(device);
+    this.connectedDevices.push(device);
   }
 
   onDataChange(device, buffer: ArrayBuffer) {
@@ -148,6 +158,10 @@ export class BluetoothService {
     this.sendData(device.address, "z");
   }
 
+  sendPing(device: Device) {
+    this.sendData(device.address, "i");
+  }
+
   syncData(device: Device) {
     if (device.settings.alertType == "Sound") {
       this.enableSound(device);
@@ -161,6 +175,14 @@ export class BluetoothService {
     else {
       this.disableRing(device);
     }
+  }
+
+  scedulePings() {
+    this.connectedDevices.forEach(device => {
+      if (device.isConnected) {
+        this.sendPing(device);
+      }
+    });
   }
 
   sendData(address: string, data: string) {

@@ -100,9 +100,14 @@ void handleIncomingData() {
     case 'z':
       ringEnabled = true;
       break;
+    case 'd':
+      receivedPing = false;
+      stopRing();
+      break;
     default:
       receivedPing = true;
       previousPingMillis = millis();
+      stopRing();
       break;
   }
 }
