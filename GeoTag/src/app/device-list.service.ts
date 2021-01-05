@@ -104,7 +104,7 @@ export class DeviceListService {
   }
 
   updateDevice(device: Device) {
-    console.log(device)
+    //console.log(device)
     return this.deviceCollection.doc(device.id).update(device);
   }
 

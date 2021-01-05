@@ -107,7 +107,6 @@ void handleIncomingData() {
     default:
       receivedPing = true;
       previousPingMillis = millis();
-      stopRing();
       break;
   }
 }

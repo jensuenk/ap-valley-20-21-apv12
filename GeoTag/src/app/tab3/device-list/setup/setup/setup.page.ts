@@ -69,7 +69,7 @@ export class SetupPage implements OnInit {
             nickname: 'Lunch Time',
             icon: 'fast-food',
             beginTime: "12:00",
-            endTime: "14:00",
+            endTime: "15:00",
             enabled: true
           }]
       }

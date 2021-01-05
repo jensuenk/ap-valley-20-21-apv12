@@ -66,6 +66,8 @@ export class EnabledNotifLocationsPage implements OnInit {
           text: 'OK',
           handler: (data: any) =>{
             this.deviceListService.deleteEnabledLocation(this.currentDevice, enabledLocation)
+            this.bluetoothService.syncData(this.currentDevice);
+            this.deviceListService.updateDevice(this.currentDevice);
           }
         }
       ]

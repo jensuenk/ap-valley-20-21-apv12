@@ -104,6 +104,8 @@ export class EnabledNotifTimesPage implements OnInit {
           text: 'OK',
           handler: (data: any) =>{
             this.deviceListService.deleteEnabledTime(this.currentDevice, enabledTime)
+            this.bluetoothService.syncData(this.currentDevice);
+            this.deviceListService.updateDevice(this.currentDevice);
           }
         }
       ]
