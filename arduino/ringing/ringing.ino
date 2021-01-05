@@ -21,13 +21,13 @@ bool loud = false;
 
 // Perodic ping data
 unsigned long previousPingMillis = 0;
-const long noPingDuration = 110000;
-bool receivedPing = true;
+const long noPingDuration = 11000;
+bool receivedPing = false;
 
 // Transfered settings
 bool ringEnabled = true;
-bool soundEnabled = false;
-bool vibrationEnabled = true;
+bool soundEnabled = true;
+bool vibrationEnabled = false;
 
 void setup() {
   Serial.begin(115200);
@@ -70,7 +70,7 @@ void loop() {
 
   // Check if their has been a ping from the smartphone
   if (receivedPing && (millis() - previousPingMillis >= noPingDuration)) {
-    if (shouldRing) {
+    if (shouldRing()) {
       startRing();
       receivedPing = false;
     }
@@ -95,6 +95,7 @@ void handleIncomingData() {
       break;
     case 'x':
       ringEnabled = false;
+      stopRing();
       break;
     case 'z':
       ringEnabled = true;

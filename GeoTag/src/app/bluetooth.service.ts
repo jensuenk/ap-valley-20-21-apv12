@@ -9,6 +9,7 @@ const SERVICE_UUID = 'dfb0';
 const CHARACTERISTIC_UUID = 'dfb1';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -50,10 +51,11 @@ export class BluetoothService {
     device.isConnected = true;
     this.ble.startNotification(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).subscribe(
       data => {
-        this.onDataChange(device, data)
+        this.onDataChange(device, data);
       },
       () => console.log('Failed to subscribe for service state changes')
     )
+    this.syncData(device);
   }
 
   onDataChange(device, buffer: ArrayBuffer) {
@@ -105,7 +107,7 @@ export class BluetoothService {
           date: new Date()
         }
         device.locationHistory.push(locationAndDate);
-        this.deviceListService.updateDevice(device);
+        //this.deviceListService.updateDevice(device);
       })
       .catch((error) => {
         console.log(error)
@@ -146,7 +148,19 @@ export class BluetoothService {
     this.sendData(device.address, "z");
   }
 
-  scudulePings(device: Device, delay: number) {
+  syncData(device: Device) {
+    if (device.settings.alertType == "Sound") {
+      this.enableSound(device);
+    }
+    else if (device.settings.alertType == "Vibration") {
+      this.enableVibration(device);
+    }
+    if (device.settings.alertsEnabled == true) {
+      this.enableRing(device);
+    }
+    else {
+      this.disableRing(device);
+    }
   }
 
   sendData(address: string, data: string) {

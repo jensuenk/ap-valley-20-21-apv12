@@ -51,7 +51,7 @@ export class SetupPage implements OnInit {
       address: this.devicelistService.currentAddress,
       locationHistory: [],
       settings: {
-        alertType: 'Vibration',
+        alertType: 'Sound',
         alertsEnabled: true,
         timeAlertsEnabled: true,
         locationAlertsEnabled: true,
