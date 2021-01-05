@@ -13,6 +13,8 @@
       <ion-col>
         <ion-list>
           <ion-card *ngFor = "let location of currentDevice.settings.enabledLocations">
+            <ion-icon class="deleteIcon" name="close-circle-outline" size="large" (click)="deleteLocation(location)"></ion-icon>
+
             <ion-grid>
               <ion-row>
                 <ion-col size="2">

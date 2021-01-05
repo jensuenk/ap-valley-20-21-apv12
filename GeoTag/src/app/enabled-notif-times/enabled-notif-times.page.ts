@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { DeviceListService, EnabledTime } from '../device-list.service';
 import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-time-modal.page'
 import { Device } from '../device-list.service'
@@ -20,6 +20,7 @@ export class EnabledNotifTimesPage implements OnInit {
     private route: ActivatedRoute,
     private modalController: ModalController,
     private deviceListService: DeviceListService,
+    private alertController: AlertController,
     private bluetoothService: BluetoothService) { }
 
   async ngOnInit() {
@@ -86,5 +87,31 @@ export class EnabledNotifTimesPage implements OnInit {
     this.currentDevice.settings.enabledTimes.push(new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime))
     this.bluetoothService.syncData(this.currentDevice);
     this.deviceListService.updateDevice(this.currentDevice);
+  }
+
+  deleteTime(enabledTime: EnabledTime){
+    this.showAlert(enabledTime)
+  }
+
+  showAlert(enabledTime: EnabledTime) {
+
+    this.alertController.create({
+      header: 'Alert',
+      message: 'Are you sure you want to delete this setting?',
+      buttons: [
+        'Cancel', 
+        {
+          text: 'OK',
+          handler: (data: any) =>{
+            this.deviceListService.deleteEnabledTime(this.currentDevice, enabledTime)
+          }
+        }
+      ]
+    }).then(res => {
+
+      res.present();
+
+    });
+
   }
 }

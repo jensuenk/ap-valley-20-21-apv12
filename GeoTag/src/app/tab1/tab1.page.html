@@ -49,6 +49,39 @@
                 </ion-row>
               </ion-grid>
             </ion-card>
+            <div *ngIf="deviceListService.deviceList">
+
+                <ion-card class="deviceCard" *ngIf="deviceListService.deviceList.length == 0"
+                [routerLink]="['/','device-list']">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="2">
+                      <ion-grid>
+                        <ion-row>
+                          <ion-col>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col>
+                            <ion-icon name="add-circle-outline" size="large"></ion-icon>
+                          </ion-col>
+                        </ion-row>
+                        <ion-row>
+                          <ion-col>
+                          </ion-col>
+                        </ion-row>
+                      </ion-grid>
+                    </ion-col>
+                    <ion-col size="8">
+                      <h1>Nothing Found</h1>
+                      <p>Click here to add a device!</p>
+                    </ion-col>
+                    <ion-col size="2">
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-card>
+            </div>
           </ion-list>
         </ion-col>
       </ion-row>

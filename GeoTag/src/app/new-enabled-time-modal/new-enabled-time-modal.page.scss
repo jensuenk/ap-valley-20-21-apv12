@@ -1,5 +1,3 @@
-
-
 ion-grid, ion-col, ion-row{
     //border: solid white 1px;
 }
@@ -38,14 +36,15 @@ ion-button{
     right: 0;
     width: 90%;
     font-family: 'Montserrat', sans-serif;
-    --background:rgb(43,186,238) !important;
-    --background: linear-gradient(90deg, rgba(43,186,238,1) 16%, rgba(13,152,238,1) 72%) !important;
+    --background:rgb(238, 137, 43) !important;
+    --background: linear-gradient(90deg, rgb(238, 153, 43) 16%, rgb(238, 84, 13) 72%) !important;
 }
 
 ion-icon {
     font-size: 3em;
-    color: white;
+    color: rgb(0, 0, 0);
 }
+
 .imageHolder{
     text-align: center;
     border-radius: 100%;

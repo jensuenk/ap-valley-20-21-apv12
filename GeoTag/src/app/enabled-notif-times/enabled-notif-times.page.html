@@ -13,6 +13,7 @@
       <ion-col>
         <ion-list>
           <ion-card *ngFor = "let time of currentDevice.settings.enabledTimes">
+            <ion-icon class="deleteIcon" name="close-circle-outline" size="large" (click)="deleteTime(time)"></ion-icon>
             <ion-grid>
               <ion-row>
                 <ion-col size="2">

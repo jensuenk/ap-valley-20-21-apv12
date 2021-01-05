@@ -103,7 +103,6 @@ export class NewEnabledLocationModalPage implements OnInit{
     }; 
     this.nativeGeocoder.forwardGeocode(address, options)
       .then((result: NativeGeocoderResult[]) => {
-        alert(result[0].latitude + " " + result[0].longitude)
         this.latitude = result[0].latitude.toString()
         this.longitude = result[0].longitude.toString()
         this.dismiss()
@@ -133,7 +132,6 @@ export class NewEnabledLocationModalPage implements OnInit{
   //wE CALL THIS FROM EACH ITEM.
   SelectSearchResult(item) {
     ///WE CAN CONFIGURE MORE COMPLEX FUNCTIONS SUCH AS UPLOAD DATA TO FIRESTORE OR LINK IT TO SOMETHING
-    alert(JSON.stringify(item)) 
     this.nickname = item.structured_formatting.main_text
     this.secondaryText = item.structured_formatting.secondary_text
     this.iconName = "home"
@@ -155,7 +153,6 @@ export class NewEnabledLocationModalPage implements OnInit{
   }
 
   dismiss(){
-    alert(this.latitude + " " + this.longitude)
     this.modalCtrl.dismiss({
       'iconName': this.iconName,
       'nickname': this.nickname,
