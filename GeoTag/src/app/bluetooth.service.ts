@@ -4,7 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { Device, DeviceListService } from './device-list.service';
 import { Notification, NotificationService } from './notification.service';
-import { interval, Subscription } from 'rxjs';
+import { interval } from 'rxjs';
 
 const SERVICE_UUID = 'dfb0';
 const CHARACTERISTIC_UUID = 'dfb1';
@@ -18,7 +18,7 @@ export class BluetoothService {
   connectedDevices: Device[] = [];
   pingInterval;
 
-  constructor(private ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService, private deviceListService: DeviceListService, private geolocation: Geolocation) {
+  constructor(public ble: BLE, public navCtrl: NavController, private alertController: AlertController, private toastCtrl: ToastController, private notificationService: NotificationService, private deviceListService: DeviceListService, private geolocation: Geolocation) {
     
     const subscribe = source.subscribe(val => this.scedulePings());
   }
@@ -235,5 +235,9 @@ export class BluetoothService {
       .catch(function (error) {
         console.log(error)
       });
+  }
+
+  getDistance(device: Device) {
+    this.ble.readRSSI
   }
 }

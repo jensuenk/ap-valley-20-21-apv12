@@ -1,0 +1,14 @@
+<ion-content>
+  <div>
+    <h1>{{rssi}}  {{ distance }}</h1>
+    <p>Click below to stop ringing this device</p>
+    <section>
+      <ion-item lines="none">
+        <ion-label>Enable ringing</ion-label>
+        <ion-checkbox (click)="toggleRing()" [(ngModel)]="isChecked"></ion-checkbox>
+      </ion-item>
+      <ion-button (click)="dismiss()" expand="block">I fount it</ion-button>
+    </section>
+  </div>
+
+</ion-content>

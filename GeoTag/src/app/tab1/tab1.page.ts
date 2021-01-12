@@ -1,6 +1,7 @@
 import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LoadingController } from '@ionic/angular';
 import { AuthService } from '../auth/auth.service';
 import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
@@ -121,6 +122,7 @@ export class Tab1Page implements OnInit {
 		private deviceListService: DeviceListService,
 		private bluetoothService: BluetoothService,
 		private notificationService: WorkingNotifServiceService,
+		private loadingController: LoadingController,
 		private ngZone: NgZone) {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
@@ -134,6 +136,13 @@ export class Tab1Page implements OnInit {
 	}
 
 	async ngOnInit() {
+		const loading = await this.loadingController.create({
+			spinner: "circles",
+			message: 'Please wait...',
+			duration: 5000
+		  });
+		await loading.present();
+
 		await new Promise(resolve => setTimeout(resolve, 1000));
 		this.bluetoothService.scan();
 		await new Promise(resolve => setTimeout(resolve, 3000));
@@ -146,6 +155,7 @@ export class Tab1Page implements OnInit {
 
 	connectDevices() {
 		this.deviceListService.deviceList.forEach((device) => {
+			device.isConnected = false;
 			this.ngZone.run(() => {
 				this.bluetoothService.connect(device);
 			});
@@ -249,88 +259,7 @@ export class Tab1Page implements OnInit {
 		const options = {
 			center: location,
 			zoom: 15,
-			disableDefaultUI: true,
-			/*styles:
-				[
-					{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
-					{ elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
-					{ elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
-					{
-						featureType: 'administrative.locality',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'poi',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'poi.park',
-						elementType: 'geometry',
-						stylers: [{ color: '#263c3f' }]
-					},
-					{
-						featureType: 'poi.park',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#6b9a76' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'geometry',
-						stylers: [{ color: '#38414e' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'geometry.stroke',
-						stylers: [{ color: '#212a37' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#9ca5b3' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'geometry',
-						stylers: [{ color: '#746855' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'geometry.stroke',
-						stylers: [{ color: '#1f2835' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#f3d19c' }]
-					},
-					{
-						featureType: 'transit',
-						elementType: 'geometry',
-						stylers: [{ color: '#2f3948' }]
-					},
-					{
-						featureType: 'transit.station',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'geometry',
-						stylers: [{ color: '#17263c' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#515c6d' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'labels.text.stroke',
-						stylers: [{ color: '#17263c' }]
-					}
-				]*/
+			disableDefaultUI: true
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
 		this.updatePostion();
