@@ -20,6 +20,7 @@ export class NearbyScanModalPage implements OnInit {
   distance: String = "";
   isChecked = false;
   rssi;
+  percentage: number = 0;
 
   constructor(  
     public modalCtrl: ModalController,
@@ -34,23 +35,33 @@ export class NearbyScanModalPage implements OnInit {
     this.bluetoothService.ble.readRSSI(this.device.address)
     .then(rssi => {
       this.rssi = Math.abs(rssi);
-      if (this.rssi <= 47) {
-        this.distance = "0m"
+      this.percentage = (100 - ((this.rssi - 45) * 2));
+      if (this.percentage > 100) {
+        this.percentage = 100;
+      }
+      if (this.rssi <= 45) {
+        this.distance = "With you"
       }
       else if (this.rssi <= 50) {
-        this.distance = "0.5m"
+        this.distance = "Less than 0.5m away"
       }
       else if (this.rssi <= 60 ) {
-        this.distance = "1m"
+        this.distance = "About 1m away"
       }
       else if (this.rssi <= 65) {
-        this.distance = "2m"
-      }
-      else if (this.rssi <= 68) {
-        this.distance = "3m"
+        this.distance = "About 2m away"
       }
       else if (this.rssi <= 70) {
-        this.distance = "4m"
+        this.distance = "About 3m away"
+      }
+      else if (this.rssi <= 74) {
+        this.distance = "About 4m away"
+      }
+      else if (this.rssi <= 77) {
+        this.distance = "About 5m away"
+      }
+      else if (this.rssi > 77) {
+        this.distance = "More than 5m away"
       }
     })
     .catch(err => {

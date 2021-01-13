@@ -1,14 +1,19 @@
 <ion-content>
   <div>
-    <h1>{{rssi}}  {{ distance }}</h1>
-    <p>Click below to stop ringing this device</p>
+    <h1 class="title">Tag Finder</h1>
+    <p class="sub-title">Please move around so that the signal strength increases until the progressbar is full.</p>
+    <h2 class="bar-title">Distance tracker</h2>
+    <h4>{{ percentage }}%</h4>
+    <ion-progress-bar value="{{percentage / 100}}"></ion-progress-bar>
+    <h5>{{ distance }}</h5>
+    
     <section>
       <ion-item lines="none">
-        <ion-label>Enable ringing</ion-label>
+        <ion-label>Make sound</ion-label>
         <ion-checkbox (click)="toggleRing()" [(ngModel)]="isChecked"></ion-checkbox>
       </ion-item>
-      <ion-button (click)="dismiss()" expand="block">I fount it</ion-button>
+      <ion-button (click)="dismiss()" expand="block">I found it!</ion-button>
     </section>
   </div>
-
 </ion-content>
+
