@@ -43,8 +43,8 @@ const routes: Routes = [
     loadChildren: () => import('./tab3/device-list/device-list.module').then( m => m.DeviceListPageModule)
   },
   {
-    path: 'ring-modal',
-    loadChildren: () => import('./ring-modal/ring-modal.module').then( m => m.RingModalPageModule)
+    path: 'nearby-scan-modal',
+    loadChildren: () => import('./nearby-scan-modal/nearby-scan-modal.module').then( m => m.NearbyScanModalPageModule)
   },
   {
     path: 'icon-modal',
@@ -77,7 +77,8 @@ const routes: Routes = [
   {
     path: 'new-enabled-time-modal',
     loadChildren: () => import('./new-enabled-time-modal/new-enabled-time-modal.module').then( m => m.NewEnabledTimeModalPageModule)
-  },  {
+  },
+  {
     path: 'new-enabled-location-modal',
     loadChildren: () => import('./new-enabled-location-modal/new-enabled-location-modal.module').then( m => m.NewEnabledLocationModalPageModule)
   }

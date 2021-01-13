@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { AuthService } from '../auth/auth.service';
 import { Device, DeviceListService } from '../device-list.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { RingModalPage } from '../ring-modal/ring-modal.page';
+import { BluetoothService } from '../bluetooth.service';
+import { NearbyScanModalPage } from '../nearby-scan-modal/nearby-scan-modal.page';
 
 declare var google: any
-
 
 @Component({
   selector: 'app-device-details',
@@ -34,8 +35,12 @@ export class DeviceDetailsPage {
     private router: Router,
     public deviceListService: DeviceListService,
     private route: ActivatedRoute,
-    private modalController: ModalController) {
+    private modalController: ModalController,
+    private bluetoothService: BluetoothService,
+    private toastController: ToastController
+    ) {
   }
+
   ngOnInit() {
     if (!this.auth.isLoggedIn) {
       this.router.navigate(['login']);
@@ -46,6 +51,10 @@ export class DeviceDetailsPage {
   }
 
   async presentModal() {
+    if (!this.currentDevice.isConnected) {
+      this.notConnectedToast();
+      return;
+    }
     const modal = await this.modalController.create({
       component: RingModalPage,
       swipeToClose: true,
@@ -56,19 +65,21 @@ export class DeviceDetailsPage {
     return await modal.present();
   }
 
-
   findCurrentDevice() {
     this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.currentDeviceId)
   }
+
   ionViewDidEnter() {
     this.showMap();
   }
+
   createMarkers() {
     this.markers = Array<marker>()
     for (let device of this.deviceListService.deviceList) {
       this.markers.push({ title: device.name, latitude: device.location.latitude, longitude: device.location.longitude });
     }
   }
+
   addMarkersToMap(markers) {
     for (let marker of markers) {
       let position = new google.maps.LatLng(marker.latitude, marker.longitude);
@@ -84,6 +95,7 @@ export class DeviceDetailsPage {
     }
 
   }
+
   addInfoWindowToMarker(marker) {
     let infoWindowContent = '<div id="content">' +
       '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>'
@@ -112,88 +124,6 @@ export class DeviceDetailsPage {
       center: location,
       zoom: 15,
       disableDefaultUI: true
-      /*,
-      styles: [
-        { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-        { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-        {
-          featureType: "administrative.locality",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {
-          featureType: "poi",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {   
-          
-          featureType: "poi.park",
-          elementType: "geometry",
-          stylers: [{ color: "#263c3f" }],
-        },
-        {
-          featureType: "poi.park",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#6b9a76" }],
-        },
-        {
-          featureType: "road",
-          elementType: "geometry",
-          stylers: [{ color: "#38414e" }],
-        },
-        {
-          featureType: "road",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#212a37" }],
-        },
-        {
-          featureType: "road",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#9ca5b3" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry",
-          stylers: [{ color: "#746855" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry.stroke",
-          stylers: [{ color: "#1f2835" }],
-        },
-        {
-          featureType: "road.highway",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#f3d19c" }],
-        },
-        {
-          featureType: "transit",
-          elementType: "geometry",
-          stylers: [{ color: "#2f3948" }],
-        },
-        {
-          featureType: "transit.station",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#d59563" }],
-        },
-        {
-          featureType: "water",
-          elementType: "geometry",
-          stylers: [{ color: "#17263c" }],
-        },
-        {
-          featureType: "water",
-          elementType: "labels.text.fill",
-          stylers: [{ color: "#515c6d" }],
-        },
-        {
-          featureType: "water",
-          elementType: "labels.text.stroke",
-          stylers: [{ color: "#17263c" }],
-        },
-      ]*/,
     }
     this.map = new google.maps.Map(this.mapRef.nativeElement, options,);
     this.updatePostion()
@@ -208,8 +138,34 @@ export class DeviceDetailsPage {
       console.log('Error getting location', error);
     });
   }
+  
+  startDeviceFinder() {
+    this.bluetoothService.isConnected(this.currentDevice);
+    if (!this.currentDevice.isConnected) {
+      this.notConnectedToast();
+      return;
+    }
+    this.presentMeasureModal();
+  }
+  
+  async presentMeasureModal() {
+    const modal = await this.modalController.create({
+      component: NearbyScanModalPage,
+      swipeToClose: true,
+      componentProps: {
+        'device': this.currentDevice
+      }
+    });
+    return await modal.present();
+  }
 
-
+  async notConnectedToast() {
+    const toast = await this.toastController.create({
+      message: "You need to be connected to the tag to do this.",
+      duration: 2000
+    });
+    toast.present();
+  }
 
 }
 class marker {

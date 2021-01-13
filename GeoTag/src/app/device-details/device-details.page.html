@@ -37,6 +37,14 @@
           </ion-label>          
         </ion-item>
 
+        <ion-item lines="none" (click)="startDeviceFinder()">
+          <ion-icon name="search-outline"></ion-icon>            
+          <ion-label>
+            <h2>Tag Finder</h2>
+            <p>Measure the distance to yor tag</p>
+          </ion-label>          
+        </ion-item>
+
         <ion-item *ngIf="currentDevice.locationHistory.length != 0" lines="none" [routerLink]="['/','location-history', currentDeviceId]">
           <ion-icon name="compass-outline"></ion-icon>          
           <ion-label>

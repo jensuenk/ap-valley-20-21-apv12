@@ -1,108 +1,105 @@
-ion-title{
-    color: black;
+ion-title {
+  color: black;
 }
 
-ion-back-button{
-    color: black;
+ion-back-button {
+  color: black;
 }
 
-#map{
-    height: 13em;
-    position: relative;
+#map {
+  height: 13em;
+  position: relative;
 }
-.mapRow{
-    position: relative;
+.mapRow {
+  position: relative;
 }
-#firstHeading{
-    color:black !important
+#firstHeading {
+  color: black !important;
 }
-p{
-    color:black
+p {
+  color: black;
 }
-.storemapper-iw-container{
-    background-color: black !important;
-}
-
-.icon{
-    width: 30%;
-    height: 100%;
+.storemapper-iw-container {
+  background-color: black !important;
 }
 
-.mapPlaceholder{
-    height: 13em;
+.icon {
+  width: 30%;
+  height: 100%;
 }
 
-.deviceList{
-    height: 100%;
+.mapPlaceholder {
+  height: 13em;
 }
 
-ion-card{
-    height: 7em;
+.deviceList {
+  height: 100%;
 }
 
-
-div p{
-    margin: 0 auto;
-    color:  rgb(175, 175, 175);
-    font-size: small;
+ion-card {
+  height: 7em;
 }
 
-p{
-    color:  rgb(175, 175, 175);
+div p {
+  margin: 0 auto;
+  color: rgb(175, 175, 175);
+  font-size: small;
 }
 
-ion-label{
-    margin-left: 1em;
+p {
+  color: rgb(175, 175, 175);
 }
 
-ion-label p{
-    font-size: 12px;
+ion-label {
+  margin-left: 1em;
 }
 
-ion-item{
-    margin-top: 3em;
+ion-label p {
+  font-size: 12px;
+}
+
+ion-item {
+  margin-top: 2em;
 }
 
 ion-toolbar {
-    --background: transparent;
-    --ion-color-base: transparent !important;
-    background: transparent !important;
+  --background: transparent;
+  --ion-color-base: transparent !important;
+  background: transparent !important;
 }
 
-ion-header{
-    --background-color: transparent;
-    --ion-color-base: transparent !important;
+ion-header {
+  --background-color: transparent;
+  --ion-color-base: transparent !important;
 }
 
-.svgImage{
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
+.svgImage {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
 }
 
-.ringCard{
-    h2{
-        color: white;
-    }
-    width: 30%;
-    background:rgb(238,162,43) !important;
-    background: linear-gradient(30deg, rgba(238,162,43,1) 31%, rgba(238,60,13,1) 100%) !important;
+.ringCard {
+  h2 {
     color: white;
-    text-align: center;
-    ion-icon{
-        position: absolute;
-        top: 50%;
-        left: 35%;
-        margin: 0;
-        padding: 0;
-    }
-    margin: 0 auto;
-    border-radius: 30%;
+  }
+  width: 90%;
+  background-color: #f1962e;
+  color: white;
+  text-align: center;
+  ion-icon {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    margin: 0;
+    padding: 0;
+  }
+  margin: 0 auto;
 }
 
-.ringDiv{
-    width: 100%;
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 2rem;
+.ringDiv {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 2rem;
 }
