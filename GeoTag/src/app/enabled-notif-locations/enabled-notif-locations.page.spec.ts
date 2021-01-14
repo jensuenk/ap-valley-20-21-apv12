@@ -19,7 +19,8 @@ describe('EnabledNotifLocationsPage', () => {
   }));
   /*
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component.currentDevice).toBeDefined("");
   });
   */
+  
 });

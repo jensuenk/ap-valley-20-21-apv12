@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BLE } from '@ionic-native/ble';
 import { IonicModule } from '@ionic/angular';
 
 import { SettingsModalPage } from './settings-modal.page';
@@ -22,4 +23,5 @@ describe('SettingsModalPage', () => {
     expect(component).toBeTruthy();
   });
   */
+  
 });

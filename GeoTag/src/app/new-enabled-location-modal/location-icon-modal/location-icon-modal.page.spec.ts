@@ -1,3 +1,4 @@
+import { isSyntaxError } from '@angular/compiler';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
@@ -20,5 +21,19 @@ describe('LocationIconModalPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have profileicons set', () => {
+    expect(component.imgPath).toContain('./assets/images/profileIcons/');
+  });
+
+  it('should have an array of icons', () =>{
+    expect(component.icons).toBeDefined([]);
+  });
+
+  it('should push icons', () =>{
+    component.icons = []; //clear
+    component.createIcons(); //push 'defaultman to [0]'
+    expect(component.icons[0]).toBe('defaultMan');
   });
 });
