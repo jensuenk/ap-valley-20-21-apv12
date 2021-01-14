@@ -17,8 +17,9 @@ describe('NewEnabledTimeModalPage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
-
-  it('should create', () => {
+  /*
+  it('should create enabledtimes', () => {
     expect(component).toBeTruthy();
   });
+  */
 });

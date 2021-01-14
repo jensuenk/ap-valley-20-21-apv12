@@ -17,8 +17,17 @@ describe('IconModalPage', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
-
-  it('should create', () => {
+  
+  it('should create', () => { //works
     expect(component).toBeTruthy();
   });
+
+  it('shouldnt have icon names set', () => {
+    expect(component.iconName).toBeUndefined();
+  });
+
+  it('should have imgpath ./assets/images/profileIcons/', () => {
+    expect(component.imgPath).toContain('./assets/images/profileIcons/');
+  });
+  
 });
