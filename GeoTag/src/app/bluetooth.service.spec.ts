@@ -31,6 +31,11 @@ describe('bluetoothservice', () => {
     device = null; //no need for any data as we'ill simply poll the functions
   });
   
+
+  it('should be created',()=>{
+    expect(component).toBeTruthy();
+  });
+
   it('should have devicename Bluno', () => {
     expect(component.deviceName).toContain("Bluno");
   });
@@ -50,5 +55,5 @@ describe('bluetoothservice', () => {
     expect(component.bytesToString(testarray)).toContain("");
   });
 
-  
+
 });
