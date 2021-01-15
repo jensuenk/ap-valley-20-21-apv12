@@ -1,26 +1,42 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-
-
+import { AlertController, IonicModule, ModalController } from '@ionic/angular';
+import { BluetoothService } from '../bluetooth.service';
+import { DeviceListService } from '../device-list.service';
 import { SettingsModalPage } from './settings-modal.page';
 
 describe('SettingsModalPage', () => {
   let component: SettingsModalPage;
-  let fixture: ComponentFixture<SettingsModalPage>;
+  let bluetoothService:BluetoothService;
+  let modalController:ModalController;
+  let deviceListService:DeviceListService;
+  let alertController:AlertController;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ SettingsModalPage ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(SettingsModalPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
-  /*
+  beforeEach(() => {
+    bluetoothService = null;
+    modalController = null;
+    deviceListService = null;
+    alertController = null;
+    component = new SettingsModalPage(bluetoothService,deviceListService,modalController,alertController);
+  });
+  
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  */
+
+  it('should define an unset originalname',()=>{
+    expect(component.originalName).toBeFalsy();
+  });
+
+  it('should define an unset currentdevice',()=>{
+    expect(component.currentDevice).toBeFalsy();
+  });
+  
+  it('should define an unset id',()=>{
+    expect(component.id).toBeFalsy();
+  });
+
+  it('should define an unset iconname',()=>{
+    expect(component.iconName).toBeFalsy();
+  });
+
 });

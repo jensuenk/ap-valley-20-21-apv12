@@ -1,9 +1,8 @@
 import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { ExpectedConditions } from 'protractor';
 import { BluetoothService } from '../bluetooth.service';
 import { DeviceListService } from '../device-list.service';
-import { EnabledNotifLocationsPage, IEnabledLocation } from './enabled-notif-locations.page';
+import { EnabledNotifLocationsPage } from './enabled-notif-locations.page';
 
 describe('EnabledNotifLocationsPage', () => {
   let component: EnabledNotifLocationsPage;

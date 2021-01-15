@@ -1,5 +1,4 @@
 import { IonSlides, ModalController } from '@ionic/angular';
-import { ExpectedConditions } from 'protractor';
 import { NewEnabledTimeModalPage } from './new-enabled-time-modal.page';
 
 describe('NewEnabledTimeModalPage', () => {
