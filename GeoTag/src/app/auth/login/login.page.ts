@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
 
   logIn(email, password) {
     this.authService.signIn(email.value, password.value)
-      .then(async (res) => {
+      .then(async () => {
         this.presentLoading();
         var tries : number = 0; 
         while (!this.authService.isLoggedIn) {
@@ -65,7 +65,5 @@ export class LoginPage implements OnInit {
       duration: 500
     });
     await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
   }
 }
