@@ -77,7 +77,7 @@ export class BluetoothService {
     )
   }
 
-  onReadData(device, buffer: ArrayBuffer) {
+  onReadData(device: Device, buffer: ArrayBuffer) {
     var data = this.bytesToString(buffer);
     console.log("Read: ", data);
     if (data == "a") {
@@ -85,7 +85,8 @@ export class BluetoothService {
         id: "",
         message: "You are ringing your phone from " + device.name + "!",
         date: new Date(),
-        device: device,
+        deviceId: device.id,
+        deviceName: device.name,
         icon: device.icon,
         alert: true
       }
@@ -99,7 +100,8 @@ export class BluetoothService {
         id: "",
         message: "You lost or forgot your " + device.name + "!",
         date: new Date(),
-        device: device,
+        deviceId: device.id,
+        deviceName: device.name,
         icon: device.icon,
         alert: true
       }
@@ -197,6 +199,9 @@ export class BluetoothService {
 
   shouldRingAtCurrentLocation(device: Device): boolean {
     var should: boolean = false;
+    if (device.settings.enabledLocations == null) {
+      return false;
+    }
     device.settings.enabledLocations.forEach(enabledLocation => {
       if (enabledLocation.nickname == "Home") {
         should = true;
@@ -206,6 +211,9 @@ export class BluetoothService {
   }
 
   shouldRingAtCurrentTime(device: Device): boolean {
+    if (device.settings.enabledTimes == null) {
+      return false;
+    }
     var now = new Date();
     now.setHours(now.getHours() + 1);
     var should: boolean = false;

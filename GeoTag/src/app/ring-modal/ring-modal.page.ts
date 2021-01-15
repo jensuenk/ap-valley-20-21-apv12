@@ -10,13 +10,15 @@ import { BluetoothService } from '../bluetooth.service';
   styleUrls: ['./ring-modal.page.scss'],
 })
 
-
 export class RingModalPage implements OnInit {
 
   @Input() device: Device;
 
-  constructor(  public modalCtrl: ModalController,
-                private bluetoothService: BluetoothService, private notificationService:NotificationService) { }
+  constructor(  
+    public modalCtrl: ModalController,
+    private bluetoothService: BluetoothService, 
+    private notificationService:NotificationService
+  ) { }
 
   ngOnInit() {
     this.bluetoothService.ring(this.device);
@@ -25,7 +27,8 @@ export class RingModalPage implements OnInit {
 			id: "",
 			message: "You ringed your " + this.device.name + ".",
 			date: new Date(),
-      device: this.device,
+      deviceId: this.device.id,
+      deviceName: this.device.name,
       icon: "notifications-outline",
 			alert: false
 		}
@@ -34,7 +37,6 @@ export class RingModalPage implements OnInit {
 
   dismiss() {
     this.bluetoothService.stopRing(this.device);
-
     this.modalCtrl.dismiss({
       'dismissed': true
     });

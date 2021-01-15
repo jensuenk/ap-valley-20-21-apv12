@@ -4,7 +4,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { DeviceListService, EnabledTime } from '../device-list.service';
 import { NewEnabledTimeModalPage } from '../new-enabled-time-modal/new-enabled-time-modal.page'
 import { Device } from '../device-list.service'
-import { BluetoothService } from '../bluetooth.service';
 
 @Component({
   selector: 'app-enabled-notif-times',
@@ -13,7 +12,7 @@ import { BluetoothService } from '../bluetooth.service';
 })
 export class EnabledNotifTimesPage implements OnInit {
 
-  currentDeviceID: string;
+  currentDeviceId: string;
   currentDevice: Device;
 
   constructor(
@@ -21,52 +20,11 @@ export class EnabledNotifTimesPage implements OnInit {
     private modalController: ModalController,
     private deviceListService: DeviceListService,
     private alertController: AlertController,
-    private bluetoothService: BluetoothService) { }
+  ) { }
 
   async ngOnInit() {
-    this.currentDeviceID = this.route.snapshot.paramMap.get('id');
-    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceID)
-    /*if (this.currentDevice == null){
-      this.currentDevice = {
-        id: "",
-        name: "TestDevice",
-        location: {
-          latitude: 20,
-          longitude: 20
-        },
-        locationHistory: [{
-          location: {
-            latitude: 20,
-            longitude: 20
-          },
-          date: new Date()
-        }],
-        icon: "home",
-        address: "",
-        settings: {
-          alertType: 'Vibration',
-          alertsEnabled: true,
-          timeAlertsEnabled: true,
-          locationAlertsEnabled: true,
-          enabledLocations: [
-          {
-            nickname: 'Home',
-            icon: 'home',
-            latitude: "1",
-            longitude: "1",
-            enabled: true
-          }],
-          enabledTimes: [
-            {
-              nickname: 'Lunch Time',
-              icon: 'fast-food',
-              beginTime: "12:00",
-              endTime: "14:00",
-              enabled: true
-          }]
-        }
-      }
-    }*/
+    this.currentDeviceId = this.route.snapshot.paramMap.get('id');
+    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceId)
   }
 
   async presentModal() {
@@ -83,37 +41,29 @@ export class EnabledNotifTimesPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
-    this.currentDevice.settings.enabledTimes.push(new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime))
-    this.bluetoothService.syncData(this.currentDevice);
-    this.deviceListService.updateDevice(this.currentDevice);
+
+    this.deviceListService.addEnabledTime(this.currentDevice, new EnabledTime(data.nickname, data.iconName, data.beginTime, data.endTime));
   }
 
-  deleteTime(enabledTime: EnabledTime){
-    this.showAlert(enabledTime)
+  deleteTime(enabledTime: EnabledTime) {
+    this.showAlert(enabledTime);
   }
 
   showAlert(enabledTime: EnabledTime) {
-
     this.alertController.create({
       header: 'Alert',
       message: 'Are you sure you want to delete this setting?',
       buttons: [
-        'Cancel', 
+        'Cancel',
         {
           text: 'OK',
-          handler: (data: any) =>{
-            this.deviceListService.deleteEnabledTime(this.currentDevice, enabledTime)
-            this.bluetoothService.syncData(this.currentDevice);
-            this.deviceListService.updateDevice(this.currentDevice);
+          handler: () => {
+            this.deviceListService.deleteEnabledTime(this.currentDevice, enabledTime);
           }
         }
       ]
     }).then(res => {
-
       res.present();
-
     });
-
   }
 }

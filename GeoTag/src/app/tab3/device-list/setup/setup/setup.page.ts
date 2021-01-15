@@ -55,23 +55,8 @@ export class SetupPage implements OnInit {
         alertsEnabled: true,
         timeAlertsEnabled: true,
         locationAlertsEnabled: true,
-        enabledLocations: [
-          {
-            nickname: 'Home',
-            icon: 'home',
-            latitude: this.currentPosLatitude,
-            longitude: this.currentPosLongitude,
-            enabled: true,
-            secondaryText: ""
-          }],
-        enabledTimes: [
-          {
-            nickname: 'Lunch Time',
-            icon: 'fast-food',
-            beginTime: "12:00",
-            endTime: "15:00",
-            enabled: true
-          }]
+        enabledLocations: [],
+        enabledTimes: []
       }
     }
 
