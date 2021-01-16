@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AlertController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +12,15 @@ import { AlertController } from '@ionic/angular';
 export class AuthService {
 
   userData: firebase.User;
+  profilePic: string = "defaultMan.jpg";
 
   constructor(
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
     public ngZone: NgZone,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private storage: Storage
   ) {
     this.ngFireAuth.authState.subscribe(user => {
       if (user) {
@@ -30,6 +33,12 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
       }
     })
+    
+		this.storage.get('profilePic').then((val) => {
+        if (val != null) {
+          this.profilePic = val;
+        }
+		  });
   }
 
   // Login in with email/password

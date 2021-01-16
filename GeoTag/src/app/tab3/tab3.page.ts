@@ -6,6 +6,7 @@ import { ToastController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-tab3',
@@ -15,23 +16,25 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 export class Tab3Page implements OnInit {
 
-  iconName: string = 'defaultMan.jpg';
-
   constructor(
     public actionSheetController: ActionSheetController,
     private modalController: ModalController,
     private toastController: ToastController,
     private router: Router,
     private auth: AuthService,
-    private inAppBrowser: InAppBrowser 
+    private inAppBrowser: InAppBrowser,
+		public storage: Storage
   ) {}
 
+  profilePic: string;
+
   ngOnInit() {
+    this.profilePic = this.auth.profilePic;
   }
 
-    openDeviceList() {
-      this.router.navigate(['/device-list'])
-    }
+  openDeviceList() {
+    this.router.navigate(['/device-list'])
+  }
 
   async presentActionSheet() {
     const actionSheet = await this.actionSheetController.create({
@@ -64,7 +67,9 @@ export class Tab3Page implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    this.iconName = data.iconName;
+    this.auth.profilePic = data.iconName;
+    this.profilePic = data.iconName;
+		this.storage.set('profilePic', data.iconName);
     this.presentToast();
   }
 
