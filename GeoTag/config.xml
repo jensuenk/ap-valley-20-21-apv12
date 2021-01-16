@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.geotag" ios-CFBundleVersion="0.1.3" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.io.geotag" ios-CFBundleVersion="0.1.3" version="1.01" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>GeoTag</name>
     <description>Never lose your stuff again.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">AP Group 12</author>
@@ -89,4 +89,6 @@
     <allow-navigation href="http://localhost:8100" sessionid="59c18a6b" />
     <allow-navigation href="http://192.168.0.104:8100" sessionid="c70a121c" />
     <allow-navigation href="http://192.168.0.105:8100" sessionid="64785aa7" />
+    <allow-navigation href="*" />
+    <access origin="*" />
 </widget>

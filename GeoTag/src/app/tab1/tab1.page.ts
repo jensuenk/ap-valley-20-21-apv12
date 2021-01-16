@@ -1,8 +1,9 @@
 import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LoadingController } from '@ionic/angular';
 import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 declare var google: any;
 
@@ -115,7 +116,9 @@ export class Tab1Page implements OnInit {
 		private geolocation: Geolocation,
 		private deviceListService: DeviceListService,
 		private bluetoothService: BluetoothService,
-		private loadingController: LoadingController
+		private loadingController: LoadingController,
+		public alertController: AlertController,
+		public storage: Storage
 	) {}
 
 	ionViewDidEnter() {
@@ -143,6 +146,24 @@ export class Tab1Page implements OnInit {
         		this.bluetoothService.syncData(device);
       		});
     	});
+
+		this.storage.get('alertShown').then((val) => {
+			if (val == null){
+				this.presentAlert()
+			}
+		  });
+	}
+
+	async presentAlert() {
+		const alert = await this.alertController.create({
+		  header: 'Attention',
+		  message: 'By using our app you agree to let us use your location when the app is closed. When a GeoTag disconnects, our app will send you a notification. By using the coordinates of your phone we can assign these coordinates to a GeoTag so that the last known position will be displayed here in case you did not see the notification. Additionally, by letting us use your location in the background, we are able to correctly apply the location settings you configure in the app.',
+		  buttons: ['OK']
+		});
+
+		this.storage.set('alertShown', 'true');
+		
+		await alert.present();
 	}
 
 	showDeviceList() {

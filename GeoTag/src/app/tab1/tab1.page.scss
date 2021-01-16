@@ -109,3 +109,10 @@ ion-slides {
     text-align: center;
     transition: all 1s;
 }
+
+.infoIcon{
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    z-index: 1000;
+}
