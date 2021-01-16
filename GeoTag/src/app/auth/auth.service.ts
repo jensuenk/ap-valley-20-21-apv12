@@ -72,7 +72,6 @@ export class AuthService {
   }
 
   async insertUserData(uid: String, email: String) {
-    console.log("Saving userdata to firestore...", uid)
     return this.afStore.doc(`Users/${uid}`).set({
       email: email,
       uid: uid

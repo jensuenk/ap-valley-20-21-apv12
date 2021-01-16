@@ -3,30 +3,6 @@
 </style>
 
 <ion-content class="no-scroll">
-
-    <!--<ion-list>
-        <ion-item lines="none">
-            <ion-input placeholder="Time Name" [(ngModel)]="nickname"></ion-input>
-        </ion-item>
-
-        <ion-item lines="none" (click)="presentModal()">
-            <ion-label slot="start">Choose Icon</ion-label>
-            <ion-icon slot="end" [name]="this.iconName"></ion-icon>
-        </ion-item>
-
-        <ion-item lines="none">
-            <ion-label>Begin Time</ion-label>
-            <ion-datetime [(ngModel)]="beginTimeDate" displayFormat="HH:mm"
-                minuteValues="0,15,30,45"></ion-datetime>
-        </ion-item>
-
-        <ion-item lines="none">
-            <ion-label>End Time</ion-label>
-            <ion-datetime [(ngModel)]="endTimeDate" displayFormat="HH:mm"
-                minuteValues="0,15,30,45"></ion-datetime>
-        </ion-item>
-    </ion-list>-->
-
     <ion-slides pager="true" [options]="slideOpts">
         <ion-slide>
             <ion-grid>
@@ -56,13 +32,13 @@
                         <ion-grid>
                             <ion-row>
                               <ion-col>
-                                <div class="imageHolder" (click)="IconChange('airplaine-outline')">
-                                  <ion-icon name="airplane-outline"></ion-icon>
+                                <div class="imageHolder" (click)="IconChange('sunny-outline')">
+                                  <ion-icon name="sunny-outline"></ion-icon>
                                 </div>
                               </ion-col>
                               <ion-col>
-                                <div class="imageHolder" (click)="IconChange('fast-food-outline')">
-                                  <ion-icon name="fast-food-outline"></ion-icon>
+                                <div class="imageHolder" (click)="IconChange('moon-outline')">
+                                  <ion-icon name="moon-outline"></ion-icon>
                                 </div>
                               </ion-col>
                               <ion-col>
@@ -93,8 +69,8 @@
                                 </div>
                               </ion-col>
                               <ion-col>
-                                <div class="imageHolder" (click)="IconChange('newspaper-outline')">
-                                  <ion-icon name="newspaper-outline"></ion-icon>
+                                <div class="imageHolder" (click)="IconChange('fast-food-outline')">
+                                  <ion-icon name="fast-food-outline"></ion-icon>
                                 </div>
                               </ion-col>
                             </ion-row>
@@ -105,8 +81,8 @@
                                 </div>
                               </ion-col>
                               <ion-col>
-                                <div class="imageHolder" (click)="IconChange('train-outline')">
-                                  <ion-icon name="train-outline"></ion-icon>
+                                <div class="imageHolder" (click)="IconChange('time-outline')">
+                                  <ion-icon name="time-outline"></ion-icon>
                                 </div>
                               </ion-col>        
                               <ion-col>

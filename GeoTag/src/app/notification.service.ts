@@ -38,7 +38,7 @@ export class NotificationService {
 				notification.date = notification.date.toDate()
 			});
 			console.log("DEBUG: Notification list changed (notification.service.ts -> getNotifications sub)")
-		})
+		});
 	}
 
 	getNotification(id: string) {

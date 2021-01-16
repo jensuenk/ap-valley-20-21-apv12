@@ -1,11 +1,8 @@
 import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
-import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LoadingController } from '@ionic/angular';
-import { AuthService } from '../auth/auth.service';
 import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
-import { WorkingNotifServiceService } from '../working-notif-service.service';
 
 
 declare var google: any;
@@ -117,49 +114,39 @@ export class Tab1Page implements OnInit {
 
 	constructor(
 		private geolocation: Geolocation,
-		private auth: AuthService,
-		private router: Router,
 		private deviceListService: DeviceListService,
 		private bluetoothService: BluetoothService,
-		private notificationService: WorkingNotifServiceService,
 		private loadingController: LoadingController,
-		private ngZone: NgZone) {
-		if (!auth.isLoggedIn) {
-			this.router.navigate(['login']);
-		}
-	}
+		private ngZone: NgZone
+	) {}
 
-	async ionViewDidEnter() {
-		this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {
-		})
+	ionViewDidEnter() {
 		this.showMap();
 	}
 
 	async ngOnInit() {
+		/*
 		const loading = await this.loadingController.create({
 			spinner: "circles",
 			message: 'Please wait...',
 			duration: 5000
 		  });
 		await loading.present();
+		*/
 
 		await new Promise(resolve => setTimeout(resolve, 1000));
-		this.bluetoothService.scan();
-		await new Promise(resolve => setTimeout(resolve, 3000));
-		this.deviceListService.deviceCollection.valueChanges().subscribe(data => {
-			this.connectDevices();
-		});
+		this.bluetoothService.connectToUnconnected();
 		await new Promise(resolve => setTimeout(resolve, 1000));
 		this.showMap();
-	}
 
-	connectDevices() {
-		this.deviceListService.deviceList.forEach((device) => {
-			device.isConnected = false;
-			this.ngZone.run(() => {
-				this.bluetoothService.connect(device);
-			});
-		});
+    	this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {
+      		data.forEach(device => {
+				console.log("Detected settings changes -> Syncing data");
+				this.createMarkers();
+				this.addMarkersToMap(this.markers);
+        		this.bluetoothService.syncData(device);
+      		});
+    	});
 	}
 
 	showDeviceList() {
@@ -222,6 +209,7 @@ export class Tab1Page implements OnInit {
 			this.addInfoWindowToMarker(mapMarker, marker.connectionStatus);
 		}
 	}
+
 	addInfoWindowToMarker(marker, status) {
 		let connectionStatus = "Not Connected";
 		
@@ -280,8 +268,6 @@ export class Tab1Page implements OnInit {
 				console.log('Error getting location', error);
 			});
 	}
-
-	goToDetails() { }
 }
 
 export class marker {

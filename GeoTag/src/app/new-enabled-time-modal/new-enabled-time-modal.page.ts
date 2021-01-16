@@ -56,7 +56,6 @@ export class NewEnabledTimeModalPage implements OnInit {
   }
 
   InputChanged(){
-    console.log("value changed");
     this.beginTime = this.beginTime;
     this.endTime = this.endTime;
   }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth/auth.service';
-import { BluetoothService } from './bluetooth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +14,7 @@ export class DeviceListService {
 
   constructor(
     private afs: AngularFirestore, 
-    private auth: AuthService,
-    private bluetoothService: BluetoothService
+    private auth: AuthService
   ) { }
 
   createTestDevice() {
@@ -59,7 +57,6 @@ export class DeviceListService {
         device.locationHistory.forEach(history => {
           history.date = history.date.toDate();
         });
-        this.bluetoothService.syncData(device);
       });
 			console.log("DEBUG: Device list changed (device-list.service.ts -> getDevices sub)");
     })
