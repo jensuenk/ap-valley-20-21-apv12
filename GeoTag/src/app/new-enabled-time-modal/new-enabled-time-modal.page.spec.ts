@@ -1,24 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-
+import { IonSlides, ModalController } from '@ionic/angular';
 import { NewEnabledTimeModalPage } from './new-enabled-time-modal.page';
 
 describe('NewEnabledTimeModalPage', () => {
   let component: NewEnabledTimeModalPage;
-  let fixture: ComponentFixture<NewEnabledTimeModalPage>;
+  let modalCtrl: ModalController;
+  let slides: IonSlides;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ NewEnabledTimeModalPage ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(NewEnabledTimeModalPage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
-
-  it('should create', () => {
+  beforeEach(() => {
+    modalCtrl = null;
+    slides = null;
+    component = new NewEnabledTimeModalPage(modalCtrl, slides);
+  });
+  
+  it('should create enabledtimes', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have slideopts set',()=>{
+    expect(component.slideOpts).toBeTruthy();
+  });
+
+  //basically all the tests i could do. if you can do better, go ahead
+  
 });
