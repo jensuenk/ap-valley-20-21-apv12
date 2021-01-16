@@ -66,4 +66,15 @@ export class EnabledNotifTimesPage implements OnInit {
       res.present();
     });
   }
+
+
+  toggleSettings(ev: any) {
+    var newSetting;
+    if (ev.detail.value == "true")
+      newSetting = true;
+    else
+      newSetting = false;
+    this.currentDevice.settings.timeAlertsEnabled = newSetting;
+    this.deviceListService.updateDevice(this.currentDevice);
+  }
 }

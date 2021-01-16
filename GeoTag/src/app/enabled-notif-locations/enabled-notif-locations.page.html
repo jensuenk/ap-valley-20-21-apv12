@@ -11,6 +11,17 @@
     <ion-row>
       <ion-col>
         <ion-list>
+          <ion-item lines="none">
+            <ion-label slot="start">Enabled</ion-label>
+            <ion-segment mode="ios" [(ngModel)]="currentDevice.settings.locationAlertsEnabled" (ionChange)="toggleSettings($event)">
+              <ion-segment-button value="false">
+                <ion-label>Off</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="true">
+                <ion-label>On</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
           <ion-card *ngFor = "let location of currentDevice.settings.enabledLocations">
             <ion-icon class="deleteIcon" name="close-circle-outline" size="large" (click)="deleteLocation(location)"></ion-icon>
             <ion-grid>

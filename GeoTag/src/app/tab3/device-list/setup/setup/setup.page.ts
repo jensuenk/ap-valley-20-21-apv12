@@ -5,8 +5,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
-import { NotificationService, Notification } from 'src/app/notification.service';
-import { BLE } from '@ionic-native/ble/ngx';
 
 @Component({
   selector: 'app-setup',
@@ -30,7 +28,6 @@ export class SetupPage implements OnInit {
   currentPosLatitude: any = 0;
   iconName: string = 'key';
   name: string = ""
-
 
   device: Device;
 
@@ -77,7 +74,6 @@ export class SetupPage implements OnInit {
     this.router.navigate(['./device-list']);
   }
 
-
   async presentModal() {
     const modal = await this.modalController.create({
       component: IconPickerPage,
@@ -90,7 +86,6 @@ export class SetupPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
     this.iconName = data.iconName;
   }
 
@@ -116,7 +111,4 @@ export class SetupPage implements OnInit {
     });
     await alert.present();
   }
-
-
-
 }

@@ -66,16 +66,13 @@ export class NewEnabledTimeModalPage implements OnInit {
 
   BeginDateChanged(ev: any){
     this.beginTime = ev.detail.value.slice(11,16)
-    console.log(this.beginTime)
   }
 
   EndDateChanged(ev: any){
     this.endTime = ev.detail.value.slice(11,16)
-    console.log(this.endTime)
   }
 
   NicknameChanged(ev: any){
-    console.log(ev);
     this.nickname = ev;
   }
 

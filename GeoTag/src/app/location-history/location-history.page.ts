@@ -42,7 +42,6 @@ export class LocationHistoryPage implements OnInit {
 		for (let notif of this.currentDevice.locationHistory) {
 			this.markers.push({ title: "Lost " + this.currentDevice.name, latitude: notif.location.latitude, longitude: notif.location.longitude });
 		}
-		console.log(this.markers)
 	}
 
 	addMarkersToMap(markers) {
@@ -74,7 +73,6 @@ export class LocationHistoryPage implements OnInit {
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
 		this.addMarkersToMap(this.markers);
-		console.log(this.markers)
 	}
 
 	moveCamera(longitude: number, latitude: number) {

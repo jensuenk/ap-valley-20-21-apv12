@@ -4,7 +4,6 @@ import { LoadingController } from '@ionic/angular';
 import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
 
-
 declare var google: any;
 
 @Component({
@@ -116,8 +115,7 @@ export class Tab1Page implements OnInit {
 		private geolocation: Geolocation,
 		private deviceListService: DeviceListService,
 		private bluetoothService: BluetoothService,
-		private loadingController: LoadingController,
-		private ngZone: NgZone
+		private loadingController: LoadingController
 	) {}
 
 	ionViewDidEnter() {
@@ -125,18 +123,16 @@ export class Tab1Page implements OnInit {
 	}
 
 	async ngOnInit() {
-		/*
 		const loading = await this.loadingController.create({
 			spinner: "circles",
-			message: 'Please wait...',
-			duration: 5000
+			message: 'Loading data...',
+			duration: 3200
 		  });
 		await loading.present();
-		*/
 
 		await new Promise(resolve => setTimeout(resolve, 1000));
 		this.bluetoothService.connectToUnconnected();
-		await new Promise(resolve => setTimeout(resolve, 1000));
+		await new Promise(resolve => setTimeout(resolve, 2000));
 		this.showMap();
 
     	this.deviceListService.deviceCollection.valueChanges().subscribe((data) => {

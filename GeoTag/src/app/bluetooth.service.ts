@@ -18,7 +18,8 @@ const connectInterval = interval(10000);
 export class BluetoothService {
 
   connectedDevices: Device[] = [];
-  pingInterval;
+  latitude: number;
+  longitude: number;
 
   constructor(
     public ble: BLE, 
@@ -84,7 +85,7 @@ export class BluetoothService {
   }
 
   async onDisconnected(device: Device, error?) {
-    //if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device)) {
+    if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device) && device.settings.alertsEnabled) {
       if (this.connectedDevices.includes(device)) {
         let notification: Notification = { id: "", message: "You lost or forgot your " + device.name + "!", date: new Date(), deviceId: device.id, deviceName: device.name, icon: device.icon, alert: true }
         this.notificationService.addNotification(notification);
@@ -99,7 +100,7 @@ export class BluetoothService {
             console.log(error)
           });
       }
-    //}
+    }
     device.isConnected = false;
     this.deviceListService.updateDevice(device);
   }
@@ -151,26 +152,29 @@ export class BluetoothService {
   }
 
   syncData(device: Device) {
-    if (device.settings.alertType == "Sound") {
-      this.enableSound(device);
-    }
-    else if (device.settings.alertType == "Vibration") {
-      this.enableVibration(device);
-    }
-    if (device.settings.alertsEnabled == true) {
-      this.enableRing(device);
-    }
-    else {
-      this.disableRing(device);
-    }
-    if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device)) {
-      console.log("Should ring now")
-      this.enableRing(device);
-    }
-    else {
-      console.log("Should not ring now")
-      this.disableRing(device);
-    }
+    this.geolocation.getCurrentPosition()
+      .then((resp) => {
+        this.latitude = resp.coords.latitude;
+        this.longitude = resp.coords.longitude;
+        if (device.settings.alertType == "Sound") {
+          this.enableSound(device);
+        }
+        else if (device.settings.alertType == "Vibration") {
+          this.enableVibration(device);
+        }
+        console.log("SETTINGS DEBUG: location="+this.shouldRingAtCurrentLocation(device) + ", time="+this.shouldRingAtCurrentTime(device)+", enabled="+device.settings.alertsEnabled);
+        if (this.shouldRingAtCurrentLocation(device) && this.shouldRingAtCurrentTime(device) && device.settings.alertsEnabled) {
+          console.log("SETTINGS DEBUG: Ringing ENABLED (location="+this.shouldRingAtCurrentLocation(device) + ", time="+this.shouldRingAtCurrentTime(device)+")");
+          this.enableRing(device);
+        }
+        else {
+          console.log("SETTINGS DEBUG: Ringing DISABLED");
+          this.disableRing(device);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   }
 
   scedulePings() {
@@ -182,25 +186,28 @@ export class BluetoothService {
   }
 
   shouldRingAtCurrentLocation(device: Device): boolean {
-    if (device.settings.enabledLocations == null) {
+    if (!device.settings.locationAlertsEnabled || device.settings.enabledLocations == null || device.settings.enabledLocations.length < 1) {
       return true;
     }
-    var should: boolean = false;
+    var should: boolean = true;
     device.settings.enabledLocations.forEach(enabledLocation => {
-      if (enabledLocation.nickname == "Home") {
-        should = true;
+      //console.log("DATE SETTING DEBUG:" + enabledLocation.nickname + "=" + enabledLocation.longitude + "," + enabledLocation.latitude);
+      //console.log("CURRENT LOC: " + this.latitude, this.longitude);
+      //console.log("DIF: " + Math.abs(this.longitude - Number(enabledLocation.latitude)) + "   " + Math.abs(this.latitude - Number(enabledLocation.longitude)), !(Math.abs(this.latitude - Number(enabledLocation.longitude)) > 0.01 || Math.abs(this.longitude - Number(enabledLocation.latitude)) > 0.01))
+      if (!(Math.abs(this.latitude - Number(enabledLocation.longitude)) > 0.01 || Math.abs(this.longitude - Number(enabledLocation.latitude)) > 0.01)) {
+        should = false;
       }
     });
     return should;
   }
 
   shouldRingAtCurrentTime(device: Device): boolean {
-    if (device.settings.enabledTimes == null) {
+    if (!device.settings.timeAlertsEnabled || device.settings.enabledTimes == null || device.settings.enabledTimes.length < 1) {
       return true;
     }
     var now = new Date();
     now.setHours(now.getHours() + 1);
-    var should: boolean = false;
+    var should: boolean = true;
     device.settings.enabledTimes.forEach(enabledTime => {
       var beginHours = enabledTime.beginTime.split(":");
       var beginDate = new Date();
@@ -209,10 +216,10 @@ export class BluetoothService {
       var endDate = new Date();
       endDate.setHours(parseInt(endHours[0])+1, parseInt(endHours[1]));
 
-      console.log("now", now, "begindate", beginDate, "enddate", endDate, now > beginDate && now < endDate)
+      //console.log("TIME SETTING DEBUG:" + "now", now, "begindate", beginDate, "enddate", endDate, now > beginDate && now < endDate);
 
       if (now > beginDate && now < endDate) {
-        should = true;
+        should = false;
       }
     });
     return should;

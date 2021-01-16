@@ -67,6 +67,16 @@ export class EnabledNotifLocationsPage implements OnInit {
       res.present();
     });
   }
+
+  toggleSettings(ev: any) {
+    var newSetting;
+    if (ev.detail.value == "true")
+      newSetting = true;
+    else
+      newSetting = false;
+    this.currentDevice.settings.locationAlertsEnabled = newSetting;
+    this.deviceListService.updateDevice(this.currentDevice);
+  }
 }
 
 export class IEnabledLocation{

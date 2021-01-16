@@ -56,7 +56,6 @@ export class SettingsModalPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
     this.iconName = data.iconName;
   }
 
