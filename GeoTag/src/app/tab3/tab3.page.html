@@ -1,32 +1,35 @@
-<ion-content>
-
-  <div class="userIcon">
-    <img  (click)="presentActionSheet()" size="large" [src]="('./assets/images/profileIcons/' + iconName)" alt="profileImage">
-  </div>
-
-  <div class="userInfo">
-    <h4>{{ auth.getUser().email }}</h4>
-  </div>
-
-  <div class="accountOptions">
-    <ion-list>
-      <ion-item lines="none" (click)="openDeviceList()">
-        <ion-icon name="key" slot="start"></ion-icon>
-        <ion-label>My GeoTags</ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ion-item lines="none" (click)="logOut()">
-        <ion-icon slot="start" name="ban"></ion-icon>
-        <ion-label>Sign Out</ion-label>
-      </ion-item>
-    </ion-list>
-    <ion-list>
-      <ion-item lines="none">
-        <ion-icon name="information-circle" slot="start"></ion-icon>
-        <ion-label>Help</ion-label>
-      </ion-item>
-    </ion-list>
-  </div>
-
+<ion-content fullscreen="true" slot="fixed" >
+    <div class="card">
+      <div class="header">
+        <div class="avatar">
+          <img (click)="presentActionSheet()" size="large" [src]="('./assets/images/profileIcons/' + iconName)" alt="profileImage">
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="user-meta ion-text-center">
+          <h3 class="email">{{ auth.getUser().email }}</h3>
+          <h5 class="status">Online</h5>
+        </div>
+        <div class="accountOptions">
+          <ion-list>
+            <ion-item lines="none" (click)="openDeviceList()">
+              <ion-icon name="key" slot="start"></ion-icon>
+              <ion-label>My GeoTags</ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-list>
+            <ion-item lines="none" (click)="logOut()" >
+              <ion-icon slot="start" name="ban"></ion-icon>
+              <ion-label>Sign Out</ion-label>
+            </ion-item>
+          </ion-list>
+          <ion-list>
+            <ion-item lines="none" (click)="openWebsite()">
+              <ion-icon name="information-circle" slot="start"></ion-icon>
+              <ion-label>Help</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
+      </div>
+    </div>
 </ion-content>

@@ -20,7 +20,6 @@ export class AuthService {
     public alertController: AlertController
   ) {
     this.ngFireAuth.authState.subscribe(user => {
-      console.log("AuthState changed: ", user)
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));

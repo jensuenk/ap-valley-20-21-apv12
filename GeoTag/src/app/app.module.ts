@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 import { BLE } from '@ionic-native/ble/ngx';
 import { FormBuilder } from '@angular/forms';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 //IMPORT THE PLUGINS
 import { Geolocation } from '@ionic-native/geolocation/ngx';
@@ -36,6 +37,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
   ],
   providers: [
     BLE,
+    InAppBrowser,
     StatusBar,
     SplashScreen,
     //ADD GEOLOCATION Y GEOCODER ON THE PROVIDERS.

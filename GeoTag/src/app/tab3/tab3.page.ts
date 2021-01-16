@@ -1,11 +1,11 @@
-import { Component, DefaultIterableDiffer } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActionSheetController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 import { IconModalPage } from '../icon-modal/icon-modal.page';
 import { ToastController } from '@ionic/angular';
-import { auth } from 'firebase';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @Component({
   selector: 'app-tab3',
@@ -13,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['tab3.page.scss']
 })
 
-export class Tab3Page {
+export class Tab3Page implements OnInit {
 
   iconName: string = 'defaultMan.jpg';
 
@@ -22,7 +22,12 @@ export class Tab3Page {
     private modalController: ModalController,
     private toastController: ToastController,
     private router: Router,
-    private auth: AuthService ) {}
+    private auth: AuthService,
+    private inAppBrowser: InAppBrowser 
+  ) {}
+
+  ngOnInit() {
+  }
 
     openDeviceList() {
       this.router.navigate(['/device-list'])
@@ -35,14 +40,12 @@ export class Tab3Page {
         icon: 'image',
         handler: () => {
           this.presentModal();
-          console.log('Change Icon Clicked');
         }
       }, {
         text: 'Cancel',
         icon: 'close',
         role: 'cancel',
         handler: () => {
-          console.log('Cancel clicked');
         }
       }]
     });
@@ -61,7 +64,6 @@ export class Tab3Page {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
     this.iconName = data.iconName;
     this.presentToast();
   }
@@ -74,7 +76,11 @@ export class Tab3Page {
     toast.present();
   }
 
-  logOut(){
+  logOut() {
     this.auth.signOut();
+  }
+
+  openWebsite() {
+    const browser = this.inAppBrowser.create('https://geotag.store/');
   }
 }
