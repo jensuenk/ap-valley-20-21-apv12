@@ -1,12 +1,12 @@
 import { Component, ViewChild, ElementRef, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../auth/auth.service';
 import { BluetoothService } from '../bluetooth.service';
 import { Device, DeviceListService } from '../device-list.service';
 import { WorkingNotifServiceService } from '../working-notif-service.service';
-
+import { Storage } from '@ionic/storage';
 
 declare var google: any;
 
@@ -123,7 +123,9 @@ export class Tab1Page implements OnInit {
 		private bluetoothService: BluetoothService,
 		private notificationService: WorkingNotifServiceService,
 		private loadingController: LoadingController,
-		private ngZone: NgZone) {
+		private ngZone: NgZone,
+		public alertController: AlertController,
+		public storage: Storage) {
 		if (!auth.isLoggedIn) {
 			this.router.navigate(['login']);
 		}
@@ -151,7 +153,25 @@ export class Tab1Page implements OnInit {
 		});
 		await new Promise(resolve => setTimeout(resolve, 1000));
 		this.showMap();
+
+		this.storage.get('alertShown').then((val) => {
+			if (val == null){
+				this.presentAlert()
+			}
+		  });
 	}
+
+	async presentAlert() {
+		const alert = await this.alertController.create({
+		  header: 'Attention',
+		  message: 'By using our app you agree to let us use your location when the app is closed. When a GeoTag disconnects, our app will send you a notification. By using the coordinates of your phone we can assign these coordinates to a GeoTag so that the last known position will be displayed here in case you did not see the notification. Additionally, by letting us use your location in the background, we are able to correctly apply the location settings you configure in the app.',
+		  buttons: ['OK']
+		});
+
+		this.storage.set('alertShown', 'true');
+		
+		await alert.present();
+	  }
 
 	connectDevices() {
 		this.deviceListService.deviceList.forEach((device) => {
