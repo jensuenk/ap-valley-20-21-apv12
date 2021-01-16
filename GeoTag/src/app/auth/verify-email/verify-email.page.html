@@ -6,17 +6,14 @@
     <ion-title>Email Verification</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-card>
     <ion-card-header>
       <ion-card-title>Email confirmation</ion-card-title>
     </ion-card-header>
-
     <ion-card-content>
       Please check your email inbox for a confirmation email and click the link to confirm your email address.
     </ion-card-content>
-
     <ion-row>
       <ion-col>
         <ion-button type="submit" fill="outline" color="dark" (click)="authService.SendVerificationMail()" expand="block">Resend Verification Email

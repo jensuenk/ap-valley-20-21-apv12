@@ -36,7 +36,6 @@ export class DeviceDetailsPage {
     public deviceListService: DeviceListService,
     private route: ActivatedRoute,
     private modalController: ModalController,
-    private bluetoothService: BluetoothService,
     private toastController: ToastController
     ) {
   }
@@ -91,31 +90,8 @@ export class DeviceDetailsPage {
       });
 
       mapMarker.setMap(this.map);
-      this.addInfoWindowToMarker(mapMarker);
     }
 
-  }
-
-  addInfoWindowToMarker(marker) {
-    let infoWindowContent = '<div id="content">' +
-      '<h2 id="firstHeading" class"firstHeading">' + marker.title + '</h2>'
-      '</div>';
-
-    let infoWindow = new google.maps.InfoWindow({
-      content: infoWindowContent
-    });
-
-    marker.addListener('click', () => {
-      this.closeAllInfoWindows();
-      infoWindow.open(this.map, marker)
-    });
-    this.infoWindows.push(infoWindow)
-  }
-
-  closeAllInfoWindows() {
-    for (let window of this.infoWindows) {
-      window.close()
-    }
   }
 
   showMap() {
@@ -140,7 +116,6 @@ export class DeviceDetailsPage {
   }
   
   startDeviceFinder() {
-    this.bluetoothService.isConnected(this.currentDevice);
     if (!this.currentDevice.isConnected) {
       this.notConnectedToast();
       return;

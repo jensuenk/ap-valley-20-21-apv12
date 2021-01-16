@@ -56,7 +56,6 @@ export class NewEnabledTimeModalPage implements OnInit {
   }
 
   InputChanged(){
-    console.log("value changed");
     this.beginTime = this.beginTime;
     this.endTime = this.endTime;
   }
@@ -67,16 +66,13 @@ export class NewEnabledTimeModalPage implements OnInit {
 
   BeginDateChanged(ev: any){
     this.beginTime = ev.detail.value.slice(11,16)
-    console.log(this.beginTime)
   }
 
   EndDateChanged(ev: any){
     this.endTime = ev.detail.value.slice(11,16)
-    console.log(this.endTime)
   }
 
   NicknameChanged(ev: any){
-    console.log(ev);
     this.nickname = ev;
   }
 

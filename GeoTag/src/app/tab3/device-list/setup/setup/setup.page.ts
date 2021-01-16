@@ -5,8 +5,6 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { BluetoothService } from 'src/app/bluetooth.service';
-import { NotificationService, Notification } from 'src/app/notification.service';
-import { BLE } from '@ionic-native/ble/ngx';
 
 @Component({
   selector: 'app-setup',
@@ -31,7 +29,6 @@ export class SetupPage implements OnInit {
   iconName: string = 'key';
   name: string = ""
 
-
   device: Device;
 
   ngOnInit() {
@@ -55,23 +52,8 @@ export class SetupPage implements OnInit {
         alertsEnabled: true,
         timeAlertsEnabled: true,
         locationAlertsEnabled: true,
-        enabledLocations: [
-          {
-            nickname: 'Home',
-            icon: 'home',
-            latitude: this.currentPosLatitude,
-            longitude: this.currentPosLongitude,
-            enabled: true,
-            secondaryText: ""
-          }],
-        enabledTimes: [
-          {
-            nickname: 'Lunch Time',
-            icon: 'fast-food',
-            beginTime: "12:00",
-            endTime: "15:00",
-            enabled: true
-          }]
+        enabledLocations: [],
+        enabledTimes: []
       }
     }
 
@@ -92,7 +74,6 @@ export class SetupPage implements OnInit {
     this.router.navigate(['./device-list']);
   }
 
-
   async presentModal() {
     const modal = await this.modalController.create({
       component: IconPickerPage,
@@ -105,7 +86,6 @@ export class SetupPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onDidDismiss();
-    console.log(data);
     this.iconName = data.iconName;
   }
 
@@ -131,7 +111,4 @@ export class SetupPage implements OnInit {
     });
     await alert.present();
   }
-
-
-
 }

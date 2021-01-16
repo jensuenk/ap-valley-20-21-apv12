@@ -7,11 +7,21 @@
 </ion-header>
 
 <ion-content fullscreen *ngIf="currentDevice">
-  
   <ion-grid>
     <ion-row>
       <ion-col>
         <ion-list>
+          <ion-item lines="none">
+            <ion-label slot="start">Enabled</ion-label>
+            <ion-segment mode="ios" [(ngModel)]="currentDevice.settings.timeAlertsEnabled" (ionChange)="toggleSettings($event)">
+              <ion-segment-button value="false">
+                <ion-label>Off</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="true">
+                <ion-label>On</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
           <ion-card *ngFor = "let time of currentDevice.settings.enabledTimes">
             <ion-icon class="deleteIcon" name="close-circle-outline" size="large" (click)="deleteTime(time)"></ion-icon>
             <ion-grid>
@@ -71,6 +81,5 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
 </ion-content>
 

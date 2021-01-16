@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { AlertController, LoadingController } from '@ionic/angular';
 import { DeviceListService } from 'src/app/device-list.service';
+import { NotificationService } from 'src/app/notification.service';
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -17,14 +18,15 @@ export class LoginPage implements OnInit {
     public router: Router,
     public alertController: AlertController,
     public loadingController: LoadingController,
-    private deviceListService: DeviceListService
+    private deviceListService: DeviceListService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {}
 
   logIn(email, password) {
     this.authService.signIn(email.value, password.value)
-      .then(async (res) => {
+      .then(async () => {
         this.presentLoading();
         var tries : number = 0; 
         while (!this.authService.isLoggedIn) {
@@ -34,7 +36,8 @@ export class LoginPage implements OnInit {
             return;
           }
         }
-        this.deviceListService.getDevices()
+        this.deviceListService.getDevices();
+        this.notificationService.getNotifications();
         this.router.navigate(['home']);          
       }).catch((error) => {
         this.loginAlert(error.message)
@@ -65,7 +68,5 @@ export class LoginPage implements OnInit {
       duration: 500
     });
     await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
   }
 }

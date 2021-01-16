@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Device, DeviceListService, Location } from '../device-list.service';
+import { Device, DeviceListService } from '../device-list.service';
+import { NotificationService } from '../notification.service';
 
 declare var google: any;
 
@@ -13,7 +14,7 @@ export class LocationHistoryPage implements OnInit {
 
 	currentDevice: Device
 
-	constructor(private deviceListService: DeviceListService, private route: ActivatedRoute) { }
+	constructor(private deviceListService: DeviceListService, private notificationService: NotificationService, private route: ActivatedRoute) { }
 
 	map: any;
 	@ViewChild('map', { read: ElementRef, static: false })
@@ -27,7 +28,7 @@ export class LocationHistoryPage implements OnInit {
 		this.currentDevice.locationHistory.sort((a, b) => b.date.getTime() - a.date.getTime())
 	}
 	findCurrentDevice() {
-		this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.route.snapshot.paramMap.get('id'))
+		this.currentDevice = this.deviceListService.deviceList.find(x => x.id == this.route.snapshot.paramMap.get('id'));
 	}
 
 	ionViewDidEnter() {
@@ -41,7 +42,6 @@ export class LocationHistoryPage implements OnInit {
 		for (let notif of this.currentDevice.locationHistory) {
 			this.markers.push({ title: "Lost " + this.currentDevice.name, latitude: notif.location.latitude, longitude: notif.location.longitude });
 		}
-		console.log(this.markers)
 	}
 
 	addMarkersToMap(markers) {
@@ -55,26 +55,7 @@ export class LocationHistoryPage implements OnInit {
 			});
 
 			mapMarker.setMap(this.map);
-			this.addInfoWindowToMarker(mapMarker);
 		}
-	}
-	addInfoWindowToMarker(marker) {
-		let infoWindowContent =
-			'<div id="content">' +
-			'<h2 id="firstHeading" class"firstHeading">' +
-			marker.title +
-			'</h2>' +
-			'</div>';
-
-		let infoWindow = new google.maps.InfoWindow({
-			content: infoWindowContent
-		});
-
-		marker.addListener('click', () => {
-			this.closeAllInfoWindows();
-			infoWindow.open(this.map, marker);
-		});
-		this.infoWindows.push(infoWindow);
 	}
 
 	closeAllInfoWindows() {
@@ -88,92 +69,10 @@ export class LocationHistoryPage implements OnInit {
 		const options = {
 			center: location,
 			zoom: 15,
-			disableDefaultUI: true/*,
-			styles:
-				[
-					{ elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
-					{ elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
-					{ elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
-					{
-						featureType: 'administrative.locality',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'poi',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'poi.park',
-						elementType: 'geometry',
-						stylers: [{ color: '#263c3f' }]
-					},
-					{
-						featureType: 'poi.park',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#6b9a76' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'geometry',
-						stylers: [{ color: '#38414e' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'geometry.stroke',
-						stylers: [{ color: '#212a37' }]
-					},
-					{
-						featureType: 'road',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#9ca5b3' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'geometry',
-						stylers: [{ color: '#746855' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'geometry.stroke',
-						stylers: [{ color: '#1f2835' }]
-					},
-					{
-						featureType: 'road.highway',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#f3d19c' }]
-					},
-					{
-						featureType: 'transit',
-						elementType: 'geometry',
-						stylers: [{ color: '#2f3948' }]
-					},
-					{
-						featureType: 'transit.station',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#d59563' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'geometry',
-						stylers: [{ color: '#17263c' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'labels.text.fill',
-						stylers: [{ color: '#515c6d' }]
-					},
-					{
-						featureType: 'water',
-						elementType: 'labels.text.stroke',
-						stylers: [{ color: '#17263c' }]
-					}
-				]*/
+			disableDefaultUI: true
 		};
 		this.map = new google.maps.Map(this.mapRef.nativeElement, options);
 		this.addMarkersToMap(this.markers);
-		console.log(this.markers)
 	}
 
 	moveCamera(longitude: number, latitude: number) {

@@ -24,11 +24,9 @@ export class AlertSettingsPage implements OnInit {
 
   async ngOnInit() {
     this.notifsEnabled = this.localNotifs.notifsEnabled;
-    //console.log(this.notifsEnabled);
     await this.deviceListService.getDevices();
     this.currentID = this.route.snapshot.paramMap.get('id');
     this.currentDevice = await this.deviceListService.getDevice(this.currentID)
-    console.log(this.currentDevice);
   }
 
   saveSettings(){
@@ -42,7 +40,6 @@ export class AlertSettingsPage implements OnInit {
     else
       newSetting = false;
     this.currentDevice.settings.alertsEnabled = newSetting;
-    console.log('Notifications have been set to: ' + newSetting);
     this.deviceListService.updateDevice(this.currentDevice);
     if (ev.detail.value == "On") {
       this.bluetoothService.enableRing(this.currentDevice);
@@ -54,7 +51,6 @@ export class AlertSettingsPage implements OnInit {
 
   changeAlertType(ev: any) {
     this.currentDevice.settings.alertType = ev.detail.value;
-    console.log('Notification type has been changed to: ', ev.detail.value);
     this.deviceListService.updateDevice(this.currentDevice);
     if (ev.detail.value == "Sound") {
       this.bluetoothService.enableSound(this.currentDevice);

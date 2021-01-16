@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
-import { FirebaseApp } from '@angular/fire';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AuthService } from './auth/auth.service';
-import { SettingsModalPageRoutingModule } from './settings-modal/settings-modal-routing.module';
-
-import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceListService {
+
   public deviceCollection: AngularFirestoreCollection<Device>;
-
   public deviceList: Array<Device>;
-  doc: any;
 
-  constructor(private afs: AngularFirestore, private auth: AuthService) { }
+  public currentAddress: string;
 
-  public currentAddress: string
-
+  constructor(
+    private afs: AngularFirestore, 
+    private auth: AuthService
+  ) { }
 
   createTestDevice() {
     let LocationAndDate = {
@@ -44,23 +41,8 @@ export class DeviceListService {
         alertsEnabled: true,
         timeAlertsEnabled: true,
         locationAlertsEnabled: true,
-        enabledLocations: [
-        {
-          nickname: 'Home',
-          icon: 'home',
-          latitude: "1",
-          longitude: "1",
-          enabled: true,
-          secondaryText: "home second"
-        }],
-        enabledTimes: [
-          {
-            nickname: 'Lunch Time',
-            icon: 'fast-food',
-            beginTime: "12:00",
-            endTime: "14:00",
-            enabled: true
-        }]
+        enabledLocations: [],
+        enabledTimes: []
       }
     }
     this.addDevice(newDevice);
@@ -73,25 +55,13 @@ export class DeviceListService {
       this.deviceList = data;
       this.deviceList.forEach(device => {
         device.locationHistory.forEach(history => {
-          history.date = history.date.toDate()
-        })
+          history.date = history.date.toDate();
+        });
       });
+			console.log("DEBUG: Device list changed (device-list.service.ts -> getDevices sub)");
     })
-    /*
-    // Alternative method of retreiving data
-    this.deviceCollection.snapshotChanges().subscribe(res => {
-      if (res) {
-        this.deviceList = res.map(e => {
-          return {
-            id: e.payload.doc.id,
-            name: e.payload.doc.data()['name'],
-            location: e.payload.doc.data()['location']
-          }
-        })
-      }
-    })
-    */
   }
+
   getDevice(id: string) {
     return this.deviceList.find(x => x.id == id);
   }
@@ -100,42 +70,11 @@ export class DeviceListService {
     const newId = this.afs.createId();
     device.id = newId;
     this.deviceCollection.doc(newId).set(device)
-    return newId;
   }
 
   updateDevice(device: Device) {
-    //console.log(device)
-    return this.deviceCollection.doc(device.id).update(device);
+    this.deviceCollection.doc(device.id).update(device);
   }
-
-  addEnabledTime(device: Device, enabledTime: EnabledTime){
-    device.settings.enabledTimes.push(enabledTime)
-    return this.deviceCollection.doc(device.id).update({
-      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledTime)
-    });
-  }
-
-  deleteEnabledTime(device: Device, enabledTime: EnabledTime){
-    const index = device.settings.enabledTimes.indexOf(enabledTime, 0);
-    if (index > -1) {
-      device.settings.enabledTimes.splice(index, 1);
-    }  
-  }
-
-  deleteEnabledLocation(device: Device, enabledLocation: EnabledLocation){
-    const index = device.settings.enabledLocations.indexOf(enabledLocation, 0);
-    if (index > -1) {
-      device.settings.enabledLocations.splice(index, 1);
-    }  
-  }
-
-  addEnabledLocation(device: Device, enabledLocation: EnabledLocation){
-    device.settings.enabledLocations.push(enabledLocation)
-    return this.deviceCollection.doc(device.id).update({
-      enabledTimes: firebase.firestore.FieldValue.arrayUnion(enabledLocation)
-    });
-  }
-
 
   deleteDevice(id: string) {
     this.deviceCollection.doc(id).delete()
@@ -146,11 +85,43 @@ export class DeviceListService {
       location: location,
       date: date
     }
-    device.locationHistory.push(LocationAndDate)
-    console.log(device)
-    return this.deviceCollection.doc(device.id).update(device);
+    device.locationHistory.push(LocationAndDate);
+    this.deviceCollection.doc(device.id).update(device);
+  }
+
+  addEnabledTime(device: Device, enabledTime: EnabledTime) {
+    if (device.settings.enabledTimes == null) {
+      device.settings.enabledTimes = [];
+    }
+    device.settings.enabledTimes.push(JSON.parse(JSON.stringify(enabledTime)));
+    this.updateDevice(device);
+  }
+
+  deleteEnabledTime(device: Device, enabledTime: EnabledTime) {
+    const index = device.settings.enabledTimes.indexOf(enabledTime, 0);
+    if (index > -1) {
+      device.settings.enabledTimes.splice(index, 1);
+    }
+    this.updateDevice(device);
+  }
+
+  addEnabledLocation(device: Device, enabledLocation: EnabledLocation) {
+    if (device.settings.enabledLocations == null) {
+      device.settings.enabledLocations = [];
+    }
+    device.settings.enabledLocations.push(JSON.parse(JSON.stringify(enabledLocation)));
+    this.updateDevice(device);
+  }
+
+  deleteEnabledLocation(device: Device, enabledLocation: EnabledLocation) {
+    const index = device.settings.enabledLocations.indexOf(enabledLocation, 0);
+    if (index > -1) {
+      device.settings.enabledLocations.splice(index, 1);
+    }
+    this.updateDevice(device);
   }
 }
+
 export class Device {
   id: string
   name: string
@@ -161,6 +132,7 @@ export class Device {
   settings: AlertSettings
   isConnected:boolean
 } 
+
 export class Location {
   latitude: number
   longitude: number
@@ -170,6 +142,7 @@ export class Location {
     this.longitude = longitude
   }
 }
+
 export class LocationAndDate {
   location: Location
   date: any
@@ -190,6 +163,7 @@ export class AlertSettings{
 }
 
 export class EnabledTime{
+  id?: string
   nickname: string;
   icon: string;
   beginTime: string;

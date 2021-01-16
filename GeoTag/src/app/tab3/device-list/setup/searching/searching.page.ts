@@ -24,8 +24,6 @@ export class SearchingPage implements OnInit {
   }
 
   scan() {
-    console.log('Scanning for Bluetooth LE Device');
-
     this.ble.scan([], 5).subscribe(
       device => this.onDeviceDiscovered(device),
       error => console.log(error)

@@ -21,7 +21,7 @@ export class RegistrationPage implements OnInit {
 
   signUp(email, password) {
     this.authService.registerUser(email.value, password.value)
-      .then((res) => {
+      .then(() => {
         this.authService.sendVerificationMail()
         this.router.navigate(['verify-email']);
       }).catch((error) => {

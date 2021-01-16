@@ -18,22 +18,22 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private auth: AuthService, 
-    private router: Router, 
-    public deviceListService: DeviceListService, 
+    private auth: AuthService,
+    private router: Router,
+    public deviceListService: DeviceListService,
     public notificationService: NotificationService
   ) {
     this.initializeApp();
-		if (!auth.isLoggedIn) {
+    if (!this.auth.isLoggedIn) {
       this.router.navigate(['login']);
       return;
-		}
-		deviceListService.getDevices()
-		notificationService.getNotifications()
+    }
+    this.deviceListService.getDevices();
+    this.notificationService.getNotifications();
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
