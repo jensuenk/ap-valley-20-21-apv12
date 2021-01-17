@@ -27,7 +27,7 @@ describe('bluetoothservice', () => {
     notificationService = null;
     deviceListService = null;
     geolocation = null;
-    component = new BluetoothService(ble, navCtrl,alertController,toastCtrl,notificationService,deviceListService,geolocation);
+    component = new BluetoothService(ble, deviceListService, navCtrl, notificationService, geolocation);
     device = null; //no need for any data as we'ill simply poll the functions
   });
   

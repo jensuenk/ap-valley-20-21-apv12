@@ -12,7 +12,7 @@ import { Device } from '../device-list.service'
 })
 export class EnabledNotifLocationsPage implements OnInit {
 
-  currentDeviceID: string;
+  currentDeviceId: string;
   currentDevice: Device;
 
   constructor(
@@ -23,8 +23,8 @@ export class EnabledNotifLocationsPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.currentDeviceID = this.route.snapshot.paramMap.get('id');
-    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceID)
+    this.currentDeviceId = this.route.snapshot.paramMap.get('id');
+    this.currentDevice = await this.deviceListService.getDevice(this.currentDeviceId)
   }
 
   async presentModal() {

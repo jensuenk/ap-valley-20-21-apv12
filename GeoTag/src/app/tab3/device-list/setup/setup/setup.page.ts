@@ -63,6 +63,7 @@ export class SetupPage implements OnInit {
   }
 
   saveDevice() {
+    this.createDevice();
 
     if (this.name == "") {
       this.name = "No name"
@@ -95,7 +96,6 @@ export class SetupPage implements OnInit {
         this.currentPosLatitude = resp.coords.latitude;
         this.currentPosLongitude = resp.coords.longitude;
 
-        this.createDevice();
       })
       .catch((error) => {
         this.locationAlert(error)

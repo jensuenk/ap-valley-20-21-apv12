@@ -53,7 +53,7 @@ void loop() {
     if (millis() - previousRingMillis >= ringDuration) {
       stopRing();
     }
-    // Check if their is a melody switch
+    // Check if there is a melody switch
     if (soundEnabled) {
       if (millis() - previousMelodyMillis >= melodyDuration) {
         if (loud) {
@@ -68,7 +68,7 @@ void loop() {
     }
   }
 
-  // Check if their has been a ping from the smartphone
+  // Check if there has been a ping from the smartphone
   if (receivedPing && (millis() - previousPingMillis >= noPingDuration)) {
     if (shouldRing()) {
       startRing();

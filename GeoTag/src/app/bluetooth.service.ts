@@ -26,7 +26,8 @@ export class BluetoothService {
     private deviceListService: DeviceListService, 
     public navCtrl: NavController,
     private notificationService: NotificationService, 
-    private geolocation: Geolocation) 
+    private geolocation: Geolocation,
+  ) 
   {
     const pingSubscribe = pingInterval.subscribe(val => this.scedulePings());
     const connectSubscribe = connectInterval.subscribe(val => this.connectToUnconnected());
@@ -77,8 +78,10 @@ export class BluetoothService {
     )
     this.connectedDevices.push(device);
 
-    let notification: Notification = { id: "", message: "Reconnected to your " + device.name + ".", date: new Date(), deviceId: device.id, deviceName: device.name, icon: "checkmark-done-outline", alert: false }
-    this.notificationService.addNotification(notification);
+    if (!device.isConnected) {
+      let notification: Notification = { id: "", message: "Reconnected to your " + device.name + ".", date: new Date(), deviceId: device.id, deviceName: device.name, icon: "checkmark-done-outline", alert: false }
+      this.notificationService.addNotification(notification);
+    }
 
     device.isConnected = true;
     this.deviceListService.updateDevice(device);
@@ -107,6 +110,7 @@ export class BluetoothService {
 
   onDataChange(device, buffer: ArrayBuffer) {
     var data = new Uint8Array(buffer);
+    console.log(data)
 
     this.ble.read(device.address, SERVICE_UUID, CHARACTERISTIC_UUID).then(
       data => this.onReadData(device, data),
@@ -116,8 +120,7 @@ export class BluetoothService {
 
   onReadData(device: Device, buffer: ArrayBuffer) {
     var data = this.bytesToString(buffer);
-    console.log("Read: ", data);
-    if (data == "a") {
+    if (data != "") {
       let notification: Notification = { id: "", message: "You are ringing your phone from " + device.name + "!", date: new Date(), deviceId: device.id, deviceName: device.name, icon: device.icon, alert: true }
       this.notificationService.addNotification(notification);
     }
@@ -229,10 +232,10 @@ export class BluetoothService {
     var bytes = this.stringToBytes(data);
     this.ble.write(address, SERVICE_UUID, CHARACTERISTIC_UUID, bytes)
       .then(function (result) {
-        //console.log("Got a response, successfully sent data.", result)
+        console.log("Got a response, successfully sent data.", result)
       })
       .catch(function (error) {
-        //console.log(error)
+        console.log(error)
       });
   }
 

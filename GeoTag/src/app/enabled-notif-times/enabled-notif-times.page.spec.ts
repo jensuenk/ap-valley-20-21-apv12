@@ -18,7 +18,7 @@ describe('EnabledNotifTimesPage', () => {
     deviceListService = null;
     alertController = null;
     bluetoothservice = null;
-    component = new EnabledNotifTimesPage(route,modalCtrl,deviceListService,alertController,bluetoothservice);
+    component = new EnabledNotifTimesPage(route,modalCtrl,deviceListService,alertController);
   });
 
   
@@ -27,7 +27,7 @@ describe('EnabledNotifTimesPage', () => {
   });
 
   it('should have currentDeviceID defined as empty', ()=>{
-    expect(component.currentDeviceID).toBeFalsy();
+    expect(component.currentDeviceId).toBeFalsy();
   });
 
   it('should have a currentDevice defined as empty',()=>{

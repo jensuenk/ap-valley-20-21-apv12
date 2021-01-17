@@ -18,15 +18,15 @@ describe('EnabledNotifLocationsPage', () => {
     deviceListService = null;
     alertController = null;
     bluetoothService = null;
-    component = new EnabledNotifLocationsPage(route,modalController,deviceListService,alertController,bluetoothService);
+    component = new EnabledNotifLocationsPage(route,modalController,deviceListService,alertController);
   });
   
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have an unset currentdeviceID',()=>{
-    expect(component.currentDeviceID).toBeFalsy();
+  it('should have an unset currentdeviceId',()=>{
+    expect(component.currentDeviceId).toBeFalsy();
   });
 
   it('should have an unset currentdevice',()=>{
@@ -42,7 +42,7 @@ describe('EnabledNotifLocationsPage', () => {
   });
 
   it('shouldnt contain data',()=>{
-    expect(component.currentDeviceID).toBeFalsy();
+    expect(component.currentDeviceId).toBeFalsy();
   })
 
   
