@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "test-puppeteer": "ng test --watch=false --source-map=false"
+    "test-puppeteer": "ng test --watch=false --source-map=false",
+    "build-cordova-android": "ionic cordova build --release --emulator android"
   },
   "private": true,
   "dependencies": {
